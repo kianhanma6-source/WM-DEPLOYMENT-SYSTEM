@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AL HAYAH A SALAH WM DEPLOYMENT SYSTEM</title>
+    <title>WM  DEPLOYMENT &I NV. SYSTEM</title>
 <style>
 *{
     box-sizing:border-box;
@@ -72,6 +72,8 @@ body::before{
     gap:8px;
     margin-bottom:15px;
     flex-wrap:nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
 }
 
 .nav-btn{
@@ -131,7 +133,7 @@ body::before{
 .col{flex:1;min-width:140px;}
 .col-wide{flex:1.7;min-width:180px;}
 .col-sm{min-width:85px; flex:1;}
-.col-flex{display:flex;gap:6px;align-items:center;}
+.col-flex{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
 
 label{
     font-size:12px;
@@ -251,6 +253,7 @@ input:focus,select:focus{
 
 .table-container{
     overflow-x:auto;
+    -webkit-overflow-scrolling: touch;
     border-radius:12px;
     border:1px solid rgba(255,255,255,.15);
     background: rgba(15, 23, 42, 0.4);
@@ -263,6 +266,7 @@ table{
     border-collapse:collapse;
     font-size:12px;
     table-layout: auto;
+    white-space: nowrap;
 }
 th{
     background:#1e40af;
@@ -285,15 +289,23 @@ h3{color:#7dd3fc;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15
 .note{font-size:11px;color:#facc15;margin-top:6px;}
 .item-row{border-bottom:1px solid rgba(255,255,255,.15);padding:15px 0;margin-bottom:10px;}
 .item-row:last-child{border-bottom:none;margin-bottom:0;}
-.series-option{display:flex;gap:15px;align-items:center;margin-bottom:12px;padding:10px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.1);}
+.series-option{display:flex;gap:15px;align-items:center;margin-bottom:12px;padding:10px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.1); flex-wrap:wrap;}
 .series-option label{margin:0;cursor:pointer;}
 .series-option input{width:auto;cursor:pointer;}
 .series-setting{background:rgba(0,0,0,0.2);padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid #4f46e5;}
-.new-prefix-wrap{display:none;margin-top:8px;gap:6px;align-items:center;}
+.new-prefix-wrap{display:none;margin-top:8px;gap:6px;align-items:center;flex-wrap:wrap;}
+
+.login-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 10px;
+}
 
 .login-box{
     width:420px;
-    max-width:95%;
+    max-width:100%;
     padding:35px 25px;
     border-radius:24px;
     background:rgba(255,255,255,.08);
@@ -318,13 +330,6 @@ h3{color:#7dd3fc;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15
     background: #1e293b;
 }
 
-.login-container-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 85vh;
-}
-
 .password-container {
     position: relative;
     width: 100%;
@@ -347,7 +352,6 @@ h3{color:#7dd3fc;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15
     user-select: none;
 }
 
-/* Remember Me Container Alignment */
 .remember-container {
     display: flex;
     align-items: center;
@@ -382,26 +386,26 @@ h3{color:#7dd3fc;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15
     text-align:center;
     margin-top: 5px;
     margin-bottom: 20px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: 0.5px;
-    white-space: nowrap;
     animation: colorCycle 5s ease infinite;
+    word-break: break-word;
 }
 
-.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:12px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.15);}
+.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:12px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.15); flex-wrap: wrap; gap: 10px;}
 .user-info{font-size:13px;font-weight:bold;color:#7dd3fc;}
 .top-bar .btn-group{margin:0;width:auto;}
 
-/* REPORT DESIGN & STYLING */
+/* REPORT DESIGN & STYLING - Left aligned logo next to company name */
 .print-header{display:none;}
-.print-header-flex{ display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; }
-.print-logo { width: 65px; height: 65px; object-fit: cover; border-radius: 50% !important; flex-shrink: 0; background: #1e293b; border: 2px solid #38bdf8; }
-.print-header-text { display: flex; flex-direction: column; text-align: left; }
-.print-header h2{ color:#38bdf8; margin-bottom:2px; font-size:18px; font-weight: bold; }
-.print-header p{ color:#94a3b8; font-size:10px; font-weight: bold; text-transform: uppercase; }
-.print-report-title { text-align: left; font-size: 13px; font-weight: bold; margin: 10px 0 5px 0; text-transform: uppercase; color: #38bdf8; }
-.print-date-generated { text-align: left; font-size: 11px; font-weight: bold; margin-bottom: 10px; color: #94a3b8; }
+.print-header-center { text-align: left; width: 100%; margin-bottom: 15px; border-bottom: 3px solid #38bdf8; padding-bottom: 10px; display: flex; align-items: center; gap: 15px; }
+.print-logo-center { width: 50px; height: 50px; object-fit: cover; border-radius: 50% !important; background: #1e293b; border: 2px solid #38bdf8; display: block; flex-shrink: 0; }
+.print-title-container { display: flex; flex-direction: column; justify-content: center; }
+.print-company-name { font-size: 13px; font-weight: bold; color: #000; text-transform: uppercase; line-height: 1.2; }
+.print-system-name { font-size: 11px; font-weight: bold; color: #334155; text-transform: uppercase; margin-top: 2px; line-height: 1.2; }
+.print-footer-info { text-align: right; font-size: 11px; font-weight: bold; color: #000; margin-top: 25px; line-height: 1.4; }
+.print-report-title { text-align: left; font-size: 15px; font-weight: bold; margin: 10px 0; text-transform: uppercase; color: #000; }
 
 .footer-credit{
     position:relative;
@@ -412,6 +416,8 @@ h3{color:#7dd3fc;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15
     font-size:11px;
     letter-spacing:1px;
     z-index: 10;
+    padding: 0 10px;
+    word-break: break-word;
 }
 
 .programmer-only{display:none;}
@@ -427,7 +433,7 @@ body.user .programmer-only, body.user .admin-only{display:none;}
 <div id="loginScreen" class="login-container-wrapper">
     <div class="login-box">
         <img src="logo.png" alt="Company Logo" class="print-logo login-logo" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'110\' height=\'110\'><circle cx=\'55\' cy=\'55\' r=\'55\' fill=\'#1e293b\'/><text x=\'50%\' y=\'50%\' fill=\'#38bdf8\' font-size=\'16\' font-family=\'Arial\' text-anchor=\'middle\' dominant-baseline=\'middle\'>LOGO</text></svg>'">
-        <div class="system-login">WM DEPLOYMENT SYSTEM</div>
+        <div class="system-login">WM DEPLOYMENT & INV. SYSTEM</div>
         
         <div style="text-align: left; margin-bottom: 15px;">
             <label>Username</label>
@@ -442,13 +448,12 @@ body.user .programmer-only, body.user .admin-only{display:none;}
             <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
         </div>
 
-        <!-- Aligned Remember Me Checkbox -->
         <div class="remember-container">
             <input type="checkbox" id="rememberMe">
             <label for="rememberMe">Remember Me</label>
         </div>
 
-        <button class="btn btn-add-update" style="width:100%; padding:15px; margin-top:10px; font-size:15px; flex: 1;" onclick="login()">LOGIN</button>
+        <button class="btn btn-add-update" style="width:100%; padding:15px; margin-top:10px; font-size:15px;" onclick="login()">LOGIN</button>
     </div>
 </div>
 
@@ -456,8 +461,7 @@ body.user .programmer-only, body.user .admin-only{display:none;}
 <div id="mainScreen" style="display:none;">
     <div class="container">
         <div class="header">
-            
-            <div class="header-accent">WM DEPLOYMENT SYSTEM</div>
+            <div class="header-accent">WM DEPLOYMENT & INV. SYSTEM</div>
         </div>
         
         <div class="top-bar">
@@ -510,20 +514,8 @@ body.user .programmer-only, body.user .admin-only{display:none;}
                 </div>
             </div>
             <div class="card printable-card" id="empPrintZone">
-                <div class="print-header" style="display:block;">
-                    <div class="print-header-flex">
-                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
-                        <div class="print-header-text">
-                            <h2>AL HAYAH AL SAHLAH</h2>
-                            <p>Electronics Devices and Repair</p>
-                        </div>
-                    </div>
-                    <div class="print-report-title">EMPLOYEE REPORT</div>
-                    <div class="print-date-generated" id="empPrintDate">Date Generated: _________________________</div>
-                </div>
-                
                 <div class="table-container">
-                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th></tr></thead><tbody id="empList"></tbody></table>
+                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th><th>DATE & TIME</th></tr></thead><tbody id="empList"></tbody></table>
                 </div>
             </div>
         </div>
@@ -532,7 +524,7 @@ body.user .programmer-only, body.user .admin-only{display:none;}
         <div id="prodPage" class="page">
             <div class="card no-print">
                 <h3>🔍 SEARCH</h3>
-                <div class="row"><div class="col"><input type="text" id="searchProd" placeholder="Type to search Description / Model / Qty..." oninput="loadProd()"></div></div>
+                <div class="row"><div class="col"><input type="text" id="searchProd" placeholder="Type to search Description / Model..." oninput="loadProd()"></div></div>
                 <div class="btn-group-right" style="margin-top:10px;">
                     <button class="btn btn-delete btn-small" onclick="resetProdSearch()">🔄 Reset</button>
                     <button class="btn btn-export btn-small" onclick="exportIndividualExcel('prod')">📊 Excel</button>
@@ -546,9 +538,9 @@ body.user .programmer-only, body.user .admin-only{display:none;}
                 <div class="row">
                     <div class="col"><label>DESCRIPTION</label><input type="text" id="prodDesc"></div>
                     <div class="col"><label>MODEL</label><input type="text" id="prodModel"></div>
-                    <div class="col" style="display: flex; gap: 10px; min-width: 180px;">
-                        <div style="flex: 1;"><label>TOTAL QTY</label><input type="number" id="prodQty" min="1"></div>
-                        <div style="flex: 1;"><label>ADD QTY</label><input type="number" id="newQty" min="0" placeholder="Amt" disabled></div>
+                    <div class="col" style="display: flex; gap: 10px; min-width: 180px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 80px;"><label>TOTAL QTY</label><input type="number" id="prodQty" min="1"></div>
+                        <div style="flex: 1; min-width: 80px;"><label>ADD QTY</label><input type="number" id="newQty" min="0" placeholder="Amt" disabled></div>
                     </div>
                 </div>
                 <div class="note">⚠️ Description cannot be duplicated & cannot be edited once saved</div>
@@ -558,20 +550,8 @@ body.user .programmer-only, body.user .admin-only{display:none;}
                 </div>
             </div>
             <div class="card printable-card" id="prodPrintZone">
-                <div class="print-header" style="display:block;">
-                    <div class="print-header-flex">
-                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
-                        <div class="print-header-text">
-                            <h2>AL HAYAH AL SAHLAH</h2>
-                            <p>Electronics Devices and Repair</p>
-                        </div>
-                    </div>
-                    <div class="print-report-title">PRODUCT INVENTORY REPORT</div>
-                    <div class="print-date-generated" id="prodPrintDate">Date Generated: _________________________</div>
-                </div>
-                
                 <div class="table-container">
-                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th></tr></thead><tbody id="prodList"></tbody></table>
+                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th><th>DATE & TIME</th></tr></thead><tbody id="prodList"></tbody></table>
                 </div>
             </div>
         </div>
@@ -579,9 +559,9 @@ body.user .programmer-only, body.user .admin-only{display:none;}
         <!-- ========== DEPLOYMENT PAGE ========== -->
         <div id="depPage" class="page">
             <div class="card no-print">
-                <h3>🔍SEARCH</h3>
+                <h3>🔍 SEARCH</h3>
                 <div class="row">
-                    <div class="col"><input type="text" id="searchDepAll" placeholder="Search All Fields (Trans No, Name, Machine No, Key No, Date)..." oninput="loadDep()"></div>
+                    <div class="col"><input type="text" id="searchDepAll" placeholder="Type to search Trans No, Name, Machine No, Key No, Date..." oninput="loadDep()"></div>
                 </div>
                 <div class="btn-group-right" style="margin-top:10px;">
                     <button class="btn btn-delete btn-small" onclick="resetDepSearch()">🔄 Reset</button>
@@ -614,26 +594,14 @@ body.user .programmer-only, body.user .admin-only{display:none;}
             </div>
             
             <div class="printable-card" id="allPrintZone" style="display:none;">
-                <div class="print-header" style="display:block;">
-                    <div class="print-header-flex">
-                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
-                        <div class="print-header-text">
-                            <h2>AL HAYAH AL SAHLAH</h2>
-                            <p>Electronics Devices and Repair</p>
-                        </div>
-                    </div>
-                    <div class="print-report-title">COMPLETE SYSTEM MASTER REPORT</div>
-                    <div class="print-date-generated" id="allPrintDate">Date Generated: _________________________</div>
-                </div>
-                
                 <h4 style="color:#000; margin-top:10px;">📋 EMPLOYEE LIST</h4>
                 <div class="table-container" style="margin-bottom:15px;">
-                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th></tr></thead><tbody id="printAllEmpList"></tbody></table>
+                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th><th>DATE & TIME</th></tr></thead><tbody id="printAllEmpList"></tbody></table>
                 </div>
 
                 <h4 style="color:#000; margin-top:15px;">📦 PRODUCT INVENTORY LIST</h4>
                 <div class="table-container" style="margin-bottom:15px;">
-                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th></tr></thead><tbody id="printAllProdList"></tbody></table>
+                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th><th>DATE & TIME</th></tr></thead><tbody id="printAllProdList"></tbody></table>
                 </div>
 
                 <h4 style="color:#000; margin-top:15px;">🚚 DEPLOYMENT LOGS LIST</h4>
@@ -643,18 +611,6 @@ body.user .programmer-only, body.user .admin-only{display:none;}
             </div>
 
             <div class="card printable-card" id="depPrintZone">
-                <div class="print-header" style="display:block;">
-                    <div class="print-header-flex">
-                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
-                        <div class="print-header-text">
-                            <h2>AL HAYAH AL SAHLAH</h2>
-                            <p>Electronics Devices and Repair</p>
-                        </div>
-                    </div>
-                    <div class="print-report-title">DEPLOYMENT LOG  REPORT</div>
-                    <div class="print-date-generated" id="depPrintDate">Date Generated: _________________________</div>
-                </div>
-                
                 <div class="table-container">
                     <table><thead><tr><th>TRANS NO</th><th>NAME</th><th>POSITION</th><th>AREA</th><th>DESCRIPTION</th><th>MODEL</th><th>MACHINE NO</th><th>KEY NO</th><th>QTY</th><th>DATE</th></tr></thead><tbody id="depList"></tbody></table>
                 </div>
@@ -708,6 +664,10 @@ body.user .programmer-only, body.user .admin-only{display:none;}
             <div id="userManageModal" class="card admin-only" style="display:none;margin-top:15px;">
                 <h3>👤 USER MANAGEMENT</h3>
                 <div class="row">
+                    <div class="col"><label>NAME</label><input type="text" id="newUserName" placeholder="Full Name"></div>
+                    <div class="col"><label>POSITION</label><input type="text" id="newUserPosition" placeholder="Position"></div>
+                </div>
+                <div class="row">
                     <div class="col"><label>USERNAME</label><input type="text" id="newUsername"></div>
                     <div class="col"><label>PASSWORD</label><input type="password" id="newUserPass"></div>
                     <div class="col"><label>ROLE</label><select id="newUserRole">
@@ -721,7 +681,7 @@ body.user .programmer-only, body.user .admin-only{display:none;}
                     <button class="btn btn-delete" onclick="closeUserManage()">✕ CLOSE</button>
                 </div>
                 <div class="table-container" style="margin-top:10px;">
-                    <table><thead><tr><th>USERNAME</th><th>ROLE</th><th>ACTION</th></tr></thead><tbody id="userList"></tbody></table>
+                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>USERNAME</th><th>ROLE</th><th>ACTION</th></tr></thead><tbody id="userList"></tbody></table>
                 </div>
             </div>
         </div>
@@ -729,7 +689,7 @@ body.user .programmer-only, body.user .admin-only{display:none;}
 </div>
 
 <div class="footer-credit">
-    NAD ITALLO PROGRAMMER v1.0
+    Generated Date: <span id="generatedDate"></span> | NAD ITALLO PROGRAMMER v1.0
 </div>
 
 <script>
@@ -740,7 +700,7 @@ const DB_DEP = 'WH_DEP';
 const DB_LAST_BACKUP = 'WH_LAST_BACKUP';
 const DB_PREFIX_DATA = 'WH_PREFIX_DATA';
 
-let users = JSON.parse(localStorage.getItem(DB_USER) || '[{"username":"NAD ITALLO","password":"Onin23","role":"programmer"},{"username":"Blazark","password":"Onin23","role":"admin"},{"username":"admin","password":"admin123","role":"user"}]');
+let users = JSON.parse(localStorage.getItem(DB_USER) || '[{"name":"NINO ANGELO D. ITALLO","position":"ELECTRIAN","username":"NAD ITALLO","password":"Onin23","role":"programmer"},{"name":"LUO JIANBIN","position":"MANAGER","username":"LUO","password":"LUO123","role":"admin"},{"name":"LEONARDO SISON","position":"WAREHOUSE INCHARGE","username":"LEO","password":"LEO123","role":"admin"},{"name":"MARK","position":"TECHNICIAN","username":"MARK","password":"MARK123","role":"user"}]');
 let empData = JSON.parse(localStorage.getItem(DB_EMP) || '[]');
 let prodData = JSON.parse(localStorage.getItem(DB_PROD) || '[]');
 let depData = JSON.parse(localStorage.getItem(DB_DEP) || '[]');
@@ -761,6 +721,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     document.getElementById('manualSeries').checked = true;
     document.getElementById('autoSeries').checked = false;
+    document.getElementById('generatedDate').textContent = new Date().toLocaleDateString('en-GB');
     updateLastNumberForPrefix(); loadPrefixList(); updateNextNumDisplay(); loadDepSelects();
 });
 
@@ -912,13 +873,29 @@ function showUserManage() { document.getElementById('userManageModal').style.dis
 function closeUserManage() { document.getElementById('userManageModal').style.display='none'; }
 function loadUserList() {
     let t = document.getElementById('userList'); t.innerHTML='';
-    users.forEach((x,i)=>{ t.innerHTML += `<tr><td>${x.username}</td><td>${x.role.toUpperCase()}</td><td><button class="btn btn-delete btn-small" onclick="delUser(${i})">DELETE</button></td></tr>`; });
+    users.forEach((x,i)=>{ 
+        let deleteBtn = x.username === 'NAD ITALLO' ? '<span style="color:#94a3b8; font-size:11px;">Restricted</span>' : `<button class="btn btn-delete btn-small" onclick="delUser(${i})">DELETE</button>`;
+        t.innerHTML += `<tr><td>${x.name || ''}</td><td>${x.position || ''}</td><td>${x.username}</td><td>${x.role.toUpperCase()}</td><td>${deleteBtn}</td></tr>`; 
+    });
 }
 function addUser() {
-    let u = document.getElementById('newUsername').value.trim(); let p = document.getElementById('newUserPass').value; let r = document.getElementById('newUserRole').value;
-    if(!u||!p) return alert('Fill all fields!'); if(users.find(x=>x.username===u)) return alert('Username already exists!');
-    users.push({username:u,password:p,role:r}); saveUsers(); loadUserList();
-    document.getElementById('newUsername').value='';document.getElementById('newUserPass').value=''; alert('✅ User added!');
+    let nameVal = document.getElementById('newUserName').value.trim();
+    let posVal = document.getElementById('newUserPosition').value.trim();
+    let u = document.getElementById('newUsername').value.trim(); 
+    let p = document.getElementById('newUserPass').value; 
+    let r = document.getElementById('newUserRole').value;
+    
+    if(!nameVal || !posVal || !u || !p) return alert('Fill all fields including Name and Position!'); 
+    if(users.find(x=>x.username===u)) return alert('Username already exists!');
+    
+    users.push({name: nameVal, position: posVal, username: u, password: p, role: r}); 
+    saveUsers(); 
+    loadUserList();
+    document.getElementById('newUserName').value='';
+    document.getElementById('newUserPosition').value='';
+    document.getElementById('newUsername').value='';
+    document.getElementById('newUserPass').value=''; 
+    alert('✅ User added!');
 }
 function delUser(i) {
     if(users[i].username==='NAD ITALLO') return alert('❌ Cannot delete main Programmer account!');
@@ -939,9 +916,10 @@ function resetEmpSearch() { document.getElementById('searchEmp').value=''; loadE
 
 function saveEmpRecord() {
     let k=document.getElementById('empKey').value, n=document.getElementById('empName').value.trim(),p=document.getElementById('empPos').value.trim(),a=document.getElementById('empArea').value.trim();
+    let nowIso = new Date().toISOString();
     if(!n||!p||!a) return alert('Fill all fields!');
-    if(!k) { empData.push({key:Date.now(),name:n,pos:p,area:a}); alert('✅ Added Successfully!'); }
-    else { let i=empData.findIndex(x=>x.key==k); empData[i]={key:k,name:n,pos:p,area:a}; alert('✅ Updated Successfully!'); }
+    if(!k) { empData.push({key:Date.now(),name:n,pos:p,area:a,date:nowIso}); alert('✅ Added Successfully!'); }
+    else { let i=empData.findIndex(x=>x.key==k); empData[i]={key:k,name:n,pos:p,area:a,date:empData[i].date || nowIso}; alert('✅ Updated Successfully!'); }
     saveEmp(); loadEmp(); clearEmpForm(); loadDepSelects();
 }
 function delEmp() {
@@ -954,8 +932,11 @@ function loadEmp() {
     let s=normStr(document.getElementById('searchEmp').value);
     let list = empData.filter(x=>normStr(x.name).includes(s)||normStr(x.pos).includes(s)||normStr(x.area).includes(s));
     list.sort((a,b)=>b.key - a.key);
-    let t=document.getElementById('empList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="3" class="empty">No Records</td></tr>';
-    list.forEach(x=>t.innerHTML+='<tr onclick="fillEmp('+x.key+')"><td>'+x.name+'</td><td>'+x.pos+'</td><td>'+x.area+'</td></tr>');
+    let t=document.getElementById('empList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="4" class="empty">No Records</td></tr>';
+    list.forEach(x=>{
+        let formattedDate = x.date ? new Date(x.date).toLocaleString('en-GB') : '-';
+        t.innerHTML+=`<tr onclick="fillEmp(${x.key})"><td>${x.name}</td><td>${x.pos}</td><td>${x.area}</td><td>${formattedDate}</td></tr>`;
+    });
 }
 function fillEmp(k) { let x=empData.find(i=>i.key==k); document.getElementById('empKey').value=x.key; document.getElementById('empName').value=x.name; document.getElementById('empPos').value=x.pos; document.getElementById('empArea').value=x.area; }
 
@@ -970,8 +951,9 @@ function resetProdSearch() { document.getElementById('searchProd').value=''; loa
 
 function saveProdRecord() {
     let k=document.getElementById('prodKey').value, d=normStr(document.getElementById('prodDesc').value),m=normStr(document.getElementById('prodModel').value),q=parseInt(document.getElementById('prodQty').value)||0,nq=parseInt(document.getElementById('newQty').value)||0;
+    let nowIso = new Date().toISOString();
     if(!d||!m||(!k && q<=0)) return alert('Fill all fields correctly!');
-    if(!k) { if(prodData.find(x=>normStr(x.desc)===d)) return alert('Description already exists!'); prodData.push({key:Date.now(),desc:d,model:m,totalQty:q}); alert('✅ Added Successfully!'); }
+    if(!k) { if(prodData.find(x=>normStr(x.desc)===d)) return alert('Description already exists!'); prodData.push({key:Date.now(),desc:d,model:m,totalQty:q,date:nowIso}); alert('✅ Added Successfully!'); }
     else { let i=prodData.findIndex(x=>x.key==k); prodData[i].totalQty=parseInt(document.getElementById('origTotalQty').value)+nq; alert('✅ Updated! New Total: '+prodData[i].totalQty); }
     saveProd(); loadProd(); clearProdForm();
 }
@@ -983,10 +965,14 @@ function saveProd() { localStorage.setItem(DB_PROD,JSON.stringify(prodData)); }
 
 function loadProd() {
     let s=normStr(document.getElementById('searchProd').value);
-    let list = prodData.filter(x=>normStr(x.desc).includes(s)||normStr(x.model).includes(s)||normStr(x.totalQty).includes(s));
+    // Tinanggal ang pag-check sa totalQty para hindi na ito isama sa search
+    let list = prodData.filter(x=>normStr(x.desc).includes(s)||normStr(x.model).includes(s));
     list.sort((a,b)=>b.key - a.key);
-    let t=document.getElementById('prodList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="3" class="empty">No Records</td></tr>';
-    list.forEach(x=>t.innerHTML+='<tr onclick="fillProd('+x.key+')"><td>'+x.desc+'</td><td>'+x.model+'</td><td>'+x.totalQty+'</td></tr>');
+    let t=document.getElementById('prodList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="4" class="empty">No Records</td></tr>';
+    list.forEach(x=>{
+        let formattedDate = x.date ? new Date(x.date).toLocaleString('en-GB') : '-';
+        t.innerHTML+=`<tr onclick="fillProd(${x.key})"><td>${x.desc}</td><td>${x.model}</td><td>${x.totalQty}</td><td>${formattedDate}</td></tr>`;
+    });
 }
 function fillProd(k) { 
     let x=prodData.find(i=>i.key==k); document.getElementById('prodKey').value=x.key; 
@@ -1090,7 +1076,8 @@ function saveDep() { localStorage.setItem(DB_DEP,JSON.stringify(depData)); }
 function getFilteredDep() {
     let s = normStr(document.getElementById('searchDepAll').value);
     return depData.filter(x=> {
-        return s==='' || normStr(x.transNo||'').includes(s) || normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s) || normStr(x.desc).includes(s) || normStr(x.model).includes(s) || normStr(x.macNo).includes(s) || normStr(x.keyNo||'').includes(s) || normStr(x.qty).includes(s) || new Date(x.date).toLocaleString('en-GB').toLowerCase().includes(s);
+        // Tinanggal ang pag-check sa qty (x.qty) para hindi na ito isama sa search criteria
+        return s==='' || normStr(x.transNo||'').includes(s) || normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s) || normStr(x.desc).includes(s) || normStr(x.model).includes(s) || normStr(x.macNo).includes(s) || normStr(x.keyNo||'').includes(s) || new Date(x.date).toLocaleString('en-GB').toLowerCase().includes(s);
     });
 }
 function loadDep() {
@@ -1100,72 +1087,108 @@ function loadDep() {
 }
 
 // ========== EXCEL & MOBILE-FRIENDLY PDF FUNCTIONS ==========
+
 function exportIndividualExcel(type) {
     let csv = "";
     let fileName = "";
     if(type === 'emp') {
-        csv = "NAME,POSITION,AREA\n";
+        csv = "NAME,POSITION,AREA,DATE & TIME\n";
         let s = normStr(document.getElementById('searchEmp').value);
         let list = s ? empData.filter(x => normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s)) : empData;
         if(list.length === 0) list = empData; 
-        list.forEach(x => csv += `"${x.name}","${x.pos}","${x.area}"\n`);
+        list.forEach(x => {
+            let dt = x.date ? new Date(x.date).toLocaleString('en-GB') : '';
+            csv += `"${x.name || ''}","${x.pos || ''}","${x.area || ''}","${dt}"\n`;
+        });
         fileName = "EMPLOYEE_REPORT";
     } else if(type === 'prod') {
-        csv = "DESCRIPTION,MODEL,TOTAL QTY\n";
+        csv = "DESCRIPTION,MODEL,TOTAL QTY,DATE & TIME\n";
         let s = normStr(document.getElementById('searchProd').value);
-        let list = s ? prodData.filter(x => normStr(x.desc).includes(s) || normStr(x.model).includes(s) || normStr(x.totalQty).includes(s)) : prodData;
+        // Tinanggal din ang totalQty dito para sa individual excel search filter kung sakali
+        let list = s ? prodData.filter(x => normStr(x.desc).includes(s) || normStr(x.model).includes(s)) : prodData;
         if(list.length === 0) list = prodData; 
-        list.forEach(x => csv += `"${x.desc}","${x.model}",${x.totalQty}\n`);
+        list.forEach(x => {
+            let dt = x.date ? new Date(x.date).toLocaleString('en-GB') : '';
+            csv += `"${x.desc || ''}","${x.model || ''}",${x.totalQty || 0},"${dt}"\n`;
+        });
         fileName = "PRODUCT_REPORT";
     } else if(type === 'dep') {
         csv = "TRANS NO,NAME,POSITION,AREA,DESCRIPTION,MODEL,MACHINE NO,KEY NO,QTY,DATE\n";
         let list = getFilteredDep();
         if(list.length === 0) list = depData; 
-        list.forEach(x => csv += `"${x.transNo||''}","${x.name}","${x.pos}","${x.area}","${x.desc}","${x.model}","${x.macNo}","${x.keyNo||''}",${x.qty},"${new Date(x.date).toLocaleString('en-GB')}"\n`);
+        list.forEach(x => csv += `"${x.transNo||''}","${x.name||''}","${x.pos||''}","${x.area||''}","${x.desc||''}","${x.model||''}","${x.macNo||''}","${x.keyNo||''}",${x.qty||0},"${x.date ? new Date(x.date).toLocaleString('en-GB') : ''}"\n`);
         fileName = "DEPLOYMENT_REPORT";
     }
+    
     let blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
     let url = URL.createObjectURL(blob);
     let a = document.createElement('a');
-    a.href = url; a.download = `${fileName}_${new Date().toISOString().slice(0,10)}.csv`;
-    a.click(); URL.revokeObjectURL(url);
+    a.href = url; 
+    a.download = `${fileName}_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a); 
+    a.click(); 
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 function printIndividualPDF(elementId) {
     let zone = document.getElementById(elementId);
     if (!zone) return;
-    
-    let nowStr = new Date().toLocaleString('en-GB');
-    if(elementId === 'empPrintZone') document.getElementById('empPrintDate').textContent = `Date Generated: ${nowStr}`;
-    if(elementId === 'prodPrintZone') document.getElementById('prodPrintDate').textContent = `Date Generated: ${nowStr}`;
-    if(elementId === 'depPrintZone') document.getElementById('depPrintDate').textContent = `Date Generated: ${nowStr}`;
-    if(elementId === 'allPrintZone') document.getElementById('allPrintDate').textContent = `Date Generated: ${nowStr}`;
+
+    let currentZoneHTML = zone.innerHTML;
+    let reportTitle = "SYSTEM REPORT";
+    if(elementId === 'empPrintZone') reportTitle = "EMPLOYEE REPORT";
+    else if(elementId === 'prodPrintZone') reportTitle = "PRODUCT INVENTORY REPORT";
+    else if(elementId === 'depPrintZone') reportTitle = "DEPLOYMENT LOG REPORT";
+    else if(elementId === 'allPrintZone') reportTitle = "COMPLETE SYSTEM MASTER REPORT";
+
+    let printHeaderHTML = `
+        <div class="print-header-center">
+            <img src="logo.png" class="print-logo-center" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'50\'><circle cx=\'25\' cy=\'25\' r=\'25\' fill=\'#1e293b\'/><text x=\'50%\' y=\'50%\' fill=\'#38bdf8\' font-size=\'10\' font-family=\'Arial\' text-anchor=\'middle\' dominant-baseline=\'middle\'>LOGO</text></svg>'">
+            <div class="print-title-container">
+                <div class="print-company-name">AL HAYAH AL SALAH ELECTRONICS DEVICES AND REP</div>
+                <div class="print-system-name">WM INVENTORY & DEPLOYMENT SYSTEM</div>
+            </div>
+        </div>
+        <div class="print-report-title">${reportTitle}</div>
+    `;
+
+    let printFooterHTML = `
+        <div class="print-footer-info">
+            Prepared by: ${currentUser ? currentUser.name : 'Warehouse Management'}<br>
+            Position: ${currentUser ? currentUser.position : 'Staff'}<br>
+            Date: ${new Date().toLocaleDateString('en-GB')}
+        </div>
+    `;
 
     let printHTML = `
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Report - WM Deployment System</title>
             <style>
-                body { font-family: Arial, sans-serif; color: black; background: white; padding: 20px; }
-                .print-header { border-bottom: 2px solid #38bdf8; padding-bottom: 15px; text-align: center; margin-bottom: 20px; display: block !important; }
-                .print-header-flex{ display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; }
-                .print-logo { width: 65px; height: 65px; object-fit: cover; border-radius: 50%; background: #1e293b; border: 2px solid #38bdf8; }
-                .print-header-text { display: flex; flex-direction: column; text-align: left; }
-                .print-header h2{ color: #000; margin-bottom: 2px; font-size: 18px; font-weight: bold; }
-                .print-header p{ color: #333; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-                .print-report-title { text-align: left; font-size: 13px; font-weight: bold; margin: 10px 0 5px 0; text-transform: uppercase; color: #000; }
-                .print-date-generated { text-align: left; font-size: 11px; font-weight: bold; margin-bottom: 10px; color: #333; }
-                .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border: 1px solid #000; }
-                table { width: 100%; border-collapse: collapse; font-size: 11px; }
-                th, td { border: 1px solid #000; padding: 8px 6px; text-align: left; color: black; }
-                th { background: #e2e8f0; font-weight: bold; }
-                h4 { margin-top: 15px; color: #000; font-size: 14px; }
+                @page { size: landscape; margin: 10mm; }
+                body { font-family: Arial, sans-serif; color: black; background: white; padding: 15px; margin: 0; }
+                .print-header-center { text-align: left; width: 100%; margin-bottom: 15px; border-bottom: 3px solid #38bdf8; padding-bottom: 10px; display: flex; align-items: center; gap: 15px; }
+                .print-logo-center { width: 50px; height: 50px; object-fit: cover; border-radius: 50% !important; background: #1e293b; border: 2px solid #38bdf8; display: block; flex-shrink: 0; }
+                .print-title-container { display: flex; flex-direction: column; justify-content: center; }
+                .print-company-name { font-size: 13px; font-weight: bold; color: #000; text-transform: uppercase; line-height: 1.2; }
+                .print-system-name { font-size: 11px; font-weight: bold; color: #334155; text-transform: uppercase; margin-top: 2px; line-height: 1.2; }
+                .print-report-title { text-align: left; font-size: 15px; font-weight: bold; margin: 10px 0; text-transform: uppercase; color: #000; }
+                .print-footer-info { text-align: right; font-size: 11px; font-weight: bold; color: #000; margin-top: 25px; line-height: 1.4; }
+                .table-container { width: 100%; margin-top: 10px; }
+                table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
+                th, td { border: 1px solid #000; padding: 8px; text-align: left; color: black; }
+                th { background-color: #e2e8f0 !important; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                h4 { margin-top: 15px; color: #000; font-size: 13px; }
             </style>
         </head>
-        <body>
-            ${zone.innerHTML}
+        <body onload="setTimeout(function() { window.print(); }, 500);">
+            ${printHeaderHTML}
+            ${currentZoneHTML}
+            ${printFooterHTML}
         </body>
         </html>
     `;
@@ -1178,9 +1201,10 @@ function printIndividualPDF(elementId) {
         let a = document.createElement('a');
         a.href = url;
         a.download = `${elementId}_Report_${new Date().toISOString().slice(0,10)}.html`;
+        document.body.appendChild(a);
         a.click();
+        document.body.removeChild(a);
     }
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function printSingleDep(transNo, name) {
@@ -1275,7 +1299,7 @@ document.getElementById('importExcelFile').addEventListener('change', function(e
                         let model = cols[1];
                         let qty = parseInt(cols[2]) || 0;
                         if(!prodData.some(p => normStr(p.desc) === normStr(desc))) {
-                            prodData.push({key: Date.now() + Math.random(), desc: desc, model: model, totalQty: qty});
+                            prodData.push({key: Date.now() + Math.random(), desc: desc, model: model, totalQty: qty, date: new Date().toISOString()});
                             importedCount++;
                         }
                     } else if(cols.length === 3) {
@@ -1283,7 +1307,7 @@ document.getElementById('importExcelFile').addEventListener('change', function(e
                         let pos = cols[1];
                         let area = cols[2];
                         if(!empData.some(e => normStr(e.name) === normStr(name))) {
-                            empData.push({key: Date.now() + Math.random(), name: name, pos: pos, area: area});
+                            empData.push({key: Date.now() + Math.random(), name: name, pos: pos, area: area, date: new Date().toISOString()});
                             importedCount++;
                         }
                     } else if(cols.length >= 10) {
@@ -1333,12 +1357,12 @@ function exportExcelAll() {
     
     if(empData.length > 0) {
         empData.forEach(x=> {
-            csv += `"EMPLOYEE","","${x.name || ''}","${x.pos || ''}","${x.area || ''}","","","","","", "${new Date().toISOString()}"\n`;
+            csv += `"EMPLOYEE","","${x.name || ''}","${x.pos || ''}","${x.area || ''}","","","","","", "${x.date || new Date().toISOString()}"\n`;
         });
     }
     if(prodData.length > 0) {
         prodData.forEach(x=> {
-            csv += `"PRODUCT","","","","","${x.desc || ''}","${x.model || ''}","","",${x.totalQty || 0}, "${new Date().toISOString()}"\n`;
+            csv += `"PRODUCT","","","","","${x.desc || ''}","${x.model || ''}","","",${x.totalQty || 0}, "${x.date || new Date().toISOString()}"\n`;
         });
     }
     if(depData.length > 0) {
@@ -1352,7 +1376,9 @@ function exportExcelAll() {
     let a = document.createElement('a');
     a.href = url; 
     a.download = `ALHAYAH_MASTER_REPORT_${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a);
     a.click(); 
+    document.body.removeChild(a);
     URL.revokeObjectURL(url);
 }
 
@@ -1361,8 +1387,8 @@ function exportPDFAll() {
     let prodTbody = document.getElementById('printAllProdList');
     let depTbody = document.getElementById('printAllDepList');
     
-    empTbody.innerHTML = empData.length === 0 ? '<tr><td colspan="3" class="empty">No Records</td></tr>' : empData.map(x => `<tr><td>${x.name || ''}</td><td>${x.pos || ''}</td><td>${x.area || ''}</td></tr>`).join('');
-    prodTbody.innerHTML = prodData.length === 0 ? '<tr><td colspan="3" class="empty">No Records</td></tr>' : prodData.map(x => `<tr><td>${x.desc || ''}</td><td>${x.model || ''}</td><td>${x.totalQty || 0}</td></tr>`).join('');
+    empTbody.innerHTML = empData.length === 0 ? '<tr><td colspan="4" class="empty">No Records</td></tr>' : empData.map(x => `<tr><td>${x.name || ''}</td><td>${x.pos || ''}</td><td>${x.area || ''}</td><td>${x.date ? new Date(x.date).toLocaleString('en-GB') : '-'}</td></tr>`).join('');
+    prodTbody.innerHTML = prodData.length === 0 ? '<tr><td colspan="4" class="empty">No Records</td></tr>' : prodData.map(x => `<tr><td>${x.desc || ''}</td><td>${x.model || ''}</td><td>${x.totalQty || 0}</td><td>${x.date ? new Date(x.date).toLocaleString('en-GB') : '-'}</td></tr>`).join('');
     depTbody.innerHTML = depData.length === 0 ? '<tr><td colspan="10" class="empty">No Records</td></tr>' : depData.map(x => `<tr><td>${x.transNo || ''}</td><td>${x.name || ''}</td><td>${x.pos || ''}</td><td>${x.area || ''}</td><td>${x.desc || ''}</td><td>${x.model || ''}</td><td>${x.macNo || ''}</td><td>${x.keyNo || ''}</td><td>${x.qty || 0}</td><td>${new Date(x.date).toLocaleString('en-GB')}</td></tr>`).join('');
     
     printIndividualPDF('allPrintZone');
