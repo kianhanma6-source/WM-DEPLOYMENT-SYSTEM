@@ -663,6 +663,7 @@ body.user .programmer-only, body.user .admin-only{display:none;}
 
             <div id="userManageModal" class="card admin-only" style="display:none;margin-top:15px;">
                 <h3>👤 USER MANAGEMENT</h3>
+                <input type="hidden" id="editUserIndex" value="">
                 <div class="row">
                     <div class="col"><label>NAME</label><input type="text" id="newUserName" placeholder="Full Name"></div>
                     <div class="col"><label>POSITION</label><input type="text" id="newUserPosition" placeholder="Position"></div>
@@ -673,12 +674,12 @@ body.user .programmer-only, body.user .admin-only{display:none;}
                     <div class="col"><label>ROLE</label><select id="newUserRole">
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
-                        <option value="programmer">Programmer</option>
                     </select></div>
                 </div>
-                <div class="btn-group-vertical">
-                    <button class="btn btn-add-update" onclick="addUser()">➕ ADD USER</button>
-                    <button class="btn btn-delete" onclick="closeUserManage()">✕ CLOSE</button>
+                <div class="btn-group-right" style="margin-top:12px;">
+                    <button class="btn btn-add-update" id="userSaveBtn" onclick="saveUserRecord()">➕ ADD USER</button>
+                    <button class="btn btn-delete" onclick="resetUserForm()">🔄 CLEAR</button>
+                    <button class="btn btn-other" onclick="closeUserManage()">✕ CLOSE</button>
                 </div>
                 <div class="table-container" style="margin-top:10px;">
                     <table><thead><tr><th>NAME</th><th>POSITION</th><th>USERNAME</th><th>ROLE</th><th>ACTION</th></tr></thead><tbody id="userList"></tbody></table>
@@ -700,7 +701,7 @@ const DB_DEP = 'WH_DEP';
 const DB_LAST_BACKUP = 'WH_LAST_BACKUP';
 const DB_PREFIX_DATA = 'WH_PREFIX_DATA';
 
-let users = JSON.parse(localStorage.getItem(DB_USER) || '[{"name":"NINO ANGELO D. ITALLO","position":"ELECTRIAN","username":"NAD ITALLO","password":"Onin23","role":"programmer"},{"name":"LUO JIANBIN","position":"MANAGER","username":"LUO","password":"LUO123","role":"admin"},{"name":"LEONARDO SISON","position":"WAREHOUSE INCHARGE","username":"LEO","password":"LEO123","role":"admin"},{"name":"MARK","position":"TECHNICIAN","username":"MARK","password":"MARK123","role":"user"}]');
+let users = JSON.parse(localStorage.getItem(DB_USER) || '[{"name":"NINO ANGELO D. ITALLO","position":"ELECTRIAN","username":"NAD ITALLO","password":"Onin23","role":"admin"},{"name":"LUO JIANBIN","position":"MANAGER","username":"LUO","password":"LUO123","role":"admin"},{"name":"LEONARDO SISON","position":"WAREHOUSE INCHARGE","username":"LEO","password":"LEO123","role":"admin"},{"name":"MARK","position":"TECHNICIAN","username":"MARK","password":"MARK123","role":"user"}]');
 let empData = JSON.parse(localStorage.getItem(DB_EMP) || '[]');
 let prodData = JSON.parse(localStorage.getItem(DB_PROD) || '[]');
 let depData = JSON.parse(localStorage.getItem(DB_DEP) || '[]');
@@ -869,37 +870,90 @@ function logout() {
     document.body.classList.remove('programmer','admin','user');
 }
 function saveUsers() { localStorage.setItem(DB_USER, JSON.stringify(users)); }
-function showUserManage() { document.getElementById('userManageModal').style.display='block'; loadUserList(); }
-function closeUserManage() { document.getElementById('userManageModal').style.display='none'; }
+function showUserManage() { document.getElementById('userManageModal').style.display='block'; loadUserList(); resetUserForm(); }
+function closeUserManage() { document.getElementById('userManageModal').style.display='none'; resetUserForm(); }
+
+function resetUserForm() {
+    document.getElementById('editUserIndex').value = '';
+    document.getElementById('newUserName').value = '';
+    document.getElementById('newUserPosition').value = '';
+    document.getElementById('newUsername').value = '';
+    document.getElementById('newUserPass').value = '';
+    document.getElementById('newUserRole').value = 'user';
+    document.getElementById('userSaveBtn').textContent = '➕ ADD USER';
+}
+
 function loadUserList() {
     let t = document.getElementById('userList'); t.innerHTML='';
     users.forEach((x,i)=>{ 
-        let deleteBtn = x.username === 'NAD ITALLO' ? '<span style="color:#94a3b8; font-size:11px;">Restricted</span>' : `<button class="btn btn-delete btn-small" onclick="delUser(${i})">DELETE</button>`;
-        t.innerHTML += `<tr><td>${x.name || ''}</td><td>${x.position || ''}</td><td>${x.username}</td><td>${x.role.toUpperCase()}</td><td>${deleteBtn}</td></tr>`; 
+        let actionBtns = '';
+        if(x.username === 'NAD ITALLO') {
+            actionBtns = `<button class="btn btn-other btn-small" onclick="editUser(${i})">EDIT</button> <span style="color:#94a3b8; font-size:11px;">Fully Restricted</span>`;
+        } else {
+            actionBtns = `<button class="btn btn-other btn-small" onclick="editUser(${i})">EDIT</button> <button class="btn btn-delete btn-small" onclick="delUser(${i})">DELETE</button>`;
+        }
+        t.innerHTML += `<tr><td>${x.name || ''}</td><td>${x.position || ''}</td><td>${x.username}</td><td>${x.role.toUpperCase()}</td><td>${actionBtns}</td></tr>`; 
     });
 }
-function addUser() {
+
+function saveUserRecord() {
+    let editIdx = document.getElementById('editUserIndex').value;
     let nameVal = document.getElementById('newUserName').value.trim();
     let posVal = document.getElementById('newUserPosition').value.trim();
     let u = document.getElementById('newUsername').value.trim(); 
     let p = document.getElementById('newUserPass').value; 
     let r = document.getElementById('newUserRole').value;
     
-    if(!nameVal || !posVal || !u || !p) return alert('Fill all fields including Name and Position!'); 
-    if(users.find(x=>x.username===u)) return alert('Username already exists!');
+    if(editIdx !== "") {
+        let i = parseInt(editIdx);
+        if(users[i].username === 'NAD ITALLO') {
+            return alert('❌ NAD ITALLO account is fully restricted and cannot be edited!');
+        }
+    }
     
-    users.push({name: nameVal, position: posVal, username: u, password: p, role: r}); 
+    if(!nameVal || !posVal || !u || !p) return alert('Fill all fields including Name, Position, Username, and Password!'); 
+    
+    if(editIdx === "") {
+        if(users.find(x=>x.username===u)) return alert('Username already exists!');
+        users.push({name: nameVal, position: posVal, username: u, password: p, role: r});
+        alert('✅ User added successfully!');
+    } else {
+        let i = parseInt(editIdx);
+        let existingUserWithSameName = users.find((x, idx) => idx !== i && x.username === u);
+        if(existingUserWithSameName) return alert('Username already exists!');
+        
+        users[i] = {name: nameVal, position: posVal, username: u, password: p, role: r};
+        alert('✅ User updated successfully!');
+    }
+    
     saveUsers(); 
     loadUserList();
-    document.getElementById('newUserName').value='';
-    document.getElementById('newUserPosition').value='';
-    document.getElementById('newUsername').value='';
-    document.getElementById('newUserPass').value=''; 
-    alert('✅ User added!');
+    resetUserForm();
 }
+
+function editUser(i) {
+    let x = users[i];
+    if(x.username === 'NAD ITALLO') {
+        return alert('❌ NAD ITALLO account is fully restricted and cannot be edited!');
+    }
+    document.getElementById('editUserIndex').value = i;
+    document.getElementById('newUserName').value = x.name || '';
+    document.getElementById('newUserPosition').value = x.position || '';
+    document.getElementById('newUsername').value = x.username || '';
+    document.getElementById('newUserPass').value = x.password || '';
+    document.getElementById('newUserRole').value = x.role || 'user';
+    document.getElementById('userSaveBtn').textContent = '💾 UPDATE USER';
+    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+}
+
 function delUser(i) {
-    if(users[i].username==='NAD ITALLO') return alert('❌ Cannot delete main Programmer account!');
-    if(!confirm('Delete this user?')) return; users.splice(i,1); saveUsers(); loadUserList(); alert('Deleted!');
+    if(users[i].username==='NAD ITALLO') return alert('❌ NAD ITALLO account is fully restricted and cannot be deleted!');
+    if(!confirm('Delete this user?')) return; 
+    users.splice(i,1); 
+    saveUsers(); 
+    loadUserList(); 
+    resetUserForm();
+    alert('Deleted!');
 }
 
 function showPage(page, btn) {
@@ -965,7 +1019,6 @@ function saveProd() { localStorage.setItem(DB_PROD,JSON.stringify(prodData)); }
 
 function loadProd() {
     let s=normStr(document.getElementById('searchProd').value);
-    // Tinanggal ang pag-check sa totalQty para hindi na ito isama sa search
     let list = prodData.filter(x=>normStr(x.desc).includes(s)||normStr(x.model).includes(s));
     list.sort((a,b)=>b.key - a.key);
     let t=document.getElementById('prodList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="4" class="empty">No Records</td></tr>';
@@ -1076,17 +1129,59 @@ function saveDep() { localStorage.setItem(DB_DEP,JSON.stringify(depData)); }
 function getFilteredDep() {
     let s = normStr(document.getElementById('searchDepAll').value);
     return depData.filter(x=> {
-        // Tinanggal ang pag-check sa qty (x.qty) para hindi na ito isama sa search criteria
         return s==='' || normStr(x.transNo||'').includes(s) || normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s) || normStr(x.desc).includes(s) || normStr(x.model).includes(s) || normStr(x.macNo).includes(s) || normStr(x.keyNo||'').includes(s) || new Date(x.date).toLocaleString('en-GB').toLowerCase().includes(s);
     });
 }
 function loadDep() {
     let list=getFilteredDep(); list.sort((a,b)=>new Date(b.date) - new Date(a.date));
     let t=document.getElementById('depList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="10" class="empty">No Records Found</td></tr>';
-    list.forEach(x=>t.innerHTML+='<tr onclick="printSingleDep(\''+x.transNo+'\',\''+x.name+'\')"><td>'+(x.transNo||'')+'</td><td>'+x.name+'</td><td>'+x.pos+'</td><td>'+x.area+'</td><td>'+x.desc+'</td><td>'+x.model+'</td><td>'+x.macNo+'</td><td>'+(x.keyNo||'')+'</td><td>'+x.qty+'</td><td>'+new Date(x.date).toLocaleString('en-GB')+'</td></tr>');
+    
+    // Check if current user is NAD ITALLO
+    let isNadItallo = currentUser && currentUser.username === 'NAD ITALLO';
+
+    list.forEach(x => {
+        let actionCell = isNadItallo ? `<td><button class="btn btn-delete btn-small" onclick="delSingleDep('${x.transNo}')">🗑️ DELETE</button></td>` : '';
+        t.innerHTML += `<tr onclick="printSingleDep('${x.transNo}','${x.name}')">
+            <td>${x.transNo||''}</td>
+            <td>${x.name}</td>
+            <td>${x.pos}</td>
+            <td>${x.area}</td>
+            <td>${x.desc}</td>
+            <td>${x.model}</td>
+            <td>${x.macNo}</td>
+            <td>${x.keyNo||''}</td>
+            <td>${x.qty}</td>
+            <td>${new Date(x.date).toLocaleString('en-GB')}</td>
+            ${actionCell}
+        </tr>`;
+    });
 }
 
-// ========== EXCEL & MOBILE-FRIENDLY PDF FUNCTIONS ==========
+function delSingleDep(transNo) {
+    event.stopPropagation();
+    
+    if(!currentUser || currentUser.username !== 'NAD ITALLO') {
+        alert('❌ Restricted: Only NAD ITALLO can delete deployment records!');
+        return;
+    }
+    
+    if(!confirm(`⚠️ Are you sure you want to delete transaction ${transNo}? Product stocks will be returned.`)) return;
+
+    let matchingItems = depData.filter(x => x.transNo === transNo);
+    matchingItems.forEach(item => {
+        let prod = prodData.find(p => p.desc === item.desc && p.model === item.model);
+        if(prod) {
+            prod.totalQty += item.qty;
+        }
+    });
+
+    depData = depData.filter(x => x.transNo !== transNo);
+    saveDep();
+    saveProd();
+    loadDep();
+    loadProd();
+    alert('✅ Deployment transaction deleted and stocks restored successfully!');
+}
 
 function exportIndividualExcel(type) {
     let csv = "";
@@ -1104,7 +1199,6 @@ function exportIndividualExcel(type) {
     } else if(type === 'prod') {
         csv = "DESCRIPTION,MODEL,TOTAL QTY,DATE & TIME\n";
         let s = normStr(document.getElementById('searchProd').value);
-        // Tinanggal din ang totalQty dito para sa individual excel search filter kung sakali
         let list = s ? prodData.filter(x => normStr(x.desc).includes(s) || normStr(x.model).includes(s)) : prodData;
         if(list.length === 0) list = prodData; 
         list.forEach(x => {
@@ -1156,7 +1250,7 @@ function printIndividualPDF(elementId) {
     let printFooterHTML = `
         <div class="print-footer-info">
             Prepared by: ${currentUser ? currentUser.name : 'Warehouse Management'}<br>
-            Position: ${currentUser ? currentUser.position : 'Staff'}<br>
+            Prepared by ${currentUser ? currentUser.position : 'Staff'}<br>
             Date: ${new Date().toLocaleDateString('en-GB')}
         </div>
     `;
