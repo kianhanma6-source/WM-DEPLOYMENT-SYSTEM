@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL HAYAH A SALAH WM DEPLOYMENT SYSTEM</title>
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top left,#38bdf8 0%,transparent 35%),
+        radial-gradient(circle at bottom right,#7c3aed 0%,transparent 35%),
+        linear-gradient(135deg,#020617,#0f172a,#1e293b,#111827);
+    color:#fff;
+    padding:20px 10px;
+    position: relative;
+}
+
+/* Floating Lights Background Effect */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background: radial-gradient(circle,#38bdf855 2px,transparent 2px);
+    background-size:80px 80px;
+    animation:movebg 25s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes movebg{
+    from{transform:translateY(0);}
+    to{transform:translateY(-80px);}
+}
+
+.container{
+    max-width:1100px;
+    margin:0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* Modern Header Style */
+.header{
+    background:rgba(255,255,255,.06);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.2);
+    padding:20px;
+    text-align:center;
+    border-radius:15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    margin-bottom:15px;
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.4;
+    letter-spacing: 0.5px;
+}
+
+.header-accent {
+    color: #facc15;
+}
+
+.nav{
+    display:flex;
+    gap:8px;
+    margin-bottom:15px;
+    flex-wrap:nowrap;
+}
+
+.nav-btn{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:rgba(255,255,255,.1);
+    backdrop-filter:blur(10px);
+    border: 1px solid rgba(255,255,255,.1);
+    color:#fff;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:13px;
+    white-space:nowrap;
+    transition: 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255,255,255,.2);
+}
+
+.nav-btn.active{
+    background:#38bdf8;
+    color:#0f172a;
+    box-shadow: 0 0 15px rgba(56,189,248,.5);
+    border-color: #38bdf8;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* Glassmorphism Card Style */
+.card{
+    background:rgba(255,255,255,.07);
+    backdrop-filter:blur(15px);
+    border-radius:18px;
+    padding:20px;
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow: 0 15px 35px rgba(0,0,0,.4);
+    margin-bottom:15px;
+}
+
+.row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+.col{flex:1;min-width:140px;}
+.col-wide{flex:1.7;min-width:180px;}
+.col-sm{min-width:85px; flex:1;}
+.col-flex{display:flex;gap:6px;align-items:center;}
+
+label{
+    font-size:12px;
+    font-weight:bold;
+    color:#7dd3fc;
+    margin-bottom:5px;
+    display:block;
+    letter-spacing: 0.5px;
+}
+
+input,select{
+    width:100%;
+    padding:11px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.15);
+    background:#1f2937;
+    color:#fff;
+    font-size:13px;
+    transition: 0.2s;
+}
+
+input:read-only,select:read-only{
+    background:rgba(17, 24, 39, 0.6);
+    color:#9ca3af;
+    border-color: rgba(255,255,255,.05);
+}
+
+input:focus,select:focus{
+    outline:none;
+    border-color:#38bdf8;
+    box-shadow: 0 0 10px rgba(56,189,248,.3);
+}
+
+/* Styled Action Buttons */
+.btn{
+    padding:11px 16px;
+    border-radius:10px;
+    border:none;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:13px;
+    white-space:nowrap;
+    text-align:center;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 0 1 auto;
+}
+
+.btn-add-update{
+    background: linear-gradient(#22c55e,#15803d);
+    color:#fff;
+    box-shadow: 0 4px 0 #166534, 0 8px 15px rgba(0,0,0,.3);
+}
+
+.btn-add-update:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #166534;
+}
+
+.btn-delete{
+    background: linear-gradient(#ef4444,#b91c1c);
+    color:#fff;
+    box-shadow: 0 4px 0 #991b1b, 0 8px 15px rgba(0,0,0,.3);
+}
+
+.btn-delete:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #991b1b;
+}
+
+.btn-other{
+    background: linear-gradient(#6366f1,#4338ca);
+    color:#fff;
+    box-shadow: 0 4px 0 #3730a3, 0 8px 15px rgba(0,0,0,.3);
+}
+
+.btn-other:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #3730a3;
+}
+
+.btn-export{
+    background: linear-gradient(#06b6d4,#0369a1);
+    color:#fff;
+    box-shadow: 0 4px 0 #075985, 0 8px 15px rgba(0,0,0,.3);
+}
+
+.btn-export:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #075985;
+}
+
+.btn-small{
+    padding:7px 12px;
+    font-size:11px;
+    min-width:auto;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+}
+
+.btn-small:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-group{display:flex;gap:8px;flex-wrap:nowrap;margin-top:8px;width:100%;clear:both;}
+.btn-group-right{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap;width:100%;clear:both;}
+.btn-group-right .btn{flex:0 1 auto;min-width:auto;}
+.btn-group-vertical{display:flex;flex-direction:column;gap:12px;margin-top:8px;width:100%;clear:both;}
+.btn-group-vertical .btn{width:100%;text-align:center;padding:14px;font-size:14px;}
+
+.table-container{
+    overflow-x:auto;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.15);
+    background: rgba(15, 23, 42, 0.4);
+    margin-top:12px;
+    width: 100%;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+    table-layout: auto;
+}
+th{
+    background:#1e40af;
+    padding:10px 12px;
+    text-align:left;
+    color:#7dd3fc;
+    border-bottom: 2px solid rgba(255,255,255,.15);
+    white-space: nowrap;
+}
+td{
+    padding:9px 12px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    cursor:pointer;
+    white-space: nowrap;
+}
+td:hover{background:rgba(56,189,248,.15);}
+.empty{text-align:center;padding:20px;color:#94a3b8;}
+.file-input{display:none;}
+h3{color:#7dd3fc;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:6px;font-size:15px;letter-spacing: 0.5px;}
+.note{font-size:11px;color:#facc15;margin-top:6px;}
+.item-row{border-bottom:1px solid rgba(255,255,255,.15);padding:15px 0;margin-bottom:10px;}
+.item-row:last-child{border-bottom:none;margin-bottom:0;}
+.series-option{display:flex;gap:15px;align-items:center;margin-bottom:12px;padding:10px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.1);}
+.series-option label{margin:0;cursor:pointer;}
+.series-option input{width:auto;cursor:pointer;}
+.series-setting{background:rgba(0,0,0,0.2);padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid #4f46e5;}
+.new-prefix-wrap{display:none;margin-top:8px;gap:6px;align-items:center;}
+
+.login-box{
+    width:420px;
+    max-width:95%;
+    padding:35px 25px;
+    border-radius:24px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.25);
+    box-shadow: 0 25px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.30);
+    position:relative;
+    z-index:10;
+    text-align: center;
+}
+
+.login-logo{
+    width:110px !important;
+    height:110px !important;
+    margin:0 auto 15px auto;
+    display:block;
+    object-fit:cover;
+    border-radius:50%;
+    padding:3px;
+    border:3px solid #fff;
+    box-shadow: 0 0 0 3px #38bdf8, 0 0 20px rgba(56,189,248,.9);
+    background: #1e293b;
+}
+
+.login-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.password-container input {
+    margin-bottom: 0 !important;
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    color: #94a3b8;
+    user-select: none;
+}
+
+/* Remember Me Container Alignment */
+.remember-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 12px 0;
+    text-align: left;
+}
+
+.remember-container input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.remember-container label {
+    color: #7dd3fc;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0;
+}
+
+@keyframes colorCycle {
+    0% { color: #facc15; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(250,204,21,0.6); }
+    33% { color: #38bdf8; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(56,189,248,0.6); }
+    66% { color: #c084fc; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(192,132,252,0.6); }
+    100% { color: #facc15; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(250,204,21,0.6); }
+}
+
+.system-login{
+    text-align:center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    animation: colorCycle 5s ease infinite;
+}
+
+.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:12px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.15);}
+.user-info{font-size:13px;font-weight:bold;color:#7dd3fc;}
+.top-bar .btn-group{margin:0;width:auto;}
+
+/* REPORT DESIGN & STYLING */
+.print-header{display:none;}
+.print-header-flex{ display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; }
+.print-logo { width: 65px; height: 65px; object-fit: cover; border-radius: 50% !important; flex-shrink: 0; background: #1e293b; border: 2px solid #38bdf8; }
+.print-header-text { display: flex; flex-direction: column; text-align: left; }
+.print-header h2{ color:#38bdf8; margin-bottom:2px; font-size:18px; font-weight: bold; }
+.print-header p{ color:#94a3b8; font-size:10px; font-weight: bold; text-transform: uppercase; }
+.print-report-title { text-align: left; font-size: 13px; font-weight: bold; margin: 10px 0 5px 0; text-transform: uppercase; color: #38bdf8; }
+.print-date-generated { text-align: left; font-size: 11px; font-weight: bold; margin-bottom: 10px; color: #94a3b8; }
+
+.footer-credit{
+    position:relative;
+    margin-top: 25px;
+    width:100%;
+    text-align:center;
+    color:#94a3b8;
+    font-size:11px;
+    letter-spacing:1px;
+    z-index: 10;
+}
+
+.programmer-only{display:none;}
+.admin-only{display:none;}
+body.programmer .programmer-only, body.programmer .admin-only{display:block;}
+body.admin .admin-only{display:block;}
+body.user .programmer-only, body.user .admin-only{display:none;}
+</style>
+</head>
+<body>
+
+<!-- ========== LOGIN SCREEN ========== -->
+<div id="loginScreen" class="login-container-wrapper">
+    <div class="login-box">
+        <img src="logo.png" alt="Company Logo" class="print-logo login-logo" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'110\' height=\'110\'><circle cx=\'55\' cy=\'55\' r=\'55\' fill=\'#1e293b\'/><text x=\'50%\' y=\'50%\' fill=\'#38bdf8\' font-size=\'16\' font-family=\'Arial\' text-anchor=\'middle\' dominant-baseline=\'middle\'>LOGO</text></svg>'">
+        <div class="system-login">WM DEPLOYMENT SYSTEM</div>
+        
+        <div style="text-align: left; margin-bottom: 15px;">
+            <label>Username</label>
+            <input type="text" id="loginUser" placeholder="Enter username">
+        </div>
+        
+        <div style="text-align: left; margin-bottom: 5px;">
+            <label>Password</label>
+        </div>
+        <div class="password-container">
+            <input type="password" id="loginPass" placeholder="Enter password">
+            <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+        </div>
+
+        <!-- Aligned Remember Me Checkbox -->
+        <div class="remember-container">
+            <input type="checkbox" id="rememberMe">
+            <label for="rememberMe">Remember Me</label>
+        </div>
+
+        <button class="btn btn-add-update" style="width:100%; padding:15px; margin-top:10px; font-size:15px; flex: 1;" onclick="login()">LOGIN</button>
+    </div>
+</div>
+
+<!-- ========== MAIN SYSTEM ========== -->
+<div id="mainScreen" style="display:none;">
+    <div class="container">
+        <div class="header">
+            
+            <div class="header-accent">WM DEPLOYMENT SYSTEM</div>
+        </div>
+        
+        <div class="top-bar">
+            <div class="user-info"><span id="mainGreeting"></span></div>
+            <div class="btn-group">
+                <button class="btn btn-small btn-delete" onclick="logout()">🚪 LOGOUT</button>
+            </div>
+        </div>
+        
+        <div class="nav">
+            <button class="nav-btn active" onclick="showPage('emp', this)">EMPLOYEE</button>
+            <button class="nav-btn" onclick="showPage('prod', this)">PRODUCT</button>
+            <button class="nav-btn" onclick="showPage('dep', this)">DEPLOYMENT</button>
+            <button class="nav-btn" onclick="showPage('settings', this)">SETTINGS</button>
+        </div>
+
+        <!-- ========== EMPLOYEE PAGE ========== -->
+        <div id="empPage" class="page active">
+            <div class="card no-print">
+                <h3>🔍SEARCH</h3>
+                <div class="row"><div class="col"><input type="text" id="searchEmp" placeholder="Type to search Name / Position / Area..." oninput="loadEmp()"></div></div>
+                <div class="btn-group-right" style="margin-top:10px;">
+                    <button class="btn btn-delete btn-small" onclick="resetEmpSearch()">🔄 Reset</button>
+                    <button class="btn btn-export btn-small" onclick="exportIndividualExcel('emp')">📊 Excel</button>
+                    <button class="btn btn-other btn-small" onclick="printIndividualPDF('empPrintZone')">📄 PDF</button>
+                </div>
+            </div>
+            <div class="card no-print">
+                <h3>EMPLOYEE INFORMATION</h3>
+                <input type="hidden" id="empKey">
+                <div class="row">
+                    <div class="col">
+                        <label>NAME</label>
+                        <input type="text" id="empName" placeholder="Enter Employee Name">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label>POSITION</label>
+                        <input type="text" id="empPos" placeholder="Enter Position">
+                    </div>
+                    <div class="col">
+                        <label>AREA</label>
+                        <input type="text" id="empArea" placeholder="Enter Area">
+                    </div>
+                </div>
+                <div class="btn-group-right">
+                    <button class="btn btn-add-update" onclick="saveEmpRecord()">💾 ADD </button>
+                    <button class="btn btn-delete" onclick="delEmp()">🗑️ DELETE</button>
+                </div>
+            </div>
+            <div class="card printable-card" id="empPrintZone">
+                <div class="print-header" style="display:block;">
+                    <div class="print-header-flex">
+                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
+                        <div class="print-header-text">
+                            <h2>AL HAYAH AL SAHLAH</h2>
+                            <p>Electronics Devices and Repair</p>
+                        </div>
+                    </div>
+                    <div class="print-report-title">EMPLOYEE REPORT</div>
+                    <div class="print-date-generated" id="empPrintDate">Date Generated: _________________________</div>
+                </div>
+                
+                <div class="table-container">
+                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th></tr></thead><tbody id="empList"></tbody></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== PRODUCT PAGE ========== -->
+        <div id="prodPage" class="page">
+            <div class="card no-print">
+                <h3>🔍 SEARCH</h3>
+                <div class="row"><div class="col"><input type="text" id="searchProd" placeholder="Type to search Description / Model / Qty..." oninput="loadProd()"></div></div>
+                <div class="btn-group-right" style="margin-top:10px;">
+                    <button class="btn btn-delete btn-small" onclick="resetProdSearch()">🔄 Reset</button>
+                    <button class="btn btn-export btn-small" onclick="exportIndividualExcel('prod')">📊 Excel</button>
+                    <button class="btn btn-other btn-small" onclick="printIndividualPDF('prodPrintZone')">📄 PDF</button>
+                </div>
+            </div>
+            <div class="card no-print">
+                <h3>PRODUCT INFORMATION</h3>
+                <input type="hidden" id="prodKey">
+                <input type="hidden" id="origTotalQty">
+                <div class="row">
+                    <div class="col"><label>DESCRIPTION</label><input type="text" id="prodDesc"></div>
+                    <div class="col"><label>MODEL</label><input type="text" id="prodModel"></div>
+                    <div class="col" style="display: flex; gap: 10px; min-width: 180px;">
+                        <div style="flex: 1;"><label>TOTAL QTY</label><input type="number" id="prodQty" min="1"></div>
+                        <div style="flex: 1;"><label>ADD QTY</label><input type="number" id="newQty" min="0" placeholder="Amt" disabled></div>
+                    </div>
+                </div>
+                <div class="note">⚠️ Description cannot be duplicated & cannot be edited once saved</div>
+                <div class="btn-group-right">
+                    <button class="btn btn-add-update" onclick="saveProdRecord()">💾 ADD </button>
+                    <button class="btn btn-delete" onclick="delProd()">🗑️ DELETE</button>
+                </div>
+            </div>
+            <div class="card printable-card" id="prodPrintZone">
+                <div class="print-header" style="display:block;">
+                    <div class="print-header-flex">
+                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
+                        <div class="print-header-text">
+                            <h2>AL HAYAH AL SAHLAH</h2>
+                            <p>Electronics Devices and Repair</p>
+                        </div>
+                    </div>
+                    <div class="print-report-title">PRODUCT INVENTORY REPORT</div>
+                    <div class="print-date-generated" id="prodPrintDate">Date Generated: _________________________</div>
+                </div>
+                
+                <div class="table-container">
+                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th></tr></thead><tbody id="prodList"></tbody></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== DEPLOYMENT PAGE ========== -->
+        <div id="depPage" class="page">
+            <div class="card no-print">
+                <h3>🔍SEARCH</h3>
+                <div class="row">
+                    <div class="col"><input type="text" id="searchDepAll" placeholder="Search All Fields (Trans No, Name, Machine No, Key No, Date)..." oninput="loadDep()"></div>
+                </div>
+                <div class="btn-group-right" style="margin-top:10px;">
+                    <button class="btn btn-delete btn-small" onclick="resetDepSearch()">🔄 Reset</button>
+                    <button class="btn btn-export btn-small" onclick="exportIndividualExcel('dep')">📊 Excel</button>
+                    <button class="btn btn-other btn-small" onclick="printIndividualPDF('depPrintZone')">📄 PDF</button>
+                </div>
+            </div>
+
+            <div class="card no-print">
+                <h3>DEPLOYMENT FORM</h3>
+                <div class="row">
+                    <div class="col"><label>TRANSACTION NO</label><input type="text" id="transNo" readonly></div>
+                    <div class="col"><label>DATE</label><input type="text" id="depDate" readonly></div>
+                </div>
+                <div class="row">
+                    <div class="col"><label>NAME</label><select id="depName"><option value="">-- Select --</option></select></div>
+                </div>
+                <div class="row">
+                    <div class="col"><label>POSITION</label><input type="text" id="depPos" readonly placeholder="Auto Loaded"></div>
+                    <div class="col"><label>AREA</label><input type="text" id="depArea" placeholder="Enter or Edit Area"></div>
+                </div>
+
+                <h3 style="margin-top:15px;">📦 ITEMS</h3>
+                <div id="depItemsContainer"></div>
+                
+                <div class="btn-group-right">
+                    <button class="btn btn-add-update" onclick="saveBatchDep()">💾 RELEASED</button>
+                    <button class="btn btn-delete" onclick="newDep()">🔄 CLEAR FORM</button>
+                </div>
+            </div>
+            
+            <div class="printable-card" id="allPrintZone" style="display:none;">
+                <div class="print-header" style="display:block;">
+                    <div class="print-header-flex">
+                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
+                        <div class="print-header-text">
+                            <h2>AL HAYAH AL SAHLAH</h2>
+                            <p>Electronics Devices and Repair</p>
+                        </div>
+                    </div>
+                    <div class="print-report-title">COMPLETE SYSTEM MASTER REPORT</div>
+                    <div class="print-date-generated" id="allPrintDate">Date Generated: _________________________</div>
+                </div>
+                
+                <h4 style="color:#000; margin-top:10px;">📋 EMPLOYEE LIST</h4>
+                <div class="table-container" style="margin-bottom:15px;">
+                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th></tr></thead><tbody id="printAllEmpList"></tbody></table>
+                </div>
+
+                <h4 style="color:#000; margin-top:15px;">📦 PRODUCT INVENTORY LIST</h4>
+                <div class="table-container" style="margin-bottom:15px;">
+                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th></tr></thead><tbody id="printAllProdList"></tbody></table>
+                </div>
+
+                <h4 style="color:#000; margin-top:15px;">🚚 DEPLOYMENT LOGS LIST</h4>
+                <div class="table-container">
+                    <table><thead><tr><th>TRANS NO</th><th>NAME</th><th>POSITION</th><th>AREA</th><th>DESCRIPTION</th><th>MODEL</th><th>MACHINE NO</th><th>KEY NO</th><th>QTY</th><th>DATE</th></tr></thead><tbody id="printAllDepList"></tbody></table>
+                </div>
+            </div>
+
+            <div class="card printable-card" id="depPrintZone">
+                <div class="print-header" style="display:block;">
+                    <div class="print-header-flex">
+                        <img src="logo.png" alt="Company Logo" class="print-logo" onerror="this.style.display='none'">
+                        <div class="print-header-text">
+                            <h2>AL HAYAH AL SAHLAH</h2>
+                            <p>Electronics Devices and Repair</p>
+                        </div>
+                    </div>
+                    <div class="print-report-title">DEPLOYMENT LOG  REPORT</div>
+                    <div class="print-date-generated" id="depPrintDate">Date Generated: _________________________</div>
+                </div>
+                
+                <div class="table-container">
+                    <table><thead><tr><th>TRANS NO</th><th>NAME</th><th>POSITION</th><th>AREA</th><th>DESCRIPTION</th><th>MODEL</th><th>MACHINE NO</th><th>KEY NO</th><th>QTY</th><th>DATE</th></tr></thead><tbody id="depList"></tbody></table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== SETTINGS PAGE ========== -->
+        <div id="settingsPage" class="page">
+            <div class="card">
+                <h3 style="margin-top:0;">⚙️ ALPHANUMERIC SERIES SETTINGS</h3>
+                <div class="series-setting">
+                    <div class="row col-flex">
+                        <div class="col"><label>SELECT PREFIX</label>
+                            <select id="prefixSelect" onchange="selectPrefix()"></select>
+                        </div>
+                        <div class="col-sm"><label>START NUMBER</label><input type="number" id="setStartSeries" min="1" placeholder="Ex: 1"></div>
+                        <div class="col-sm" style="padding-top:20px;"><button class="btn btn-add-update btn-small" onclick="savePrefixSetting()">💾 SAVE</button></div>
+                        <button class="btn btn-other btn-small" style="margin-top:20px;" onclick="showNewPrefix()">➕ NEW PREFIX</button>
+                    </div>
+                    <div class="new-prefix-wrap" id="newPrefixWrap">
+                        <input type="text" id="newPrefixInput" placeholder="Type New Prefix Here" maxlength="20">
+                        <button class="btn btn-small btn-add-update" onclick="addNewPrefix()">✓ ADD</button>
+                        <button class="btn btn-small btn-delete" onclick="hideNewPrefix()">✕</button>
+                    </div>
+                    <div class="note">Current next: <span id="currentNextNum">Easy-0001</span></div>
+                </div>
+                <div class="series-option">
+                    <input type="radio" name="seriesMode" id="autoSeries" value="auto" onchange="updateSeriesMode()">
+                    <label for="autoSeries">🔢 AUTOMATIC SERIES</label>
+                    <input type="radio" name="seriesMode" id="manualSeries" value="manual" checked onchange="updateSeriesMode()">
+                    <label for="manualSeries">✏️ MANUAL INPUT</label>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>⚙️ SYSTEM SETTINGS</h3>
+                <div class="btn-group-vertical">
+                    <button class="btn btn-other admin-only" onclick="showUserManage()">👤 MANAGE USERS</button>
+                    <button class="btn btn-delete programmer-only" onclick="clearAllDB()">🗑️ CLEAR ALL DATABASE</button>
+                    <button class="btn btn-export" onclick="backupDB()">💾 BACKUP DATA</button>
+                    <button class="btn btn-other" onclick="document.getElementById('restoreFile').click()">🔄 RESTORE DATA</button>
+                    <button class="btn btn-other" onclick="document.getElementById('importExcelFile').click()">📥 IMPORT EXCEL FILE</button>
+                    <button class="btn btn-export" onclick="exportExcelAll()">📊 EXPORT ALL TO EXCEL</button>
+                    <button class="btn btn-other" onclick="printIndividualPDF('depPrintZone')">📄 EXPORT DEPLOYMENT PDF</button>
+                    <button class="btn btn-export" onclick="exportPDFAll()">📄 EXPORT ALL TO PDF</button>
+                </div>
+                <input type="file" id="restoreFile" class="file-input" accept=".json">
+                <input type="file" id="importExcelFile" class="file-input" accept=".csv, .txt">
+            </div>
+
+            <div id="userManageModal" class="card admin-only" style="display:none;margin-top:15px;">
+                <h3>👤 USER MANAGEMENT</h3>
+                <div class="row">
+                    <div class="col"><label>USERNAME</label><input type="text" id="newUsername"></div>
+                    <div class="col"><label>PASSWORD</label><input type="password" id="newUserPass"></div>
+                    <div class="col"><label>ROLE</label><select id="newUserRole">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                        <option value="programmer">Programmer</option>
+                    </select></div>
+                </div>
+                <div class="btn-group-vertical">
+                    <button class="btn btn-add-update" onclick="addUser()">➕ ADD USER</button>
+                    <button class="btn btn-delete" onclick="closeUserManage()">✕ CLOSE</button>
+                </div>
+                <div class="table-container" style="margin-top:10px;">
+                    <table><thead><tr><th>USERNAME</th><th>ROLE</th><th>ACTION</th></tr></thead><tbody id="userList"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-credit">
+    NAD ITALLO PROGRAMMER v1.0
+</div>
+
+<script>
+const DB_USER = 'WH_USERS';
+const DB_EMP = 'WH_EMP';
+const DB_PROD = 'WH_PROD';
+const DB_DEP = 'WH_DEP';
+const DB_LAST_BACKUP = 'WH_LAST_BACKUP';
+const DB_PREFIX_DATA = 'WH_PREFIX_DATA';
+
+let users = JSON.parse(localStorage.getItem(DB_USER) || '[{"username":"NAD ITALLO","password":"Onin23","role":"programmer"},{"username":"Blazark","password":"Onin23","role":"admin"},{"username":"admin","password":"admin123","role":"user"}]');
+let empData = JSON.parse(localStorage.getItem(DB_EMP) || '[]');
+let prodData = JSON.parse(localStorage.getItem(DB_PROD) || '[]');
+let depData = JSON.parse(localStorage.getItem(DB_DEP) || '[]');
+let prefixData = JSON.parse(localStorage.getItem(DB_PREFIX_DATA) || '{"Easy":1}');
+let seriesPrefix = localStorage.getItem('SERIES_PREFIX') || 'Easy';
+let transCounter = parseInt(localStorage.getItem('TRANS_SERIES') || '2001');
+let currentUser = null;
+let depItemCount = 0;
+
+let defaultSeriesMode = 'manual';
+localStorage.setItem('SERIES_MODE', defaultSeriesMode);
+
+window.addEventListener('DOMContentLoaded', () => {
+    let rememberedUser = localStorage.getItem('REMEMBERED_USER');
+    if(rememberedUser) {
+        document.getElementById('loginUser').value = rememberedUser;
+        document.getElementById('rememberMe').checked = true;
+    }
+    document.getElementById('manualSeries').checked = true;
+    document.getElementById('autoSeries').checked = false;
+    updateLastNumberForPrefix(); loadPrefixList(); updateNextNumDisplay(); loadDepSelects();
+});
+
+function togglePasswordVisibility() {
+    let passInput = document.getElementById('loginPass');
+    if (passInput.type === 'password') {
+        passInput.type = 'text';
+    } else {
+        passInput.type = 'password';
+    }
+}
+
+function getGreeting(username = '') {
+    let hour = new Date().getHours();
+    let timeGreet;
+    if (hour >= 5 && hour < 12) timeGreet = "Good morning";
+    else if (hour >= 12 && hour < 18) timeGreet = "Good afternoon";
+    else timeGreet = "Good evening";
+    if (username) return `Welcome! ${timeGreet}, ${username.toUpperCase()}!`;
+    return `Welcome! ${timeGreet}`;
+}
+
+function getDate() { return new Date().toLocaleString('en-GB'); }
+function normStr(s) { return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
+function savePrefixData() { localStorage.setItem(DB_PREFIX_DATA, JSON.stringify(prefixData)); }
+function saveTransCounter() { localStorage.setItem('TRANS_SERIES', transCounter); }
+function formatMacNum(num) { return `${seriesPrefix}-${String(num).padStart(4, '0')}`; }
+function updateNextNumDisplay() { 
+    let nextNum = prefixData[seriesPrefix] || 1;
+    document.getElementById('currentNextNum').textContent = formatMacNum(nextNum); 
+}
+function loadPrefixList() {
+    let sel = document.getElementById('prefixSelect');
+    sel.innerHTML = '';
+    Object.keys(prefixData).sort().forEach(p=>{
+        sel.innerHTML += `<option value="${p}">${p} (Next: ${formatMacNum(prefixData[p] || 1)})</option>`;
+    });
+    sel.value = seriesPrefix;
+}
+function selectPrefix() {
+    let val = document.getElementById('prefixSelect').value;
+    seriesPrefix = val;
+    localStorage.setItem('SERIES_PREFIX', seriesPrefix);
+    updateNextNumDisplay();
+    updateSeriesMode();
+}
+function showNewPrefix() {
+    document.getElementById('newPrefixWrap').style.display = 'flex';
+    document.getElementById('newPrefixInput').value = '';
+    document.getElementById('newPrefixInput').focus();
+}
+function hideNewPrefix() { document.getElementById('newPrefixWrap').style.display = 'none'; }
+function addNewPrefix() {
+    let newP = document.getElementById('newPrefixInput').value.trim();
+    if(!newP) return alert('❌ Enter new Prefix');
+    if(prefixData[newP]) return alert('❌ Prefix already exists');
+    prefixData[newP] = 1;
+    savePrefixData();
+    seriesPrefix = newP;
+    localStorage.setItem('SERIES_PREFIX', seriesPrefix);
+    loadPrefixList();
+    updateNextNumDisplay();
+    updateSeriesMode();
+    hideNewPrefix();
+    alert(`✅ New Prefix added: ${newP}`);
+}
+function savePrefixSetting() {
+    let startNum = parseInt(document.getElementById('setStartSeries').value);
+    if(!startNum || startNum < 1) return alert('❌ Enter valid starting number');
+    prefixData[seriesPrefix] = startNum;
+    savePrefixData();
+    updateNextNumDisplay();
+    updateSeriesMode();
+    document.getElementById('setStartSeries').value = '';
+    alert(`✅ Set to: ${formatMacNum(startNum)}`);
+}
+function updateSeriesMode() {
+    let isAuto = document.getElementById('autoSeries').checked;
+    let currentNext = prefixData[seriesPrefix] || 1;
+    document.querySelectorAll('.item-mac').forEach((input, idx) => {
+        input.readOnly = isAuto;
+        if(isAuto) input.value = formatMacNum(currentNext + idx);
+        else input.value = '';
+    });
+}
+function updateLastNumberForPrefix() {
+    let currentMax = 0;
+    depData.forEach(x=>{
+        if(x.macNo && x.macNo.startsWith(seriesPrefix + '-')) {
+            let m = x.macNo.match(/(\d+)$/);
+            if(m) currentMax = Math.max(currentMax, parseInt(m[1]));
+        }
+    });
+    prefixData[seriesPrefix] = currentMax + 1;
+    savePrefixData();
+}
+function checkAutoBackup() {
+    let lastBackup = localStorage.getItem(DB_LAST_BACKUP);
+    let now = new Date();
+    if(!lastBackup) { localStorage.setItem(DB_LAST_BACKUP, now.toISOString()); return; }
+    let lastDate = new Date(lastBackup);
+    let monthsDiff = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
+    if(monthsDiff >= 1) {
+        if(confirm(`⚠️ ${monthsDiff} month/s passed since last backup!\nDownload backup file now?`)) {
+            backupDB(); localStorage.setItem(DB_LAST_BACKUP, now.toISOString());
+        }
+    }
+}
+
+function loadDepSelects() {
+    let depName = document.getElementById('depName');
+    depName.innerHTML = '<option value="">-- Select Employee --</option>';
+    let uniqueNames = [...new Set(empData.map(e => e.name))].sort();
+    uniqueNames.forEach(n=>{
+        depName.innerHTML += `<option value="${n}">${n}</option>`;
+    });
+}
+
+function login() {
+    let u = document.getElementById('loginUser').value.trim();
+    let p = document.getElementById('loginPass').value;
+    let remember = document.getElementById('rememberMe').checked;
+    
+    let found = users.find(x=>x.username===u && x.password===p);
+    if(!found) return alert('❌ Invalid Username or Password!');
+    
+    if(remember) {
+        localStorage.setItem('REMEMBERED_USER', u);
+    } else {
+        localStorage.removeItem('REMEMBERED_USER');
+    }
+
+    currentUser = found;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('mainScreen').style.display='block';
+    document.getElementById('mainGreeting').textContent = getGreeting(found.username);
+    document.body.classList.add(found.role);
+    checkAutoBackup(); loadEmp();loadProd();loadDep();newDep();loadDepSelects();
+}
+function logout() {
+    if(!confirm('Logout now?')) return;
+    currentUser = null; document.getElementById('mainScreen').style.display='none';
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('loginPass').value='';
+    document.body.classList.remove('programmer','admin','user');
+}
+function saveUsers() { localStorage.setItem(DB_USER, JSON.stringify(users)); }
+function showUserManage() { document.getElementById('userManageModal').style.display='block'; loadUserList(); }
+function closeUserManage() { document.getElementById('userManageModal').style.display='none'; }
+function loadUserList() {
+    let t = document.getElementById('userList'); t.innerHTML='';
+    users.forEach((x,i)=>{ t.innerHTML += `<tr><td>${x.username}</td><td>${x.role.toUpperCase()}</td><td><button class="btn btn-delete btn-small" onclick="delUser(${i})">DELETE</button></td></tr>`; });
+}
+function addUser() {
+    let u = document.getElementById('newUsername').value.trim(); let p = document.getElementById('newUserPass').value; let r = document.getElementById('newUserRole').value;
+    if(!u||!p) return alert('Fill all fields!'); if(users.find(x=>x.username===u)) return alert('Username already exists!');
+    users.push({username:u,password:p,role:r}); saveUsers(); loadUserList();
+    document.getElementById('newUsername').value='';document.getElementById('newUserPass').value=''; alert('✅ User added!');
+}
+function delUser(i) {
+    if(users[i].username==='NAD ITALLO') return alert('❌ Cannot delete main Programmer account!');
+    if(!confirm('Delete this user?')) return; users.splice(i,1); saveUsers(); loadUserList(); alert('Deleted!');
+}
+
+function showPage(page, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(page+'Page').classList.add('active'); if(btn) btn.classList.add('active');
+    if(page==='emp') loadEmp(); if(page==='prod') loadProd();
+    if(page==='dep') { loadDep(); loadDepSelects(); newDep(); updateLastNumberForPrefix(); }
+}
+
+// ========== EMPLOYEE ==========
+function clearEmpForm() { document.getElementById('empKey').value='';document.getElementById('empName').value='';document.getElementById('empPos').value='';document.getElementById('empArea').value=''; }
+function resetEmpSearch() { document.getElementById('searchEmp').value=''; loadEmp(); }
+
+function saveEmpRecord() {
+    let k=document.getElementById('empKey').value, n=document.getElementById('empName').value.trim(),p=document.getElementById('empPos').value.trim(),a=document.getElementById('empArea').value.trim();
+    if(!n||!p||!a) return alert('Fill all fields!');
+    if(!k) { empData.push({key:Date.now(),name:n,pos:p,area:a}); alert('✅ Added Successfully!'); }
+    else { let i=empData.findIndex(x=>x.key==k); empData[i]={key:k,name:n,pos:p,area:a}; alert('✅ Updated Successfully!'); }
+    saveEmp(); loadEmp(); clearEmpForm(); loadDepSelects();
+}
+function delEmp() {
+    let k=document.getElementById('empKey').value; if(!k) return alert('Select record first by clicking on list!');
+    if(!confirm('Delete this employee?')) return; empData=empData.filter(x=>x.key!=k); saveEmp(); loadEmp(); clearEmpForm(); alert('Deleted!'); loadDepSelects();
+}
+function saveEmp() { localStorage.setItem(DB_EMP,JSON.stringify(empData)); }
+
+function loadEmp() {
+    let s=normStr(document.getElementById('searchEmp').value);
+    let list = empData.filter(x=>normStr(x.name).includes(s)||normStr(x.pos).includes(s)||normStr(x.area).includes(s));
+    list.sort((a,b)=>b.key - a.key);
+    let t=document.getElementById('empList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="3" class="empty">No Records</td></tr>';
+    list.forEach(x=>t.innerHTML+='<tr onclick="fillEmp('+x.key+')"><td>'+x.name+'</td><td>'+x.pos+'</td><td>'+x.area+'</td></tr>');
+}
+function fillEmp(k) { let x=empData.find(i=>i.key==k); document.getElementById('empKey').value=x.key; document.getElementById('empName').value=x.name; document.getElementById('empPos').value=x.pos; document.getElementById('empArea').value=x.area; }
+
+// ========== PRODUCT ==========
+function clearProdForm() { 
+    document.getElementById('prodKey').value='';document.getElementById('prodDesc').value='';document.getElementById('prodModel').value='';
+    document.getElementById('prodQty').disabled=false;document.getElementById('prodQty').value='';document.getElementById('newQty').value='';
+    document.getElementById('newQty').disabled=true;document.getElementById('origTotalQty').value='';
+    document.getElementById('prodDesc').readOnly=false;document.getElementById('prodModel').readOnly=false;
+}
+function resetProdSearch() { document.getElementById('searchProd').value=''; loadProd(); }
+
+function saveProdRecord() {
+    let k=document.getElementById('prodKey').value, d=normStr(document.getElementById('prodDesc').value),m=normStr(document.getElementById('prodModel').value),q=parseInt(document.getElementById('prodQty').value)||0,nq=parseInt(document.getElementById('newQty').value)||0;
+    if(!d||!m||(!k && q<=0)) return alert('Fill all fields correctly!');
+    if(!k) { if(prodData.find(x=>normStr(x.desc)===d)) return alert('Description already exists!'); prodData.push({key:Date.now(),desc:d,model:m,totalQty:q}); alert('✅ Added Successfully!'); }
+    else { let i=prodData.findIndex(x=>x.key==k); prodData[i].totalQty=parseInt(document.getElementById('origTotalQty').value)+nq; alert('✅ Updated! New Total: '+prodData[i].totalQty); }
+    saveProd(); loadProd(); clearProdForm();
+}
+function delProd() {
+    let k=document.getElementById('prodKey').value; if(!k) return alert('Select record first!');
+    if(!confirm('Delete this product?')) return; prodData=prodData.filter(x=>x.key!=k); saveProd(); loadProd(); clearProdForm(); alert('Deleted!');
+}
+function saveProd() { localStorage.setItem(DB_PROD,JSON.stringify(prodData)); }
+
+function loadProd() {
+    let s=normStr(document.getElementById('searchProd').value);
+    let list = prodData.filter(x=>normStr(x.desc).includes(s)||normStr(x.model).includes(s)||normStr(x.totalQty).includes(s));
+    list.sort((a,b)=>b.key - a.key);
+    let t=document.getElementById('prodList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="3" class="empty">No Records</td></tr>';
+    list.forEach(x=>t.innerHTML+='<tr onclick="fillProd('+x.key+')"><td>'+x.desc+'</td><td>'+x.model+'</td><td>'+x.totalQty+'</td></tr>');
+}
+function fillProd(k) { 
+    let x=prodData.find(i=>i.key==k); document.getElementById('prodKey').value=x.key; 
+    document.getElementById('prodDesc').value=x.desc; document.getElementById('prodDesc').readOnly=true;
+    document.getElementById('prodModel').value=x.model; document.getElementById('prodModel').readOnly=true;
+    document.getElementById('prodQty').value=x.totalQty; document.getElementById('prodQty').readOnly=true;
+    document.getElementById('origTotalQty').value=x.totalQty; document.getElementById('newQty').disabled=false; document.getElementById('newQty').value=''; 
+}
+
+// ========== DEPLOYMENT ==========
+document.getElementById('depName').addEventListener('change',()=>{
+    let selName = document.getElementById('depName').value;
+    if(!selName){
+        document.getElementById('depPos').value='';
+        document.getElementById('depArea').value='';
+        return;
+    }
+    let emp = empData.find(e=>e.name === selName);
+    if(emp){
+        document.getElementById('depPos').value=emp.pos;
+        document.getElementById('depArea').value=emp.area;
+        document.querySelectorAll('.item-area').forEach(input => {
+            if(!input.value) input.value = emp.area;
+        });
+    } else {
+        document.getElementById('depPos').value='';
+        document.getElementById('depArea').value='';
+    }
+});
+
+function addDepItem() {
+    depItemCount++; let isAuto = document.getElementById('autoSeries').checked;
+    let baseNum = prefixData[seriesPrefix] || 1; let currentItemIdx = document.querySelectorAll('.item-row').length;
+    let nextNum = baseNum + currentItemIdx;
+    let container = document.getElementById('depItemsContainer');
+    let currentArea = document.getElementById('depArea').value || '';
+    
+    let itemHtml = `
+    <div class="item-row" id="item-${depItemCount}">
+        <div class="row">
+            <div class="col-wide"><label>PRODUCT</label><select class="item-prod" id="prod-${depItemCount}"><option value="">-- Select --</option>${prodData.map(x=>'<option value="'+x.key+'">'+x.desc+'</option>').join('')}</select></div>
+            <div class="col"><label>MODEL</label><input type="text" class="item-model" id="model-${depItemCount}" readonly></div>
+            <div class="col"><label>AREA</label><input type="text" class="item-area" id="area-${depItemCount}" value="${currentArea}" placeholder="Edit Area for this item"></div>
+        </div>
+        <div class="row">
+            <div class="col"><label>MACHINE NO</label><input type="text" class="item-mac" id="mac-${depItemCount}" value="${isAuto ? formatMacNum(nextNum) : ''}" ${isAuto ? 'readonly' : ''}></div>
+            <div class="col"><label>KEY NO</label><input type="text" class="item-keyno" id="keyno-${depItemCount}" placeholder="Enter Key No"></div>
+            <div class="col"><label>QTY</label><input type="number" class="item-qty" id="qty-${depItemCount}" min="1" value="1"></div>
+            <div class="col-sm" style="padding-top:20px; display:flex; gap:4px; align-items:flex-end;">
+                <button class="btn btn-add-update btn-small" style="margin-top:20px;" onclick="addDepItem()">➕</button>
+                <button class="btn btn-delete btn-small" style="margin-top:20px;" onclick="removeDepItem(${depItemCount})">✕</button>
+            </div>
+        </div>
+    </div>`;
+    container.insertAdjacentHTML('beforeend', itemHtml);
+    document.getElementById(`prod-${depItemCount}`).addEventListener('change',function(){
+        let k=this.value; document.getElementById(`model-${depItemCount}`).value=k?prodData.find(i=>i.key==k).model:'';
+    });
+}
+function removeDepItem(id) { 
+    let items = document.querySelectorAll('.item-row');
+    if(items.length <= 1) {
+        alert("⚠️ Kailangang may matirang kahit isang item sa listahan.");
+        return;
+    }
+    document.getElementById(`item-${id}`).remove(); 
+    updateSeriesMode(); 
+}
+function resetDepSearch() { document.getElementById('searchDepAll').value=''; loadDep(); }
+
+function newDep() {
+    document.getElementById('transNo').value=`TRN-${transCounter}`;
+    document.getElementById('depName').value='';document.getElementById('depPos').value='';document.getElementById('depArea').value='';
+    document.getElementById('depDate').value=getDate(); document.getElementById('depItemsContainer').innerHTML=''; depItemCount=0; addDepItem();
+    updateSeriesMode(); updateLastNumberForPrefix(); updateNextNumDisplay();
+}
+function saveBatchDep() {
+    let empName = document.getElementById('depName').value; let position = document.getElementById('depPos').value.trim(); let transNo = document.getElementById('transNo').value.trim();
+    if(!empName||!position) return alert('Select Employee first!');
+    let items = document.querySelectorAll('.item-row');
+    if(items.length===0) return alert('Add at least one item!');
+    let valid = true;
+    items.forEach((item)=>{
+        let pk = item.querySelector('.item-prod').value; let q = parseInt(item.querySelector('.item-qty').value)||0; let mac = item.querySelector('.item-mac').value.trim(); let itemArea = item.querySelector('.item-area').value.trim(); let kn = item.querySelector('.item-keyno').value.trim();
+        if(!pk||q<=0||!mac||!itemArea||!kn) valid=false; let prod = prodData.find(x=>x.key==pk);
+        if(!prod) { valid=false; return; }
+        if(prod.totalQty < q) { alert(`Not enough stock for ${prod.desc}! Available: ${prod.totalQty}`); valid=false; }
+    });
+    if(!valid) return alert('Please fill up all product, item area, machine number, key no and quantity fields correctly.');
+    
+    items.forEach(item=>{
+        let pk = item.querySelector('.item-prod').value; let mac = item.querySelector('.item-mac').value.trim(); let q = parseInt(item.querySelector('.item-qty').value)||0;
+        let itemArea = item.querySelector('.item-area').value.trim(); let kn = item.querySelector('.item-keyno').value.trim();
+        let prod = prodData.find(x=>x.key==pk); prod.totalQty -= q;
+        depData.push({key:Date.now()+Math.random(), transNo:transNo, name:empName, pos:position, area:itemArea, desc:prod.desc, model:prod.model, macNo:mac, keyNo:kn, qty:q, date:new Date().toISOString()});
+    });
+    updateLastNumberForPrefix(); transCounter++; saveProd(); saveDep(); saveTransCounter(); loadDep(); newDep(); alert(`✅ Transaction Saved! ${items.length} item/s recorded.`);
+}
+function saveDep() { localStorage.setItem(DB_DEP,JSON.stringify(depData)); }
+
+function getFilteredDep() {
+    let s = normStr(document.getElementById('searchDepAll').value);
+    return depData.filter(x=> {
+        return s==='' || normStr(x.transNo||'').includes(s) || normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s) || normStr(x.desc).includes(s) || normStr(x.model).includes(s) || normStr(x.macNo).includes(s) || normStr(x.keyNo||'').includes(s) || normStr(x.qty).includes(s) || new Date(x.date).toLocaleString('en-GB').toLowerCase().includes(s);
+    });
+}
+function loadDep() {
+    let list=getFilteredDep(); list.sort((a,b)=>new Date(b.date) - new Date(a.date));
+    let t=document.getElementById('depList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="10" class="empty">No Records Found</td></tr>';
+    list.forEach(x=>t.innerHTML+='<tr onclick="printSingleDep(\''+x.transNo+'\',\''+x.name+'\')"><td>'+(x.transNo||'')+'</td><td>'+x.name+'</td><td>'+x.pos+'</td><td>'+x.area+'</td><td>'+x.desc+'</td><td>'+x.model+'</td><td>'+x.macNo+'</td><td>'+(x.keyNo||'')+'</td><td>'+x.qty+'</td><td>'+new Date(x.date).toLocaleString('en-GB')+'</td></tr>');
+}
+
+// ========== EXCEL & MOBILE-FRIENDLY PDF FUNCTIONS ==========
+function exportIndividualExcel(type) {
+    let csv = "";
+    let fileName = "";
+    if(type === 'emp') {
+        csv = "NAME,POSITION,AREA\n";
+        let s = normStr(document.getElementById('searchEmp').value);
+        let list = s ? empData.filter(x => normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s)) : empData;
+        if(list.length === 0) list = empData; 
+        list.forEach(x => csv += `"${x.name}","${x.pos}","${x.area}"\n`);
+        fileName = "EMPLOYEE_REPORT";
+    } else if(type === 'prod') {
+        csv = "DESCRIPTION,MODEL,TOTAL QTY\n";
+        let s = normStr(document.getElementById('searchProd').value);
+        let list = s ? prodData.filter(x => normStr(x.desc).includes(s) || normStr(x.model).includes(s) || normStr(x.totalQty).includes(s)) : prodData;
+        if(list.length === 0) list = prodData; 
+        list.forEach(x => csv += `"${x.desc}","${x.model}",${x.totalQty}\n`);
+        fileName = "PRODUCT_REPORT";
+    } else if(type === 'dep') {
+        csv = "TRANS NO,NAME,POSITION,AREA,DESCRIPTION,MODEL,MACHINE NO,KEY NO,QTY,DATE\n";
+        let list = getFilteredDep();
+        if(list.length === 0) list = depData; 
+        list.forEach(x => csv += `"${x.transNo||''}","${x.name}","${x.pos}","${x.area}","${x.desc}","${x.model}","${x.macNo}","${x.keyNo||''}",${x.qty},"${new Date(x.date).toLocaleString('en-GB')}"\n`);
+        fileName = "DEPLOYMENT_REPORT";
+    }
+    let blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url; a.download = `${fileName}_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+}
+
+function printIndividualPDF(elementId) {
+    let zone = document.getElementById(elementId);
+    if (!zone) return;
+    
+    let nowStr = new Date().toLocaleString('en-GB');
+    if(elementId === 'empPrintZone') document.getElementById('empPrintDate').textContent = `Date Generated: ${nowStr}`;
+    if(elementId === 'prodPrintZone') document.getElementById('prodPrintDate').textContent = `Date Generated: ${nowStr}`;
+    if(elementId === 'depPrintZone') document.getElementById('depPrintDate').textContent = `Date Generated: ${nowStr}`;
+    if(elementId === 'allPrintZone') document.getElementById('allPrintDate').textContent = `Date Generated: ${nowStr}`;
+
+    let printHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Report - WM Deployment System</title>
+            <style>
+                body { font-family: Arial, sans-serif; color: black; background: white; padding: 20px; }
+                .print-header { border-bottom: 2px solid #38bdf8; padding-bottom: 15px; text-align: center; margin-bottom: 20px; display: block !important; }
+                .print-header-flex{ display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; }
+                .print-logo { width: 65px; height: 65px; object-fit: cover; border-radius: 50%; background: #1e293b; border: 2px solid #38bdf8; }
+                .print-header-text { display: flex; flex-direction: column; text-align: left; }
+                .print-header h2{ color: #000; margin-bottom: 2px; font-size: 18px; font-weight: bold; }
+                .print-header p{ color: #333; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+                .print-report-title { text-align: left; font-size: 13px; font-weight: bold; margin: 10px 0 5px 0; text-transform: uppercase; color: #000; }
+                .print-date-generated { text-align: left; font-size: 11px; font-weight: bold; margin-bottom: 10px; color: #333; }
+                .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border: 1px solid #000; }
+                table { width: 100%; border-collapse: collapse; font-size: 11px; }
+                th, td { border: 1px solid #000; padding: 8px 6px; text-align: left; color: black; }
+                th { background: #e2e8f0; font-weight: bold; }
+                h4 { margin-top: 15px; color: #000; font-size: 14px; }
+            </style>
+        </head>
+        <body>
+            ${zone.innerHTML}
+        </body>
+        </html>
+    `;
+
+    let blob = new Blob([printHTML], {type: 'text/html;charset=utf-8;'});
+    let url = URL.createObjectURL(blob);
+    
+    let newWindow = window.open(url, '_blank');
+    if (!newWindow) {
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = `${elementId}_Report_${new Date().toISOString().slice(0,10)}.html`;
+        a.click();
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function printSingleDep(transNo, name) {
+    printIndividualPDF('depPrintZone');
+}
+
+function clearAllDB() {
+    if(!confirm('⚠️ WARNING! THIS WILL DELETE ALL DATA FOREVER!\nOnly Programmer can do this!\nType "DELETE ALL" to confirm:')) return;
+    let confirmTxt = prompt("Type exactly: DELETE ALL");
+    if(confirmTxt !== "DELETE ALL") return alert("❌ Cancelled!");
+    localStorage.clear();
+    alert("✅ All Data Cleared! Page will reload.");
+    location.reload();
+}
+
+function backupDB() {
+    let backupData = {
+        version: "1.0",
+        exported: new Date().toISOString(),
+        users: users,
+        empData: empData,
+        prodData: prodData,
+        depData: depData,
+        prefixData: prefixData,
+        transCounter: transCounter,
+        seriesPrefix: seriesPrefix
+    };
+    let blob = new Blob([JSON.stringify(backupData, null, 2)], {type:'application/json'});
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = `ALHAYAH_BACKUP_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    localStorage.setItem(DB_LAST_BACKUP, new Date().toISOString());
+    alert("✅ Backup Downloaded Successfully!");
+}
+
+document.getElementById('restoreFile').addEventListener('change', function(e){
+    let file = e.target.files[0];
+    if(!file) return;
+    if(!confirm('⚠️ This will replace ALL current data with backup file!\nContinue?')) return;
+    let reader = new FileReader();
+    reader.onload = function(event){
+        try{
+            let data = JSON.parse(event.target.result);
+            if(!data.version) return alert('❌ Invalid backup file!');
+            users = data.users || [];
+            empData = data.empData || [];
+            prodData = data.prodData || [];
+            depData = data.depData || [];
+            prefixData = data.prefixData || {"Easy":1};
+            transCounter = data.transCounter || 2001;
+            seriesPrefix = data.seriesPrefix || 'Easy';
+            
+            localStorage.setItem(DB_USER, JSON.stringify(users));
+            localStorage.setItem(DB_EMP, JSON.stringify(empData));
+            localStorage.setItem(DB_PROD, JSON.stringify(prodData));
+            localStorage.setItem(DB_DEP, JSON.stringify(depData));
+            localStorage.setItem(DB_PREFIX_DATA, JSON.stringify(prefixData));
+            localStorage.setItem('TRANS_SERIES', transCounter);
+            localStorage.setItem('SERIES_PREFIX', seriesPrefix);
+            
+            alert("✅ Restore Complete! Page will reload.");
+            location.reload();
+        }catch(err){
+            alert("❌ Error reading file: " + err.message);
+        }
+    };
+    reader.readAsText(file);
+    this.value = '';
+});
+
+document.getElementById('importExcelFile').addEventListener('change', function(e){
+    let file = e.target.files[0];
+    if(!file) return;
+    let reader = new FileReader();
+    reader.onload = function(event){
+        try {
+            let text = event.target.result;
+            let lines = text.split(/\r\n|\n/);
+            let importedCount = 0;
+            
+            for(let i=1; i<lines.length; i++) {
+                let line = lines[i].trim();
+                if(!line) continue;
+                let cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+                
+                if(cols.length >= 3 && cols[0]) {
+                    if(cols.length === 3 && !isNaN(cols[2])) {
+                        let desc = cols[0];
+                        let model = cols[1];
+                        let qty = parseInt(cols[2]) || 0;
+                        if(!prodData.some(p => normStr(p.desc) === normStr(desc))) {
+                            prodData.push({key: Date.now() + Math.random(), desc: desc, model: model, totalQty: qty});
+                            importedCount++;
+                        }
+                    } else if(cols.length === 3) {
+                        let name = cols[0];
+                        let pos = cols[1];
+                        let area = cols[2];
+                        if(!empData.some(e => normStr(e.name) === normStr(name))) {
+                            empData.push({key: Date.now() + Math.random(), name: name, pos: pos, area: area});
+                            importedCount++;
+                        }
+                    } else if(cols.length >= 10) {
+                        let transNo = cols[1] || `TRN-${transCounter++}`;
+                        let name = cols[2];
+                        let pos = cols[3];
+                        let area = cols[4];
+                        let desc = cols[5];
+                        let model = cols[6];
+                        let mac = cols[7];
+                        let keyNo = cols[8];
+                        let qty = parseInt(cols[9]) || 1;
+                        let dateVal = cols[10] ? new Date(cols[10]).toISOString() : new Date().toISOString();
+                        
+                        depData.push({
+                            key: Date.now() + Math.random(),
+                            transNo: transNo,
+                            name: name,
+                            pos: pos,
+                            area: area,
+                            desc: desc,
+                            model: model,
+                            macNo: mac,
+                            keyNo: keyNo,
+                            qty: qty,
+                            date: dateVal
+                        });
+                        importedCount++;
+                    }
+                }
+            }
+            
+            saveEmp(); saveProd(); saveDep();
+            loadEmp(); loadProd(); loadDep(); loadDepSelects();
+            
+            alert(`✅ Excel File Imported Successfully! Added ${importedCount} record(s).`);
+        } catch(err) {
+            alert("❌ Error importing Excel file: " + err.message);
+        }
+    };
+    reader.readAsText(file);
+    this.value = '';
+});
+
+function exportExcelAll() {
+    let csv = "DATA TYPE,TRANS NO,NAME,POSITION,AREA,DESCRIPTION,MODEL,MACHINE NO,KEY NO,QTY,DATE\n";
+    
+    if(empData.length > 0) {
+        empData.forEach(x=> {
+            csv += `"EMPLOYEE","","${x.name || ''}","${x.pos || ''}","${x.area || ''}","","","","","", "${new Date().toISOString()}"\n`;
+        });
+    }
+    if(prodData.length > 0) {
+        prodData.forEach(x=> {
+            csv += `"PRODUCT","","","","","${x.desc || ''}","${x.model || ''}","","",${x.totalQty || 0}, "${new Date().toISOString()}"\n`;
+        });
+    }
+    if(depData.length > 0) {
+        depData.forEach(x=> {
+            csv += `"DEPLOYMENT","${x.transNo || ''}","${x.name || ''}","${x.pos || ''}","${x.area || ''}","${x.desc || ''}","${x.model || ''}","${x.macNo || ''}","${x.keyNo || ''}",${x.qty || 0},"${x.date || ''}"\n`;
+        });
+    }
+    
+    let blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    let url = URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.href = url; 
+    a.download = `ALHAYAH_MASTER_REPORT_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click(); 
+    URL.revokeObjectURL(url);
+}
+
+function exportPDFAll() {
+    let empTbody = document.getElementById('printAllEmpList');
+    let prodTbody = document.getElementById('printAllProdList');
+    let depTbody = document.getElementById('printAllDepList');
+    
+    empTbody.innerHTML = empData.length === 0 ? '<tr><td colspan="3" class="empty">No Records</td></tr>' : empData.map(x => `<tr><td>${x.name || ''}</td><td>${x.pos || ''}</td><td>${x.area || ''}</td></tr>`).join('');
+    prodTbody.innerHTML = prodData.length === 0 ? '<tr><td colspan="3" class="empty">No Records</td></tr>' : prodData.map(x => `<tr><td>${x.desc || ''}</td><td>${x.model || ''}</td><td>${x.totalQty || 0}</td></tr>`).join('');
+    depTbody.innerHTML = depData.length === 0 ? '<tr><td colspan="10" class="empty">No Records</td></tr>' : depData.map(x => `<tr><td>${x.transNo || ''}</td><td>${x.name || ''}</td><td>${x.pos || ''}</td><td>${x.area || ''}</td><td>${x.desc || ''}</td><td>${x.model || ''}</td><td>${x.macNo || ''}</td><td>${x.keyNo || ''}</td><td>${x.qty || 0}</td><td>${new Date(x.date).toLocaleString('en-GB')}</td></tr>`).join('');
+    
+    printIndividualPDF('allPrintZone');
+}
+</script>
+</body>
+</html>
