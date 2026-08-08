@@ -1,204 +1,343 @@
 <!DOCTYPE html>
 <html lang="tl">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Continuous 20 Round Letter Analyzer</title>
 
+
 <style>
+
+/* ============================================================
+   GLOBAL
+============================================================ */
+
 * {
     box-sizing: border-box;
 }
 
+
 body {
+
     font-family: Arial, sans-serif;
+
     margin: 0;
+
     padding: 20px;
+
     background: #f4f4f9;
 }
 
+
 .container {
+
     max-width: 700px;
+
     margin: auto;
+
     background: white;
+
     padding: 20px;
+
     border-radius: 10px;
-    box-shadow: 0 0 12px rgba(0,0,0,0.12);
+
+    box-shadow:
+        0 0 12px rgba(0,0,0,0.12);
 }
 
+
 .section {
+
     margin-bottom: 20px;
 }
 
+
 label {
+
     display: block;
+
     margin-bottom: 7px;
+
     font-weight: bold;
 }
 
+
 input[type="number"] {
+
     width: 100%;
+
     padding: 10px;
+
     border: 1px solid #ccc;
+
     border-radius: 5px;
+
     font-size: 16px;
+
     margin-bottom: 10px;
 }
 
+
+/* ============================================================
+   GRID
+============================================================ */
+
 .grid-container {
+
     display: grid;
-    grid-template-columns: repeat(12, 30px);
-    grid-template-rows: repeat(6, 30px);
+
+    grid-template-columns:
+        repeat(12, 30px);
+
+    grid-template-rows:
+        repeat(6, 30px);
+
     gap: 4px;
+
     overflow-x: auto;
+
     margin-top: 10px;
+
     padding-bottom: 5px;
 }
 
+
 .grid-box {
+
     width: 30px;
+
     height: 30px;
+
     border: 1px solid #ccc;
+
     border-radius: 4px;
+
     text-align: center;
+
     font-size: 16px;
+
     font-weight: bold;
+
     text-transform: uppercase;
+
     padding: 0;
+
     outline: none;
+
+    background: white;
 }
 
+
 .grid-box:focus {
+
     border-color: #3498db;
 }
 
+
 .box-green {
-    background-color: #27ae60 !important;
+
+    background-color:
+        #27ae60 !important;
+
     color: white !important;
 }
 
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+
 .btn-group {
+
     display: flex;
+
     gap: 10px;
+
     flex-wrap: wrap;
 }
 
+
 button {
+
     padding: 10px 15px;
+
     border: none;
+
     border-radius: 5px;
+
     cursor: pointer;
+
     color: white;
+
     font-size: 15px;
 }
 
+
 .btn-loss {
+
     background: #f0ad4e;
 }
 
+
 .btn-reset-bet {
+
     background: #3498db;
 }
 
+
 .btn-reset-all {
+
     background: #d9534f;
 }
 
+
 button:hover {
+
     opacity: 0.85;
 }
 
+
+/* ============================================================
+   RESULT
+============================================================ */
+
 .result {
+
     font-size: 18px;
+
     font-weight: bold;
 }
 
+
+/* ============================================================
+   COMBINATION BOX
+============================================================ */
+
 .prediction-box {
+
     background: #222;
+
     color: white;
+
     padding: 18px;
+
     border-radius: 8px;
+
     text-align: center;
 }
 
+
 .prediction-title {
+
     font-size: 14px;
+
     color: #aaa;
+
     margin-bottom: 8px;
 }
 
+
 .prediction-result {
+
     font-size: 25px;
+
     font-weight: bold;
+
     color: #f1c40f;
+
     min-height: 30px;
+
     word-break: break-word;
+
+    line-height: 1.6;
 }
 
+
 .prediction-info {
+
     margin-top: 10px;
+
     font-size: 13px;
+
     color: #aaa;
+
     line-height: 1.5;
 }
 
+
 .round-counter {
+
     margin-top: 10px;
+
     font-size: 15px;
+
     font-weight: bold;
 }
 
+
 .status {
+
     margin-top: 8px;
+
     font-size: 13px;
+
     color: #666;
 }
 
+
+/* ============================================================
+   COUNT BOX
+   HIDDEN
+============================================================ */
+
 .count-box {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    margin-top: 12px;
+
+    display: none !important;
 }
 
-.count-item {
-    background: #f1f1f1;
-    padding: 7px;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 13px;
-}
 
-.count-item strong {
-    display: block;
-    font-size: 16px;
-}
+/* ============================================================
+   MOBILE
+============================================================ */
 
 @media (max-width: 500px) {
 
     body {
+
         padding: 10px;
     }
 
+
     .container {
+
         padding: 15px;
     }
 
-    .grid-container {
-        grid-template-columns: repeat(12, 30px);
-    }
 
-    .count-box {
-        grid-template-columns: repeat(2, 1fr);
+    .grid-container {
+
+        grid-template-columns:
+            repeat(12, 30px);
     }
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
+
 
     <!-- =====================================================
          AUTO COMPUTE / TAYA
@@ -210,6 +349,7 @@ button:hover {
             Base Amount:
         </label>
 
+
         <input
             type="number"
             id="baseAmount"
@@ -217,26 +357,43 @@ button:hover {
             oninput="autoCompute()"
         >
 
+
         <div class="result">
+
             Resulta / Taya:
-            <span id="computedResult">0</span>
+
+            <span id="computedResult">
+                0
+            </span>
+
         </div>
 
+
         <small style="color:#666;">
-            Formula: (Total × 2) + Base
+
+            Formula:
+            (Total × 2) + Base
+
         </small>
 
-        <div class="btn-group" style="margin-top:10px;">
+
+        <div
+            class="btn-group"
+            style="margin-top:10px;"
+        >
 
             <button
                 class="btn-loss"
-                onclick="applyLoss()">
+                onclick="applyLoss()"
+            >
                 LOSS
             </button>
 
+
             <button
                 class="btn-reset-bet"
-                onclick="resetBet()">
+                onclick="resetBet()"
+            >
                 Reset Taya
             </button>
 
@@ -244,7 +401,9 @@ button:hover {
 
     </div>
 
+
     <hr>
+
 
     <!-- =====================================================
          CONTINUOUS RESULT
@@ -256,51 +415,73 @@ button:hover {
             Continuous Letter Result
         </label>
 
+
         <div class="prediction-box">
 
+
             <div class="prediction-title">
-                CURRENT RESULT
+
+                COMBINATION
+
             </div>
+
 
             <div
                 id="mainPredictionText"
-                class="prediction-result">
+                class="prediction-result"
+            >
                 -
             </div>
 
+
             <div
                 id="mainPredictionLayer"
-                class="prediction-info">
-                Kailangan muna ng 20 completed rounds.
+                class="prediction-info"
+            >
+
+                Kailangan muna ng
+                20 completed rounds.
+
             </div>
 
+
         </div>
+
 
         <div class="round-counter">
 
             Completed Rounds:
+
             <span id="roundCount">
                 0 / 20
             </span>
 
         </div>
 
+
         <div
             id="statusText"
-            class="status">
+            class="status"
+        >
+
             Waiting for 20 rounds...
+
         </div>
 
-        <!-- COUNT DISPLAY -->
+
+        <!-- HIDDEN COUNT BOX -->
 
         <div
             id="countBox"
-            class="count-box">
+            class="count-box"
+        >
         </div>
 
     </div>
 
+
     <hr>
+
 
     <!-- =====================================================
          GRID
@@ -309,21 +490,29 @@ button:hover {
     <div class="section">
 
         <label>
+
             Grid Boxes
             (6 pababa × 12 pahaba)
+
         </label>
+
 
         <div
             id="gridContainer"
-            class="grid-container">
+            class="grid-container"
+        >
         </div>
 
+
         <small style="color:#666;">
+
             Allowed letters:
             W, B, R, G, Y, P
+
         </small>
 
     </div>
+
 
     <!-- =====================================================
          RESET ALL
@@ -333,13 +522,18 @@ button:hover {
 
         <button
             class="btn-reset-all"
-            onclick="resetAll()">
+            onclick="resetAll()"
+        >
+
             Reset Lahat
+
         </button>
 
     </div>
 
+
 </div>
+
 
 
 <script>
@@ -349,18 +543,24 @@ button:hover {
 ============================================================ */
 
 const ROWS = 6;
+
 const COLS = 12;
 
+
 const TRACKED_LETTERS = [
+
     "W",
     "B",
     "R",
     "G",
     "Y",
     "P"
+
 ];
 
+
 const MIN_ROUNDS = 20;
+
 
 const STORAGE_KEY =
     "continuousLetterGridData";
@@ -371,34 +571,59 @@ const STORAGE_KEY =
 ============================================================ */
 
 const gridContainer =
-    document.getElementById("gridContainer");
+    document.getElementById(
+        "gridContainer"
+    );
+
 
 const gridMatrix = [];
 
 
-for (let r = 0; r < ROWS; r++) {
+for (
+    let r = 0;
+    r < ROWS;
+    r++
+) {
 
     gridMatrix[r] = [];
 
-    for (let c = 0; c < COLS; c++) {
+
+    for (
+        let c = 0;
+        c < COLS;
+        c++
+    ) {
+
 
         const input =
-            document.createElement("input");
+            document.createElement(
+                "input"
+            );
+
 
         input.type = "text";
 
+
         input.maxLength = 1;
+
 
         input.className =
             "grid-box";
 
+
         input.dataset.row = r;
+
         input.dataset.col = c;
 
 
+        /* ====================================================
+           INPUT EVENT
+        ==================================================== */
+
         input.addEventListener(
             "input",
-            function() {
+            function () {
+
 
                 let value =
                     this.value
@@ -407,29 +632,35 @@ for (let r = 0; r < ROWS; r++) {
 
 
                 /* --------------------------------------------
-                   ONLY W B R G Y P
+                   ALLOWED LETTERS ONLY
                 -------------------------------------------- */
 
                 if (
+
                     value !== "" &&
-                    !TRACKED_LETTERS.includes(value)
+
+                    !TRACKED_LETTERS
+                        .includes(value)
+
                 ) {
 
                     this.value = "";
 
-                } else {
+                }
+                else {
 
-                    this.value = value;
+                    this.value =
+                        value;
+
                 }
 
 
-                /*
-                   IMPORTANT:
-                   Bawat bagong letter ay automatic
-                   nagre-recompute agad.
-                */
+                /* --------------------------------------------
+                   AUTOMATIC PROCESS
+                -------------------------------------------- */
 
                 processGrid();
+
 
                 saveToLocalStorage();
 
@@ -437,11 +668,16 @@ for (let r = 0; r < ROWS; r++) {
         );
 
 
-        gridContainer.appendChild(input);
+        gridContainer.appendChild(
+            input
+        );
+
 
         gridMatrix[r][c] =
             input;
+
     }
+
 }
 
 
@@ -450,6 +686,7 @@ for (let r = 0; r < ROWS; r++) {
 ============================================================ */
 
 function autoCompute() {
+
 
     const base =
         parseFloat(
@@ -475,7 +712,9 @@ function autoCompute() {
 
     document.getElementById(
         "computedResult"
-    ).innerText = result;
+    ).innerText =
+        result;
+
 }
 
 
@@ -484,6 +723,7 @@ function autoCompute() {
 ============================================================ */
 
 function applyLoss() {
+
 
     const base =
         parseFloat(
@@ -520,6 +760,7 @@ function applyLoss() {
     ) {
 
         current = base;
+
     }
 
 
@@ -529,7 +770,9 @@ function applyLoss() {
 
     document.getElementById(
         "computedResult"
-    ).innerText = next;
+    ).innerText =
+        next;
+
 }
 
 
@@ -539,6 +782,7 @@ function applyLoss() {
 
 function resetBet() {
 
+
     document.getElementById(
         "baseAmount"
     ).value = "";
@@ -546,7 +790,9 @@ function resetBet() {
 
     document.getElementById(
         "computedResult"
-    ).innerText = "0";
+    ).innerText =
+        "0";
+
 }
 
 
@@ -556,30 +802,52 @@ function resetBet() {
 
 function processGrid() {
 
-    /*
-       Remove previous green marks
-    */
 
-    for (let r = 0; r < ROWS; r++) {
+    /* ========================================================
+       REMOVE OLD GREEN MARKS
+    ======================================================== */
 
-        for (let c = 0; c < COLS; c++) {
+    for (
+        let r = 0;
+        r < ROWS;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < COLS;
+            c++
+        ) {
 
             gridMatrix[r][c]
                 .classList
-                .remove("box-green");
+                .remove(
+                    "box-green"
+                );
+
         }
+
     }
 
 
-    /*
-       Existing streak logic
-    */
+    /* ========================================================
+       STREAK LOGIC
+    ======================================================== */
 
-    for (let r = 0; r < ROWS; r++) {
+    for (
+        let r = 0;
+        r < ROWS;
+        r++
+    ) {
+
 
         let c = 0;
 
-        while (c < COLS) {
+
+        while (
+            c < COLS
+        ) {
+
 
             const value =
                 gridMatrix[r][c]
@@ -588,47 +856,65 @@ function processGrid() {
                     .toUpperCase();
 
 
-            if (value === "") {
+            if (
+                value === ""
+            ) {
 
                 c++;
 
                 continue;
+
             }
 
 
-            const startC = c;
+            const startC =
+                c;
+
 
             let streak = 0;
 
-            let nextC = c;
+
+            let nextC =
+                c;
 
 
             while (
+
                 nextC < COLS &&
+
                 gridMatrix[r][nextC]
                     .value
                     .trim()
                     .toUpperCase()
                     === value
+
             ) {
 
                 streak++;
 
                 nextC++;
+
             }
 
 
-            /*
-               4 or more consecutive
-            */
+            /* =================================================
+               4 OR MORE CONSECUTIVE
+            ================================================= */
 
-            if (streak >= 4) {
+            if (
+                streak >= 4
+            ) {
+
 
                 for (
-                    let i = startC + 4;
+                    let i =
+                        startC + 4;
+
                     i < COLS;
+
                     i++
                 ) {
+
 
                     const current =
                         gridMatrix[r][i]
@@ -638,13 +924,19 @@ function processGrid() {
 
 
                     if (
+
                         current === value ||
+
                         current === ""
+
                     ) {
+
 
                         gridMatrix[r][i]
                             .classList
-                            .add("box-green");
+                            .add(
+                                "box-green"
+                            );
 
 
                         if (
@@ -652,28 +944,92 @@ function processGrid() {
                         ) {
 
                             break;
+
                         }
 
-                    } else {
+                    }
+                    else {
 
                         break;
+
                     }
+
                 }
+
             }
 
 
-            c = nextC;
+            c =
+                nextC;
+
         }
+
     }
 
 
-    /*
-       IMPORTANT:
-       Ito ang nagti-trigger ng continuous
-       rolling result.
-    */
+    /* ========================================================
+       UPDATE CONTINUOUS RESULT
+    ======================================================== */
 
     updateMainPrediction();
+
+}
+
+
+/* ============================================================
+   GENERATE COMBINATIONS
+============================================================
+
+   Example:
+
+   W R B G
+
+   Output:
+
+   W/R
+   W/B
+   W/G
+   R/B
+   R/G
+   B/G
+
+============================================================ */
+
+function generateCombinations(
+    letters
+) {
+
+
+    const combinations = [];
+
+
+    for (
+        let i = 0;
+        i < letters.length;
+        i++
+    ) {
+
+
+        for (
+            let j = i + 1;
+            j < letters.length;
+            j++
+        ) {
+
+
+            combinations.push(
+
+                `${letters[i]}/${letters[j]}`
+
+            );
+
+        }
+
+    }
+
+
+    return combinations;
+
 }
 
 
@@ -683,29 +1039,28 @@ function processGrid() {
 
 function updateMainPrediction() {
 
+
     const resultElement =
         document.getElementById(
             "mainPredictionText"
         );
+
 
     const infoElement =
         document.getElementById(
             "mainPredictionLayer"
         );
 
+
     const roundElement =
         document.getElementById(
             "roundCount"
         );
 
+
     const statusElement =
         document.getElementById(
             "statusText"
-        );
-
-    const countBox =
-        document.getElementById(
-            "countBox"
         );
 
 
@@ -716,9 +1071,19 @@ function updateMainPrediction() {
     let allRounds = [];
 
 
-    for (let r = 0; r < ROWS; r++) {
+    for (
+        let r = 0;
+        r < ROWS;
+        r++
+    ) {
 
-        for (let c = 0; c < COLS; c++) {
+
+        for (
+            let c = 0;
+            c < COLS;
+            c++
+        ) {
+
 
             const value =
                 gridMatrix[r][c]
@@ -728,18 +1093,25 @@ function updateMainPrediction() {
 
 
             if (
+
                 TRACKED_LETTERS
                     .includes(value)
+
             ) {
 
-                allRounds.push(value);
+                allRounds.push(
+                    value
+                );
+
             }
+
         }
+
     }
 
 
     /* ========================================================
-       ROUND COUNTER
+       TOTAL ROUND DISPLAY
     ======================================================== */
 
     roundElement.innerText =
@@ -747,16 +1119,7 @@ function updateMainPrediction() {
 
 
     /* ========================================================
-       COUNT DISPLAY
-    ======================================================== */
-
-    updateCountDisplay(
-        allRounds
-    );
-
-
-    /* ========================================================
-       2. LESS THAN 20
+       LESS THAN 20
     ======================================================== */
 
     if (
@@ -764,45 +1127,55 @@ function updateMainPrediction() {
         MIN_ROUNDS
     ) {
 
+
         resultElement.innerText =
             "-";
+
 
         infoElement.innerText =
             `Kulang pa ang rounds ` +
             `(${allRounds.length}/${MIN_ROUNDS}). ` +
             `Kailangan muna ng 20 completed rounds.`;
 
+
         statusElement.innerText =
             "Waiting for 20 rounds...";
 
+
         return;
+
     }
 
 
     /* ========================================================
-       3. CONTINUOUS ROLLING 20
+       CONTINUOUS ROLLING LATEST 20
        
-       IMPORTANT:
-       Hindi na kailangang mag-reset sa 20.
-
        20 rounds:
-       rounds 1-20
+       1–20
 
        21 rounds:
-       rounds 2-21
+       2–21
 
        22 rounds:
-       rounds 3-22
+       3–22
 
-       At tuloy-tuloy...
+       23 rounds:
+       4–23
+
+       24 rounds:
+       5–24
+
+       CONTINUOUS FOREVER
     ======================================================== */
 
     const latest20 =
-        allRounds.slice(-MIN_ROUNDS);
+        allRounds.slice(
+            -MIN_ROUNDS
+        );
 
 
     /* ========================================================
-       4. COUNT LATEST 20
+       COUNT LATEST 20
     ======================================================== */
 
     const counts = {};
@@ -827,7 +1200,7 @@ function updateMainPrediction() {
 
 
     /* ========================================================
-       5. SORT HIGH → LOW
+       SORT HIGH → LOW
     ======================================================== */
 
     const highToLow =
@@ -836,9 +1209,35 @@ function updateMainPrediction() {
             .sort(
                 (a, b) => {
 
-                    return (
-                        counts[b] -
+
+                    if (
+                        counts[b] !==
                         counts[a]
+                    ) {
+
+                        return (
+                            counts[b] -
+                            counts[a]
+                        );
+
+                    }
+
+
+                    /*
+                       SAME COUNT:
+                       Keep original order.
+                    */
+
+                    return (
+
+                        TRACKED_LETTERS
+                            .indexOf(a)
+
+                        -
+
+                        TRACKED_LETTERS
+                            .indexOf(b)
+
                     );
 
                 }
@@ -846,7 +1245,7 @@ function updateMainPrediction() {
 
 
     /* ========================================================
-       6. SORT LOW → HIGH
+       SORT LOW → HIGH
     ======================================================== */
 
     const lowToHigh =
@@ -855,9 +1254,30 @@ function updateMainPrediction() {
             .sort(
                 (a, b) => {
 
-                    return (
-                        counts[a] -
+
+                    if (
+                        counts[a] !==
                         counts[b]
+                    ) {
+
+                        return (
+                            counts[a] -
+                            counts[b]
+                        );
+
+                    }
+
+
+                    return (
+
+                        TRACKED_LETTERS
+                            .indexOf(a)
+
+                        -
+
+                        TRACKED_LETTERS
+                            .indexOf(b)
+
                     );
 
                 }
@@ -865,26 +1285,27 @@ function updateMainPrediction() {
 
 
     /* ========================================================
-       HELPER:
-       GET ALL LETTERS WITH SAME COUNT
+       HELPER — ALL TIED LETTERS
     ======================================================== */
 
     function getTiedLetters(
         count
     ) {
 
+
         return TRACKED_LETTERS
             .filter(
                 letter =>
                     counts[letter] === count
             );
+
     }
 
 
     /* ========================================================
        RESULT SET
        
-       Set automatically prevents duplicates.
+       Set prevents duplicates.
     ======================================================== */
 
     const results =
@@ -892,47 +1313,59 @@ function updateMainPrediction() {
 
 
     /* ========================================================
-       CONDITION 1
+       1ST RESULT
        
-       1ST FROM HIGHEST
+       PINAKAMARAMI
        
-       ALL TIES INCLUDED
+       Kapag tie:
+       LAHAT NG TIE kasama.
     ======================================================== */
 
     const highestCount =
-        counts[highToLow[0]];
+        counts[
+            highToLow[0]
+        ];
 
 
     getTiedLetters(
         highestCount
-    ).forEach(
+    )
+    .forEach(
         letter => {
 
-            results.add(letter);
+            results.add(
+                letter
+            );
 
         }
     );
 
 
     /* ========================================================
-       CONDITION 2
+       2ND RESULT
        
-       2ND DISTINCT HIGHEST
+       PANGALAWA SA MARAMI
        
-       ALL TIES INCLUDED
+       DISTINCT COUNT.
+       
+       Kapag tie:
+       LAHAT NG TIE kasama.
     ======================================================== */
 
     const distinctHighCounts =
         [
             ...new Set(
+
                 highToLow.map(
                     letter =>
                         counts[letter]
                 )
+
             )
         ]
         .sort(
-            (a, b) => b - a
+            (a, b) =>
+                b - a
         );
 
 
@@ -940,62 +1373,89 @@ function updateMainPrediction() {
         distinctHighCounts.length >= 2
     ) {
 
+
         const secondHighestCount =
             distinctHighCounts[1];
 
 
         getTiedLetters(
             secondHighestCount
-        ).forEach(
+        )
+        .forEach(
             letter => {
 
-                results.add(letter);
+                results.add(
+                    letter
+                );
 
             }
         );
+
     }
 
 
     /* ========================================================
-       CONDITION 3
+       3RD RESULT
        
-       5TH FROM LOWEST
+       PANG-LIMANG POSITION
+       MULA SA HIGHEST RANKING
        
-       ALL TIES INCLUDED
+       Example:
+
+       W 7
+       B 5
+       R 3
+       G 2
+       Y 2
+       P 1
+
+       5th position = Y
+
+       Pero G at Y ay parehong 2.
+
+       Kaya:
+       G + Y
+       parehong kasama.
     ======================================================== */
 
-    const fifthLowestLetter =
-        lowToHigh[4];
-
-
     if (
-        fifthLowestLetter
+        highToLow.length >= 5
     ) {
 
-        const fifthLowestCount =
+
+        const fifthLetter =
+            highToLow[4];
+
+
+        const fifthCount =
             counts[
-                fifthLowestLetter
+                fifthLetter
             ];
 
 
         getTiedLetters(
-            fifthLowestCount
-        ).forEach(
+            fifthCount
+        )
+        .forEach(
             letter => {
 
-                results.add(letter);
+                results.add(
+                    letter
+                );
 
             }
         );
+
     }
 
 
     /* ========================================================
-       CONDITION 4
+       4TH RESULT
        
-       LOWEST
+       PINAKAMABABA
        
-       ALL TIES INCLUDED
+       Kapag tie:
+       LAHAT NG LOWEST TIE kasama.
     ======================================================== */
 
     const lowestCount =
@@ -1006,72 +1466,101 @@ function updateMainPrediction() {
 
     getTiedLetters(
         lowestCount
-    ).forEach(
+    )
+    .forEach(
         letter => {
 
-            results.add(letter);
+            results.add(
+                letter
+            );
 
         }
     );
 
 
     /* ========================================================
-       FINAL ARRAY
+       FINAL RESULTS
     ======================================================== */
 
     const finalResults =
-        Array.from(results);
+        Array.from(
+            results
+        );
 
 
     /* ========================================================
-       DISPLAY RESULT
+       COMBINATIONS
+    ======================================================== */
+
+    const combinations =
+        generateCombinations(
+            finalResults
+        );
+
+
+    /* ========================================================
+       DISPLAY
     ======================================================== */
 
     if (
-        finalResults.length >= 4
+        finalResults.length >= 2
     ) {
 
+
         resultElement.innerText =
-            finalResults.join(
+            combinations.join(
                 "  |  "
             );
 
 
         infoElement.innerText =
-            "Latest 20 rounds ang ginagamit. " +
-            "Automatic na nagre-recompute sa bawat bagong round.";
+            `Result: ` +
+            `${finalResults.join("  ")} ` +
+            `— Latest 20 rounds ang ginagamit. ` +
+            `Continuous automatic analysis.`;
 
 
         statusElement.innerText =
-            `ACTIVE — ${allRounds.length} total rounds | ` +
+            `ACTIVE — ` +
+            `${allRounds.length} total rounds | ` +
             `Latest 20 analyzed | ` +
-            `${finalResults.length} unique result(s)`;
+            `${finalResults.length} unique result(s) | ` +
+            `${combinations.length} combination(s)`;
 
-    } else {
+
+    }
+    else {
+
 
         resultElement.innerText =
+            finalResults.join("  ") ||
             "-";
 
 
         infoElement.innerText =
-            `Nakakuha ng ${finalResults.length} ` +
-            `unique result(s). ` +
-            `Minimum 4 ang kailangan.`;
+            "Continuous analysis — " +
+            "automatic na nagre-recompute " +
+            "sa bawat bagong round.";
 
 
         statusElement.innerText =
-            "Analyzing...";
+            `ACTIVE — ` +
+            `${allRounds.length} total rounds | ` +
+            `Latest 20 analyzed`;
+
     }
+
 }
 
 
 /* ============================================================
-   COUNT DISPLAY
+   HIDDEN COUNT DISPLAY
 ============================================================ */
 
 function updateCountDisplay(
     allRounds
 ) {
+
 
     const countBox =
         document.getElementById(
@@ -1079,89 +1568,62 @@ function updateCountDisplay(
         );
 
 
-    if (
-        allRounds.length === 0
-    ) {
-
-        countBox.innerHTML = "";
+    if (!countBox) {
 
         return;
+
     }
 
 
     /*
-       Gamitin ang latest 20 kung
-       20 pataas na.
+       Hidden na ang count display.
     */
 
-    const data =
-        allRounds.length >= MIN_ROUNDS
-            ? allRounds.slice(-MIN_ROUNDS)
-            : allRounds;
-
-
-    const counts = {};
-
-
-    TRACKED_LETTERS.forEach(
-        letter => {
-
-            counts[letter] = 0;
-
-        }
-    );
-
-
-    data.forEach(
-        letter => {
-
-            counts[letter]++;
-
-        }
-    );
-
-
     countBox.innerHTML =
-        TRACKED_LETTERS
-            .map(
-                letter => {
+        "";
 
-                    return `
-                        <div class="count-item">
-                            <strong>${letter}</strong>
-                            ${counts[letter]}
-                        </div>
-                    `;
-
-                }
-            )
-            .join("");
 }
 
 
 /* ============================================================
-   SAVE
+   SAVE TO LOCAL STORAGE
 ============================================================ */
 
 function saveToLocalStorage() {
 
+
     const data = [];
 
 
-    for (let r = 0; r < ROWS; r++) {
+    for (
+        let r = 0;
+        r < ROWS;
+        r++
+    ) {
+
 
         const row = [];
 
 
-        for (let c = 0; c < COLS; c++) {
+        for (
+            let c = 0;
+            c < COLS;
+            c++
+        ) {
+
 
             row.push(
-                gridMatrix[r][c].value
+                gridMatrix[r][c]
+                    .value
             );
+
         }
 
 
-        data.push(row);
+        data.push(
+            row
+        );
+
     }
 
 
@@ -1169,14 +1631,16 @@ function saveToLocalStorage() {
         STORAGE_KEY,
         JSON.stringify(data)
     );
+
 }
 
 
 /* ============================================================
-   LOAD
+   LOAD FROM LOCAL STORAGE
 ============================================================ */
 
 function loadFromLocalStorage() {
+
 
     const saved =
         localStorage.getItem(
@@ -1186,37 +1650,84 @@ function loadFromLocalStorage() {
 
     if (!saved) {
 
+
         updateMainPrediction();
 
+
         return;
+
     }
 
 
     try {
 
+
         const data =
-            JSON.parse(saved);
+            JSON.parse(
+                saved
+            );
 
 
-        for (let r = 0; r < ROWS; r++) {
+        for (
+            let r = 0;
+            r < ROWS;
+            r++
+        ) {
 
-            for (let c = 0; c < COLS; c++) {
+
+            for (
+                let c = 0;
+                c < COLS;
+                c++
+            ) {
+
 
                 if (
+
                     data[r] &&
-                    data[r][c] !== undefined
+
+                    data[r][c] !==
+                        undefined
+
                 ) {
 
-                    gridMatrix[r][c].value =
-                        data[r][c];
+
+                    const value =
+                        String(
+                            data[r][c]
+                        )
+                        .trim()
+                        .toUpperCase();
+
+
+                    if (
+
+                        value === "" ||
+
+                        TRACKED_LETTERS
+                            .includes(value)
+
+                    ) {
+
+                        gridMatrix[r][c]
+                            .value =
+                            value;
+
+                    }
+
                 }
+
             }
+
         }
 
 
         processGrid();
 
-    } catch (error) {
+
+    }
+    catch (error) {
+
 
         console.error(
             "Load error:",
@@ -1230,7 +1741,9 @@ function loadFromLocalStorage() {
 
 
         updateMainPrediction();
+
     }
+
 }
 
 
@@ -1240,6 +1753,7 @@ function loadFromLocalStorage() {
 
 function resetAll() {
 
+
     if (
         !confirm(
             "Sigurado ka bang i-reset lahat ng rounds at result?"
@@ -1247,44 +1761,67 @@ function resetAll() {
     ) {
 
         return;
+
     }
 
 
-    /* Reset bet */
+    /* ========================================================
+       RESET BET
+    ======================================================== */
 
     resetBet();
 
 
-    /* Clear grid */
+    /* ========================================================
+       CLEAR GRID
+    ======================================================== */
 
-    for (let r = 0; r < ROWS; r++) {
+    for (
+        let r = 0;
+        r < ROWS;
+        r++
+    ) {
 
-        for (let c = 0; c < COLS; c++) {
 
-            gridMatrix[r][c].value =
-                "";
+        for (
+            let c = 0;
+            c < COLS;
+            c++
+        ) {
+
+
+            gridMatrix[r][c]
+                .value = "";
+
 
             gridMatrix[r][c]
                 .classList
                 .remove(
                     "box-green"
                 );
+
         }
+
     }
 
 
-    /* Clear storage */
+    /* ========================================================
+       CLEAR STORAGE
+    ======================================================== */
 
     localStorage.removeItem(
         STORAGE_KEY
     );
 
 
-    /* Reset display */
+    /* ========================================================
+       RESET RESULT
+    ======================================================== */
 
     document.getElementById(
         "mainPredictionText"
-    ).innerText = "-";
+    ).innerText =
+        "-";
 
 
     document.getElementById(
@@ -1307,7 +1844,9 @@ function resetAll() {
 
     document.getElementById(
         "countBox"
-    ).innerHTML = "";
+    ).innerHTML =
+        "";
+
 }
 
 
@@ -1322,5 +1861,7 @@ window.addEventListener(
 
 </script>
 
+
 </body>
+
 </html>
