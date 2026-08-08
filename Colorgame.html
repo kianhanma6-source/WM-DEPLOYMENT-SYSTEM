@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Compute, Auto-Save Letters at Custom Rank Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 30px);
+            grid-template-rows: repeat(6, 30px);
+            gap: 4px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+        .grid-box {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-size: 16px;
+            text-transform: uppercase;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .box-green {
+            background-color: #27ae60 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #c9302c;
+        }
+        .btn-loss {
+            background-color: #f0ad4e;
+        }
+        .btn-loss:hover {
+            background-color: #ec971f;
+        }
+        .btn-reset-bet {
+            background-color: #3498db;
+        }
+        .btn-reset-bet:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .prediction-box {
+            background-color: #222;
+            color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .pred-highlight { color: #f1c40f; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Auto Compute Section -->
+    <div class="section">
+        <label for="baseAmount">Base Amount:</label>
+        <input type="number" id="baseAmount" placeholder="Ilagay ang numero dito (hal. 50)" oninput="autoCompute()">
+        
+        <div class="result">
+            Resulta / Taya: <span id="computedResult">0</span>
+        </div>
+        <small style="color: #666;">Formula: (Total * 2) + Base</small>
+        
+        <div class="btn-group" style="margin-top: 10px;">
+            <button type="button" class="btn-loss" onclick="applyLoss()">LOSS</button>
+            <button type="button" class="btn-reset-bet" onclick="resetBet()">Reset Taya</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Single Prediction Box Section -->
+    <div class="section">
+        <label>Trend Prediction (7+ Misses o Custom Rank sa huling 20 rounds):</label>
+        <div class="prediction-box">
+            <div id="mainPredictionText">-</div>
+            <div id="mainPredictionLayer" style="font-size: 14px; color: #aaa; margin-top: 5px;">Maglagay ng W, B, R, G, Y, o P sa grid boxes.</div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- 6x12 Grid Section -->
+    <div class="section">
+        <label>Grid Boxes (6 pababa, 12 pahaba):</label>
+        <div class="grid-container" id="gridContainer"></div>
+    </div>
+
+    <!-- Main Reset Button -->
+    <div class="section">
+        <button onclick="resetAll()">Reset Lahat (Grid & Taya)</button>
+    </div>
+</div>
+
+<script>
+    const ROWS = 6;
+    const COLS = 12;
+    const TRACKED_LETTERS = ['W', 'B', 'R', 'G', 'Y', 'P']; 
+    const gridContainer = document.getElementById('gridContainer');
+    const gridMatrix = []; 
+
+    for (let r = 0; r < ROWS; r++) {
+        gridMatrix[r] = [];
+        for (let c = 0; c < COLS; c++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.className = 'grid-box';
+            input.dataset.row = r;
+            input.dataset.col = c;
+            input.addEventListener('input', () => {
+                processGrid();
+                saveToLocalStorage();
+            });
+            gridContainer.appendChild(input);
+            gridMatrix[r][c] = input;
+        }
+    }
+
+    function autoCompute() {
+        let base = parseFloat(document.getElementById('baseAmount').value);
+        if (isNaN(base)) {
+            document.getElementById('computedResult').innerText = 0;
+            return;
+        }
+        let result = (base * 2) + base;
+        document.getElementById('computedResult').innerText = result;
+    }
+
+    function applyLoss() {
+        let base = parseFloat(document.getElementById('baseAmount').value);
+        if (isNaN(base) || base <= 0) {
+            alert("Maglagay muna ng Base Amount.");
+            return;
+        }
+
+        let currentTotal = parseFloat(document.getElementById('computedResult').innerText);
+        if (isNaN(currentTotal) || currentTotal === 0) {
+            currentTotal = base;
+        }
+
+        let nextResult = (currentTotal * 2) + base;
+        document.getElementById('computedResult').innerText = nextResult;
+    }
+
+    function resetBet() {
+        document.getElementById('baseAmount').value = '';
+        document.getElementById('computedResult').innerText = '0';
+    }
+
+    function processGrid() {
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                gridMatrix[r][c].classList.remove('box-green');
+            }
+        }
+
+        for (let r = 0; r < ROWS; r++) {
+            let c = 0;
+            while (c < COLS) {
+                let val = gridMatrix[r][c].value.trim().toUpperCase();
+                if (val === '') {
+                    c++;
+                    continue;
+                }
+
+                let startC = c;
+                let streak = 0;
+                let nextC = c;
+                
+                while (nextC < COLS && gridMatrix[r][nextC].value.trim().toUpperCase() === val) {
+                    streak++;
+                    nextC++;
+                }
+
+                if (streak >= 4) {
+                    for (let i = startC + 4; i < COLS; i++) {
+                        let currentVal = gridMatrix[r][i].value.trim().toUpperCase();
+                        if (currentVal === val || currentVal === "") {
+                            gridMatrix[r][i].classList.add('box-green');
+                            if (currentVal === "") break;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+
+                c = nextC;
+            }
+        }
+
+        updateMainPrediction();
+    }
+
+    function updateMainPrediction() {
+        let predTextElem = document.getElementById('mainPredictionText');
+        let predLayerElem = document.getElementById('mainPredictionLayer');
+
+        let activeLayer = -1;
+        let targetMatch = [];
+        let criteriaType = "";
+
+        // 1. Suriin muna ang bawat layer kung may 7+ consecutive misses
+        for (let r = 0; r < ROWS; r++) {
+            let rowValues = [];
+            for (let c = 0; c < COLS; c++) {
+                let val = gridMatrix[r][c].value.trim().toUpperCase();
+                if (val !== '') {
+                    rowValues.push(val);
+                }
+            }
+
+            if (rowValues.length > 0) {
+                let layerMissHits = [];
+                TRACKED_LETTERS.forEach(letter => {
+                    let consecutiveMisses = 0;
+                    for (let i = rowValues.length - 1; i >= 0; i--) {
+                        if (rowValues[i] !== letter) {
+                            consecutiveMisses++;
+                        } else {
+                            break; 
+                        }
+                    }
+                    if (consecutiveMisses >= 7) {
+                        layerMissHits.push(letter);
+                    }
+                });
+
+                if (layerMissHits.length > 0) {
+                    activeLayer = r + 1;
+                    targetMatch = layerMissHits;
+                    criteriaType = "7+ consecutive misses";
+                    break;
+                }
+            }
+        }
+
+        // 2. Kung walang 7+ misses, kunin ang huling 20 rounds sa pangkalahatan at sundin ang Custom Rank
+        if (activeLayer === -1) {
+            let allGridValues = [];
+            let lastRowWithData = -1;
+
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    let val = gridMatrix[r][c].value.trim().toUpperCase();
+                    if (val !== '') {
+                        allGridValues.push(val);
+                        lastRowWithData = r + 1;
+                    }
+                }
+            }
+
+            if (allGridValues.length > 0) {
+                let last20Overall = allGridValues.slice(-20);
+
+                let counts = {};
+                TRACKED_LETTERS.forEach(letter => {
+                    counts[letter] = 0;
+                });
+
+                last20Overall.forEach(letter => {
+                    if (counts.hasOwnProperty(letter)) {
+                        counts[letter]++;
+                    }
+                });
+
+                // I-sort ang mga letra mula sa Pinakamataas patungo sa Pinakamababa (Descending)
+                let sortedDesc = TRACKED_LETTERS.slice().sort((a, b) => {
+                    if (counts[b] !== counts[a]) {
+                        return counts[b] - counts[a];
+                    }
+                    return 0;
+                });
+
+                // 1st Letter: Pinakamataas (Index 0)
+                // 2nd Letter: Pang-3 sa mataas (Index 2)
+                // 3rd Letter: Pinakamababa (Index 5 o ang dulo)
+                let highest = sortedDesc[0];
+                let thirdHighest = sortedDesc[2];
+                let lowest = sortedDesc[sortedDesc.length - 1];
+
+                targetMatch = [highest, thirdHighest, lowest];
+                activeLayer = lastRowWithData;
+                criteriaType = `Custom Rank sa pangkalahatang huling ${last20Overall.length} rounds`;
+            }
+        }
+
+        if (activeLayer === -1) {
+            predTextElem.innerText = "-";
+            predTextElem.className = "";
+            predLayerElem.innerText = "Wala pang laman ang mga grid boxes.";
+            return;
+        }
+
+        predTextElem.innerText = targetMatch.join(", ");
+        predTextElem.className = "pred-highlight";
+        predLayerElem.innerText = `Resulta (${criteriaType}) [Hanggang Layer ${activeLayer}]`;
+    }
+
+    function saveToLocalStorage() {
+        let gridData = [];
+        for (let r = 0; r < ROWS; r++) {
+            let row = [];
+            for (let c = 0; c < COLS; c++) {
+                row.push(gridMatrix[r][c].value);
+            }
+            gridData.push(row);
+        }
+        localStorage.setItem('savedGridData', JSON.stringify(gridData));
+    }
+
+    function loadFromLocalStorage() {
+        let savedData = localStorage.getItem('savedGridData');
+        if (savedData) {
+            let gridData = JSON.parse(savedData);
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (gridData[r] && gridData[r][c] !== undefined) {
+                        gridMatrix[r][c].value = gridData[r][c];
+                    }
+                }
+            }
+            processGrid();
+        }
+    }
+
+    function resetAll() {
+        resetBet();
+        document.getElementById('mainPredictionText').innerText = '-';
+        document.getElementById('mainPredictionText').className = '';
+        document.getElementById('mainPredictionLayer').innerText = 'Maglagay ng W, B, R, G, Y, o P sa grid boxes.';
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                gridMatrix[r][c].value = '';
+                gridMatrix[r][c].classList.remove('box-green');
+            }
+        }
+
+        localStorage.removeItem('savedGridData');
+    }
+
+    window.onload = loadFromLocalStorage;
+</script>
+
+</body>
+</html>
