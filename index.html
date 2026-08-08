@@ -1,1492 +1,399 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WM  DEPLOYMENT &I NV. SYSTEM</title>
-<style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Arial,sans-serif;
-}
-
-body{
-    min-height:100vh;
-    background:
-        radial-gradient(circle at top left,#38bdf8 0%,transparent 35%),
-        radial-gradient(circle at bottom right,#7c3aed 0%,transparent 35%),
-        linear-gradient(135deg,#020617,#0f172a,#1e293b,#111827);
-    color:#fff;
-    padding:20px 10px;
-    position: relative;
-}
-
-/* Floating Lights Background Effect */
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background: radial-gradient(circle,#38bdf855 2px,transparent 2px);
-    background-size:80px 80px;
-    animation:movebg 25s linear infinite;
-    z-index: 1;
-    pointer-events: none;
-}
-
-@keyframes movebg{
-    from{transform:translateY(0);}
-    to{transform:translateY(-80px);}
-}
-
-.container{
-    max-width:1100px;
-    margin:0 auto;
-    position: relative;
-    z-index: 10;
-}
-
-/* Modern Header Style */
-.header{
-    background:rgba(255,255,255,.06);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.2);
-    padding:20px;
-    text-align:center;
-    border-radius:15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.3);
-    margin-bottom:15px;
-    font-size:18px;
-    font-weight:bold;
-    line-height:1.4;
-    letter-spacing: 0.5px;
-}
-
-.header-accent {
-    color: #facc15;
-}
-
-.nav{
-    display:flex;
-    gap:8px;
-    margin-bottom:15px;
-    flex-wrap:nowrap;
-    overflow-x: auto;
-    padding-bottom: 4px;
-}
-
-.nav-btn{
-    flex:1;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:rgba(255,255,255,.1);
-    backdrop-filter:blur(10px);
-    border: 1px solid rgba(255,255,255,.1);
-    color:#fff;
-    font-weight:bold;
-    cursor:pointer;
-    font-size:13px;
-    white-space:nowrap;
-    transition: 0.2s ease;
-}
-
-.nav-btn:hover {
-    background: rgba(255,255,255,.2);
-}
-
-.nav-btn.active{
-    background:#38bdf8;
-    color:#0f172a;
-    box-shadow: 0 0 15px rgba(56,189,248,.5);
-    border-color: #38bdf8;
-}
-
-.page{
-    display:none;
-}
-
-.page.active{
-    display:block;
-}
-
-/* Glassmorphism Card Style */
-.card{
-    background:rgba(255,255,255,.07);
-    backdrop-filter:blur(15px);
-    border-radius:18px;
-    padding:20px;
-    border:1px solid rgba(255,255,255,.2);
-    box-shadow: 0 15px 35px rgba(0,0,0,.4);
-    margin-bottom:15px;
-}
-
-.row{
-    display:flex;
-    gap:10px;
-    margin-bottom:10px;
-    flex-wrap:wrap;
-    align-items:center;
-}
-
-.col{flex:1;min-width:140px;}
-.col-wide{flex:1.7;min-width:180px;}
-.col-sm{min-width:85px; flex:1;}
-.col-flex{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
-
-label{
-    font-size:12px;
-    font-weight:bold;
-    color:#7dd3fc;
-    margin-bottom:5px;
-    display:block;
-    letter-spacing: 0.5px;
-}
-
-input,select{
-    width:100%;
-    padding:11px;
-    border-radius:10px;
-    border:1px solid rgba(255,255,255,.15);
-    background:#1f2937;
-    color:#fff;
-    font-size:13px;
-    transition: 0.2s;
-}
-
-input:read-only,select:read-only{
-    background:rgba(17, 24, 39, 0.6);
-    color:#9ca3af;
-    border-color: rgba(255,255,255,.05);
-}
-
-input:focus,select:focus{
-    outline:none;
-    border-color:#38bdf8;
-    box-shadow: 0 0 10px rgba(56,189,248,.3);
-}
-
-/* Styled Action Buttons */
-.btn{
-    padding:11px 16px;
-    border-radius:10px;
-    border:none;
-    font-weight:bold;
-    cursor:pointer;
-    font-size:13px;
-    white-space:nowrap;
-    text-align:center;
-    transition: 0.2s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    flex: 0 1 auto;
-}
-
-.btn-add-update{
-    background: linear-gradient(#22c55e,#15803d);
-    color:#fff;
-    box-shadow: 0 4px 0 #166534, 0 8px 15px rgba(0,0,0,.3);
-}
-
-.btn-add-update:active {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 #166534;
-}
-
-.btn-delete{
-    background: linear-gradient(#ef4444,#b91c1c);
-    color:#fff;
-    box-shadow: 0 4px 0 #991b1b, 0 8px 15px rgba(0,0,0,.3);
-}
-
-.btn-delete:active {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 #991b1b;
-}
-
-.btn-other{
-    background: linear-gradient(#6366f1,#4338ca);
-    color:#fff;
-    box-shadow: 0 4px 0 #3730a3, 0 8px 15px rgba(0,0,0,.3);
-}
-
-.btn-other:active {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 #3730a3;
-}
-
-.btn-export{
-    background: linear-gradient(#06b6d4,#0369a1);
-    color:#fff;
-    box-shadow: 0 4px 0 #075985, 0 8px 15px rgba(0,0,0,.3);
-}
-
-.btn-export:active {
-    transform: translateY(3px);
-    box-shadow: 0 1px 0 #075985;
-}
-
-.btn-small{
-    padding:7px 12px;
-    font-size:11px;
-    min-width:auto;
-    box-shadow: 0 2px 0 rgba(0,0,0,0.4);
-}
-
-.btn-small:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.2);
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-}
-
-.btn-group{display:flex;gap:8px;flex-wrap:nowrap;margin-top:8px;width:100%;clear:both;}
-.btn-group-right{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap;width:100%;clear:both;}
-.btn-group-right .btn{flex:0 1 auto;min-width:auto;}
-.btn-group-vertical{display:flex;flex-direction:column;gap:12px;margin-top:8px;width:100%;clear:both;}
-.btn-group-vertical .btn{width:100%;text-align:center;padding:14px;font-size:14px;}
-
-.table-container{
-    overflow-x:auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.15);
-    background: rgba(15, 23, 42, 0.4);
-    margin-top:12px;
-    width: 100%;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:12px;
-    table-layout: auto;
-    white-space: nowrap;
-}
-th{
-    background:#1e40af;
-    padding:10px 12px;
-    text-align:left;
-    color:#7dd3fc;
-    border-bottom: 2px solid rgba(255,255,255,.15);
-    white-space: nowrap;
-}
-td{
-    padding:9px 12px;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    cursor:pointer;
-    white-space: nowrap;
-}
-td:hover{background:rgba(56,189,248,.15);}
-.empty{text-align:center;padding:20px;color:#94a3b8;}
-.file-input{display:none;}
-h3{color:#7dd3fc;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,.15);padding-bottom:6px;font-size:15px;letter-spacing: 0.5px;}
-.note{font-size:11px;color:#facc15;margin-top:6px;}
-.item-row{border-bottom:1px solid rgba(255,255,255,.15);padding:15px 0;margin-bottom:10px;}
-.item-row:last-child{border-bottom:none;margin-bottom:0;}
-.series-option{display:flex;gap:15px;align-items:center;margin-bottom:12px;padding:10px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.1); flex-wrap:wrap;}
-.series-option label{margin:0;cursor:pointer;}
-.series-option input{width:auto;cursor:pointer;}
-.series-setting{background:rgba(0,0,0,0.2);padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid #4f46e5;}
-.new-prefix-wrap{display:none;margin-top:8px;gap:6px;align-items:center;flex-wrap:wrap;}
-
-.login-container-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 85vh;
-    padding: 10px;
-}
-
-.login-box{
-    width:420px;
-    max-width:100%;
-    padding:35px 25px;
-    border-radius:24px;
-    background:rgba(255,255,255,.08);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.25);
-    box-shadow: 0 25px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.30);
-    position:relative;
-    z-index:10;
-    text-align: center;
-}
-
-.login-logo{
-    width:110px !important;
-    height:110px !important;
-    margin:0 auto 15px auto;
-    display:block;
-    object-fit:cover;
-    border-radius:50%;
-    padding:3px;
-    border:3px solid #fff;
-    box-shadow: 0 0 0 3px #38bdf8, 0 0 20px rgba(56,189,248,.9);
-    background: #1e293b;
-}
-
-.password-container {
-    position: relative;
-    width: 100%;
-    margin-bottom: 12px;
-}
-
-.password-container input {
-    margin-bottom: 0 !important;
-    padding-right: 40px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 16px;
-    color: #94a3b8;
-    user-select: none;
-}
-
-.remember-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-    margin: 12px 0;
-    text-align: left;
-}
-
-.remember-container input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-}
-
-.remember-container label {
-    color: #7dd3fc;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    margin: 0;
-}
-
-@keyframes colorCycle {
-    0% { color: #facc15; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(250,204,21,0.6); }
-    33% { color: #38bdf8; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(56,189,248,0.6); }
-    66% { color: #c084fc; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(192,132,252,0.6); }
-    100% { color: #facc15; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(250,204,21,0.6); }
-}
-
-.system-login{
-    text-align:center;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    animation: colorCycle 5s ease infinite;
-    word-break: break-word;
-}
-
-.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:12px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.15); flex-wrap: wrap; gap: 10px;}
-.user-info{font-size:13px;font-weight:bold;color:#7dd3fc;}
-.top-bar .btn-group{margin:0;width:auto;}
-
-/* REPORT DESIGN & STYLING - Left aligned logo next to company name */
-.print-header{display:none;}
-.print-header-center { text-align: left; width: 100%; margin-bottom: 15px; border-bottom: 3px solid #38bdf8; padding-bottom: 10px; display: flex; align-items: center; gap: 15px; }
-.print-logo-center { width: 50px; height: 50px; object-fit: cover; border-radius: 50% !important; background: #1e293b; border: 2px solid #38bdf8; display: block; flex-shrink: 0; }
-.print-title-container { display: flex; flex-direction: column; justify-content: center; }
-.print-company-name { font-size: 13px; font-weight: bold; color: #000; text-transform: uppercase; line-height: 1.2; }
-.print-system-name { font-size: 11px; font-weight: bold; color: #334155; text-transform: uppercase; margin-top: 2px; line-height: 1.2; }
-.print-footer-info { text-align: right; font-size: 11px; font-weight: bold; color: #000; margin-top: 25px; line-height: 1.4; }
-.print-report-title { text-align: left; font-size: 15px; font-weight: bold; margin: 10px 0; text-transform: uppercase; color: #000; }
-
-.footer-credit{
-    position:relative;
-    margin-top: 25px;
-    width:100%;
-    text-align:center;
-    color:#94a3b8;
-    font-size:11px;
-    letter-spacing:1px;
-    z-index: 10;
-    padding: 0 10px;
-    word-break: break-word;
-}
-
-.programmer-only{display:none;}
-.admin-only{display:none;}
-body.programmer .programmer-only, body.programmer .admin-only{display:block;}
-body.admin .admin-only{display:block;}
-body.user .programmer-only, body.user .admin-only{display:none;}
-</style>
+    <title>Auto Compute, Auto-Save Letters at Custom Rank Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 30px);
+            grid-template-rows: repeat(6, 30px);
+            gap: 4px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+        .grid-box {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-size: 16px;
+            text-transform: uppercase;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .box-green {
+            background-color: #27ae60 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #c9302c;
+        }
+        .btn-loss {
+            background-color: #f0ad4e;
+        }
+        .btn-loss:hover {
+            background-color: #ec971f;
+        }
+        .btn-reset-bet {
+            background-color: #3498db;
+        }
+        .btn-reset-bet:hover {
+            background-color: #2980b9;
+        }
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .prediction-box {
+            background-color: #222;
+            color: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .pred-highlight { color: #f1c40f; }
+    </style>
 </head>
 <body>
 
-<!-- ========== LOGIN SCREEN ========== -->
-<div id="loginScreen" class="login-container-wrapper">
-    <div class="login-box">
-        <img src="logo.png" alt="Company Logo" class="print-logo login-logo" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'110\' height=\'110\'><circle cx=\'55\' cy=\'55\' r=\'55\' fill=\'#1e293b\'/><text x=\'50%\' y=\'50%\' fill=\'#38bdf8\' font-size=\'16\' font-family=\'Arial\' text-anchor=\'middle\' dominant-baseline=\'middle\'>LOGO</text></svg>'">
-        <div class="system-login">WM DEPLOYMENT & INV. SYSTEM</div>
+<div class="container">
+    <!-- Auto Compute Section -->
+    <div class="section">
+        <label for="baseAmount">Base Amount:</label>
+        <input type="number" id="baseAmount" placeholder="Ilagay ang numero dito (hal. 50)" oninput="autoCompute()">
         
-        <div style="text-align: left; margin-bottom: 15px;">
-            <label>Username</label>
-            <input type="text" id="loginUser" placeholder="Enter username">
+        <div class="result">
+            Resulta / Taya: <span id="computedResult">0</span>
         </div>
+        <small style="color: #666;">Formula: (Total * 2) + Base</small>
         
-        <div style="text-align: left; margin-bottom: 5px;">
-            <label>Password</label>
-        </div>
-        <div class="password-container">
-            <input type="password" id="loginPass" placeholder="Enter password">
-            <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
-        </div>
-
-        <div class="remember-container">
-            <input type="checkbox" id="rememberMe">
-            <label for="rememberMe">Remember Me</label>
-        </div>
-
-        <button class="btn btn-add-update" style="width:100%; padding:15px; margin-top:10px; font-size:15px;" onclick="login()">LOGIN</button>
-    </div>
-</div>
-
-<!-- ========== MAIN SYSTEM ========== -->
-<div id="mainScreen" style="display:none;">
-    <div class="container">
-        <div class="header">
-            <div class="header-accent">WM DEPLOYMENT & INV. SYSTEM</div>
-        </div>
-        
-        <div class="top-bar">
-            <div class="user-info"><span id="mainGreeting"></span></div>
-            <div class="btn-group">
-                <button class="btn btn-small btn-delete" onclick="logout()">🚪 LOGOUT</button>
-            </div>
-        </div>
-        
-        <div class="nav">
-            <button class="nav-btn active" onclick="showPage('emp', this)">EMPLOYEE</button>
-            <button class="nav-btn" onclick="showPage('prod', this)">PRODUCT</button>
-            <button class="nav-btn" onclick="showPage('dep', this)">DEPLOYMENT</button>
-            <button class="nav-btn" onclick="showPage('settings', this)">SETTINGS</button>
-        </div>
-
-        <!-- ========== EMPLOYEE PAGE ========== -->
-        <div id="empPage" class="page active">
-            <div class="card no-print">
-                <h3>🔍 SEARCH </h3>
-                <div class="row"><div class="col"><input type="text" id="searchEmp" placeholder="Type to search Name / Position / Area..." oninput="loadEmp()"></div></div>
-                <div class="btn-group-right" style="margin-top:10px;">
-                    <button class="btn btn-delete btn-small" onclick="resetEmpSearch()">🔄 Reset</button>
-                    <button class="btn btn-export btn-small" onclick="exportIndividualExcel('emp')">📊 Excel</button>
-                    <button class="btn btn-other btn-small" onclick="printIndividualPDF('empPrintZone')">📄 PDF</button>
-                </div>
-            </div>
-            <div class="card no-print">
-                <h3>EMPLOYEE INFORMATION</h3>
-                <input type="hidden" id="empKey">
-                <div class="row">
-                    <div class="col">
-                        <label>NAME</label>
-                        <input type="text" id="empName" placeholder="Enter Employee Name">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <label>POSITION</label>
-                        <input type="text" id="empPos" placeholder="Enter Position">
-                    </div>
-                    <div class="col">
-                        <label>AREA</label>
-                        <input type="text" id="empArea" placeholder="Enter Area">
-                    </div>
-                </div>
-                <div class="btn-group-right">
-                    <button class="btn btn-add-update" onclick="saveEmpRecord()">💾 ADD </button>
-                    <button class="btn btn-delete" onclick="delEmp()">🗑️ DELETE</button>
-                </div>
-            </div>
-            <div class="card printable-card" id="empPrintZone">
-                <div class="table-container">
-                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th><th>DATE & TIME</th></tr></thead><tbody id="empList"></tbody></table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========== PRODUCT PAGE ========== -->
-        <div id="prodPage" class="page">
-            <div class="card no-print">
-                <h3>🔍 SEARCH</h3>
-                <div class="row"><div class="col"><input type="text" id="searchProd" placeholder="Type to search Description / Model..." oninput="loadProd()"></div></div>
-                <div class="btn-group-right" style="margin-top:10px;">
-                    <button class="btn btn-delete btn-small" onclick="resetProdSearch()">🔄 Reset</button>
-                    <button class="btn btn-export btn-small" onclick="exportIndividualExcel('prod')">📊 Excel</button>
-                    <button class="btn btn-other btn-small" onclick="printIndividualPDF('prodPrintZone')">📄 PDF</button>
-                </div>
-            </div>
-            <div class="card no-print">
-                <h3>PRODUCT INFORMATION</h3>
-                <input type="hidden" id="prodKey">
-                <input type="hidden" id="origTotalQty">
-                <div class="row">
-                    <div class="col"><label>DESCRIPTION</label><input type="text" id="prodDesc"></div>
-                    <div class="col"><label>MODEL</label><input type="text" id="prodModel"></div>
-                    <div class="col" style="display: flex; gap: 10px; min-width: 180px; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 80px;"><label>TOTAL QTY</label><input type="number" id="prodQty" min="1"></div>
-                        <div style="flex: 1; min-width: 80px;"><label>ADD QTY</label><input type="number" id="newQty" min="0" placeholder="Amt" disabled></div>
-                    </div>
-                </div>
-                <div class="note">⚠️ Description cannot be duplicated & cannot be edited once saved</div>
-                <div class="btn-group-right">
-                    <button class="btn btn-add-update" onclick="saveProdRecord()">💾 ADD </button>
-                    <button class="btn btn-delete" onclick="delProd()">🗑️ DELETE</button>
-                </div>
-            </div>
-            <div class="card printable-card" id="prodPrintZone">
-                <div class="table-container">
-                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th><th>DATE & TIME</th></tr></thead><tbody id="prodList"></tbody></table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========== DEPLOYMENT PAGE ========== -->
-        <div id="depPage" class="page">
-            <div class="card no-print">
-                <h3>🔍 SEARCH</h3>
-                <div class="row">
-                    <div class="col"><input type="text" id="searchDepAll" placeholder="Type to search Trans No, Name, Machine No, Key No, Date..." oninput="loadDep()"></div>
-                </div>
-                <div class="btn-group-right" style="margin-top:10px;">
-                    <button class="btn btn-delete btn-small" onclick="resetDepSearch()">🔄 Reset</button>
-                    <button class="btn btn-export btn-small" onclick="exportIndividualExcel('dep')">📊 Excel</button>
-                    <button class="btn btn-other btn-small" onclick="printIndividualPDF('depPrintZone')">📄 PDF</button>
-                </div>
-            </div>
-
-            <div class="card no-print">
-                <h3>DEPLOYMENT FORM</h3>
-                <div class="row">
-                    <div class="col"><label>TRANSACTION NO</label><input type="text" id="transNo" readonly></div>
-                    <div class="col"><label>DATE</label><input type="text" id="depDate" readonly></div>
-                </div>
-                <div class="row">
-                    <div class="col"><label>NAME</label><select id="depName"><option value="">-- Select --</option></select></div>
-                </div>
-                <div class="row">
-                    <div class="col"><label>POSITION</label><input type="text" id="depPos" readonly placeholder="Auto Loaded"></div>
-                    <div class="col"><label>AREA</label><input type="text" id="depArea" placeholder="Enter or Edit Area"></div>
-                </div>
-
-                <h3 style="margin-top:15px;">📦 ITEMS</h3>
-                <div id="depItemsContainer"></div>
-                
-                <div class="btn-group-right">
-                    <button class="btn btn-add-update" onclick="saveBatchDep()">💾 RELEASED</button>
-                    <button class="btn btn-delete" onclick="newDep()">🔄 CLEAR FORM</button>
-                </div>
-            </div>
-            
-            <div class="printable-card" id="allPrintZone" style="display:none;">
-                <h4 style="color:#000; margin-top:10px;">📋 EMPLOYEE LIST</h4>
-                <div class="table-container" style="margin-bottom:15px;">
-                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>AREA</th><th>DATE & TIME</th></tr></thead><tbody id="printAllEmpList"></tbody></table>
-                </div>
-
-                <h4 style="color:#000; margin-top:15px;">📦 PRODUCT INVENTORY LIST</h4>
-                <div class="table-container" style="margin-bottom:15px;">
-                    <table><thead><tr><th>DESCRIPTION</th><th>MODEL</th><th>TOTAL QTY</th><th>DATE & TIME</th></tr></thead><tbody id="printAllProdList"></tbody></table>
-                </div>
-
-                <h4 style="color:#000; margin-top:15px;">🚚 DEPLOYMENT LOGS LIST</h4>
-                <div class="table-container">
-                    <table><thead><tr><th>TRANS NO</th><th>NAME</th><th>POSITION</th><th>AREA</th><th>DESCRIPTION</th><th>MODEL</th><th>MACHINE NO</th><th>KEY NO</th><th>QTY</th><th>DATE</th></tr></thead><tbody id="printAllDepList"></tbody></table>
-                </div>
-            </div>
-
-            <div class="card printable-card" id="depPrintZone">
-                <div class="table-container">
-                    <table><thead><tr><th>TRANS NO</th><th>NAME</th><th>POSITION</th><th>AREA</th><th>DESCRIPTION</th><th>MODEL</th><th>MACHINE NO</th><th>KEY NO</th><th>QTY</th><th>DATE</th></tr></thead><tbody id="depList"></tbody></table>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========== SETTINGS PAGE ========== -->
-        <div id="settingsPage" class="page">
-            <div class="card">
-                <h3 style="margin-top:0;">⚙️ ALPHANUMERIC SERIES SETTINGS</h3>
-                <div class="series-setting">
-                    <div class="row col-flex">
-                        <div class="col"><label>SELECT PREFIX</label>
-                            <select id="prefixSelect" onchange="selectPrefix()"></select>
-                        </div>
-                        <div class="col-sm"><label>START NUMBER</label><input type="number" id="setStartSeries" min="1" placeholder="Ex: 1"></div>
-                        <div class="col-sm" style="padding-top:20px;"><button class="btn btn-add-update btn-small" onclick="savePrefixSetting()">💾 SAVE</button></div>
-                        <button class="btn btn-other btn-small" style="margin-top:20px;" onclick="showNewPrefix()">➕ NEW PREFIX</button>
-                    </div>
-                    <div class="new-prefix-wrap" id="newPrefixWrap">
-                        <input type="text" id="newPrefixInput" placeholder="Type New Prefix Here" maxlength="20">
-                        <button class="btn btn-small btn-add-update" onclick="addNewPrefix()">✓ ADD</button>
-                        <button class="btn btn-small btn-delete" onclick="hideNewPrefix()">✕</button>
-                    </div>
-                    <div class="note">Current next: <span id="currentNextNum">Easy-0001</span></div>
-                </div>
-                <div class="series-option">
-                    <input type="radio" name="seriesMode" id="autoSeries" value="auto" onchange="updateSeriesMode()">
-                    <label for="autoSeries">🔢 AUTOMATIC SERIES</label>
-                    <input type="radio" name="seriesMode" id="manualSeries" value="manual" checked onchange="updateSeriesMode()">
-                    <label for="manualSeries">✏️ MANUAL INPUT</label>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>⚙️ SYSTEM SETTINGS</h3>
-                <div class="btn-group-vertical">
-                    <button class="btn btn-other admin-only" onclick="showUserManage()">👤 MANAGE USERS</button>
-                    <button class="btn btn-delete programmer-only" onclick="clearAllDB()">🗑️ CLEAR ALL DATABASE</button>
-                    <button class="btn btn-export" onclick="backupDB()">💾 BACKUP DATA</button>
-                    <button class="btn btn-other" onclick="document.getElementById('restoreFile').click()">🔄 RESTORE DATA</button>
-                    <button class="btn btn-other" onclick="document.getElementById('importExcelFile').click()">📥 IMPORT EXCEL FILE</button>
-                    <button class="btn btn-export" onclick="exportExcelAll()">📊 EXPORT ALL TO EXCEL</button>
-                    <button class="btn btn-other" onclick="printIndividualPDF('depPrintZone')">📄 EXPORT DEPLOYMENT PDF</button>
-                    <button class="btn btn-export" onclick="exportPDFAll()">📄 EXPORT ALL TO PDF</button>
-                </div>
-                <input type="file" id="restoreFile" class="file-input" accept=".json">
-                <input type="file" id="importExcelFile" class="file-input" accept=".csv, .txt">
-            </div>
-
-            <div id="userManageModal" class="card admin-only" style="display:none;margin-top:15px;">
-                <h3>👤 USER MANAGEMENT</h3>
-                <input type="hidden" id="editUserIndex" value="">
-                <div class="row">
-                    <div class="col"><label>NAME</label><input type="text" id="newUserName" placeholder="Full Name"></div>
-                    <div class="col"><label>POSITION</label><input type="text" id="newUserPosition" placeholder="Position"></div>
-                </div>
-                <div class="row">
-                    <div class="col"><label>USERNAME</label><input type="text" id="newUsername"></div>
-                    <div class="col"><label>PASSWORD</label><input type="password" id="newUserPass"></div>
-                    <div class="col"><label>ROLE</label><select id="newUserRole">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                    </select></div>
-                </div>
-                <div class="btn-group-right" style="margin-top:12px;">
-                    <button class="btn btn-add-update" id="userSaveBtn" onclick="saveUserRecord()">➕ ADD USER</button>
-                    <button class="btn btn-delete" onclick="resetUserForm()">🔄 CLEAR</button>
-                    <button class="btn btn-other" onclick="closeUserManage()">✕ CLOSE</button>
-                </div>
-                <div class="table-container" style="margin-top:10px;">
-                    <table><thead><tr><th>NAME</th><th>POSITION</th><th>USERNAME</th><th>ROLE</th><th>ACTION</th></tr></thead><tbody id="userList"></tbody></table>
-                </div>
-            </div>
+        <div class="btn-group" style="margin-top: 10px;">
+            <button type="button" class="btn-loss" onclick="applyLoss()">LOSS</button>
+            <button type="button" class="btn-reset-bet" onclick="resetBet()">Reset Taya</button>
         </div>
     </div>
-</div>
 
-<div class="footer-credit">
-    Generated Date: <span id="generatedDate"></span> | NAD ITALLO PROGRAMMER v1.0
+    <hr>
+
+    <!-- Single Prediction Box Section -->
+    <div class="section">
+        <label>Trend Prediction (7+ Misses o Custom Rank sa huling 20 rounds):</label>
+        <div class="prediction-box">
+            <div id="mainPredictionText">-</div>
+            <div id="mainPredictionLayer" style="font-size: 14px; color: #aaa; margin-top: 5px;">Maglagay ng W, B, R, G, Y, o P sa grid boxes.</div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- 6x12 Grid Section -->
+    <div class="section">
+        <label>Grid Boxes (6 pababa, 12 pahaba):</label>
+        <div class="grid-container" id="gridContainer"></div>
+    </div>
+
+    <!-- Main Reset Button -->
+    <div class="section">
+        <button onclick="resetAll()">Reset Lahat (Grid & Taya)</button>
+    </div>
 </div>
 
 <script>
-const DB_USER = 'WH_USERS';
-const DB_EMP = 'WH_EMP';
-const DB_PROD = 'WH_PROD';
-const DB_DEP = 'WH_DEP';
-const DB_LAST_BACKUP = 'WH_LAST_BACKUP';
-const DB_PREFIX_DATA = 'WH_PREFIX_DATA';
+    const ROWS = 6;
+    const COLS = 12;
+    const TRACKED_LETTERS = ['W', 'B', 'R', 'G', 'Y', 'P']; 
+    const gridContainer = document.getElementById('gridContainer');
+    const gridMatrix = []; 
 
-let users = JSON.parse(localStorage.getItem(DB_USER) || '[{"name":"NINO ANGELO D. ITALLO","position":"ELECTRIAN","username":"NAD ITALLO","password":"Onin23","role":"admin"},{"name":"LUO JIANBIN","position":"MANAGER","username":"LUO","password":"LUO123","role":"admin"},{"name":"LEONARDO SISON","position":"WAREHOUSE INCHARGE","username":"LEO","password":"LEO123","role":"admin"},{"name":"MARK","position":"TECHNICIAN","username":"MARK","password":"MARK123","role":"user"}]');
-let empData = JSON.parse(localStorage.getItem(DB_EMP) || '[]');
-let prodData = JSON.parse(localStorage.getItem(DB_PROD) || '[]');
-let depData = JSON.parse(localStorage.getItem(DB_DEP) || '[]');
-let prefixData = JSON.parse(localStorage.getItem(DB_PREFIX_DATA) || '{"Easy":1}');
-let seriesPrefix = localStorage.getItem('SERIES_PREFIX') || 'Easy';
-let transCounter = parseInt(localStorage.getItem('TRANS_SERIES') || '2001');
-let currentUser = null;
-let depItemCount = 0;
-
-let defaultSeriesMode = 'manual';
-localStorage.setItem('SERIES_MODE', defaultSeriesMode);
-
-window.addEventListener('DOMContentLoaded', () => {
-    let rememberedUser = localStorage.getItem('REMEMBERED_USER');
-    if(rememberedUser) {
-        document.getElementById('loginUser').value = rememberedUser;
-        document.getElementById('rememberMe').checked = true;
-    }
-    document.getElementById('manualSeries').checked = true;
-    document.getElementById('autoSeries').checked = false;
-    document.getElementById('generatedDate').textContent = new Date().toLocaleDateString('en-GB');
-    updateLastNumberForPrefix(); loadPrefixList(); updateNextNumDisplay(); loadDepSelects();
-});
-
-function togglePasswordVisibility() {
-    let passInput = document.getElementById('loginPass');
-    if (passInput.type === 'password') {
-        passInput.type = 'text';
-    } else {
-        passInput.type = 'password';
-    }
-}
-
-function getGreeting(username = '') {
-    let hour = new Date().getHours();
-    let timeGreet;
-    if (hour >= 5 && hour < 12) timeGreet = "Good morning";
-    else if (hour >= 12 && hour < 18) timeGreet = "Good afternoon";
-    else timeGreet = "Good evening";
-    if (username) return `Welcome! ${timeGreet}, ${username.toUpperCase()}!`;
-    return `Welcome! ${timeGreet}`;
-}
-
-function getDate() { return new Date().toLocaleString('en-GB'); }
-function normStr(s) { return String(s||'').trim().toLowerCase().replace(/\s+/g,' '); }
-function savePrefixData() { localStorage.setItem(DB_PREFIX_DATA, JSON.stringify(prefixData)); }
-function saveTransCounter() { localStorage.setItem('TRANS_SERIES', transCounter); }
-function formatMacNum(num) { return `${seriesPrefix}-${String(num).padStart(4, '0')}`; }
-function updateNextNumDisplay() { 
-    let nextNum = prefixData[seriesPrefix] || 1;
-    document.getElementById('currentNextNum').textContent = formatMacNum(nextNum); 
-}
-function loadPrefixList() {
-    let sel = document.getElementById('prefixSelect');
-    sel.innerHTML = '';
-    Object.keys(prefixData).sort().forEach(p=>{
-        sel.innerHTML += `<option value="${p}">${p} (Next: ${formatMacNum(prefixData[p] || 1)})</option>`;
-    });
-    sel.value = seriesPrefix;
-}
-function selectPrefix() {
-    let val = document.getElementById('prefixSelect').value;
-    seriesPrefix = val;
-    localStorage.setItem('SERIES_PREFIX', seriesPrefix);
-    updateNextNumDisplay();
-    updateSeriesMode();
-}
-function showNewPrefix() {
-    document.getElementById('newPrefixWrap').style.display = 'flex';
-    document.getElementById('newPrefixInput').value = '';
-    document.getElementById('newPrefixInput').focus();
-}
-function hideNewPrefix() { document.getElementById('newPrefixWrap').style.display = 'none'; }
-function addNewPrefix() {
-    let newP = document.getElementById('newPrefixInput').value.trim();
-    if(!newP) return alert('❌ Enter new Prefix');
-    if(prefixData[newP]) return alert('❌ Prefix already exists');
-    prefixData[newP] = 1;
-    savePrefixData();
-    seriesPrefix = newP;
-    localStorage.setItem('SERIES_PREFIX', seriesPrefix);
-    loadPrefixList();
-    updateNextNumDisplay();
-    updateSeriesMode();
-    hideNewPrefix();
-    alert(`✅ New Prefix added: ${newP}`);
-}
-function savePrefixSetting() {
-    let startNum = parseInt(document.getElementById('setStartSeries').value);
-    if(!startNum || startNum < 1) return alert('❌ Enter valid starting number');
-    prefixData[seriesPrefix] = startNum;
-    savePrefixData();
-    updateNextNumDisplay();
-    updateSeriesMode();
-    document.getElementById('setStartSeries').value = '';
-    alert(`✅ Set to: ${formatMacNum(startNum)}`);
-}
-function updateSeriesMode() {
-    let isAuto = document.getElementById('autoSeries').checked;
-    let currentNext = prefixData[seriesPrefix] || 1;
-    document.querySelectorAll('.item-mac').forEach((input, idx) => {
-        input.readOnly = isAuto;
-        if(isAuto) input.value = formatMacNum(currentNext + idx);
-        else input.value = '';
-    });
-}
-function updateLastNumberForPrefix() {
-    let currentMax = 0;
-    depData.forEach(x=>{
-        if(x.macNo && x.macNo.startsWith(seriesPrefix + '-')) {
-            let m = x.macNo.match(/(\d+)$/);
-            if(m) currentMax = Math.max(currentMax, parseInt(m[1]));
-        }
-    });
-    prefixData[seriesPrefix] = currentMax + 1;
-    savePrefixData();
-}
-function checkAutoBackup() {
-    let lastBackup = localStorage.getItem(DB_LAST_BACKUP);
-    let now = new Date();
-    if(!lastBackup) { localStorage.setItem(DB_LAST_BACKUP, now.toISOString()); return; }
-    let lastDate = new Date(lastBackup);
-    let monthsDiff = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
-    if(monthsDiff >= 1) {
-        if(confirm(`⚠️ ${monthsDiff} month/s passed since last backup!\nDownload backup file now?`)) {
-            backupDB(); localStorage.setItem(DB_LAST_BACKUP, now.toISOString());
+    for (let r = 0; r < ROWS; r++) {
+        gridMatrix[r] = [];
+        for (let c = 0; c < COLS; c++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 1;
+            input.className = 'grid-box';
+            input.dataset.row = r;
+            input.dataset.col = c;
+            input.addEventListener('input', () => {
+                processGrid();
+                saveToLocalStorage();
+            });
+            gridContainer.appendChild(input);
+            gridMatrix[r][c] = input;
         }
     }
-}
 
-function loadDepSelects() {
-    let depName = document.getElementById('depName');
-    depName.innerHTML = '<option value="">-- Select Employee --</option>';
-    let uniqueNames = [...new Set(empData.map(e => e.name))].sort();
-    uniqueNames.forEach(n=>{
-        depName.innerHTML += `<option value="${n}">${n}</option>`;
-    });
-}
-
-function login() {
-    let u = document.getElementById('loginUser').value.trim();
-    let p = document.getElementById('loginPass').value;
-    let remember = document.getElementById('rememberMe').checked;
-    
-    let found = users.find(x=>x.username===u && x.password===p);
-    if(!found) return alert('❌ Invalid Username or Password!');
-    
-    if(remember) {
-        localStorage.setItem('REMEMBERED_USER', u);
-    } else {
-        localStorage.removeItem('REMEMBERED_USER');
-    }
-
-    currentUser = found;
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainScreen').style.display='block';
-    document.getElementById('mainGreeting').textContent = getGreeting(found.username);
-    document.body.classList.add(found.role);
-    checkAutoBackup(); loadEmp();loadProd();loadDep();newDep();loadDepSelects();
-}
-function logout() {
-    if(!confirm('Logout now?')) return;
-    currentUser = null; document.getElementById('mainScreen').style.display='none';
-    document.getElementById('loginScreen').style.display='flex';
-    document.getElementById('loginPass').value='';
-    document.body.classList.remove('programmer','admin','user');
-}
-function saveUsers() { localStorage.setItem(DB_USER, JSON.stringify(users)); }
-function showUserManage() { document.getElementById('userManageModal').style.display='block'; loadUserList(); resetUserForm(); }
-function closeUserManage() { document.getElementById('userManageModal').style.display='none'; resetUserForm(); }
-
-function resetUserForm() {
-    document.getElementById('editUserIndex').value = '';
-    document.getElementById('newUserName').value = '';
-    document.getElementById('newUserPosition').value = '';
-    document.getElementById('newUsername').value = '';
-    document.getElementById('newUserPass').value = '';
-    document.getElementById('newUserRole').value = 'user';
-    document.getElementById('userSaveBtn').textContent = '➕ ADD USER';
-}
-
-function loadUserList() {
-    let t = document.getElementById('userList'); t.innerHTML='';
-    users.forEach((x,i)=>{ 
-        let actionBtns = '';
-        if(x.username === 'NAD ITALLO') {
-            actionBtns = `<button class="btn btn-other btn-small" onclick="editUser(${i})">EDIT</button> <span style="color:#94a3b8; font-size:11px;">Fully Restricted</span>`;
-        } else {
-            actionBtns = `<button class="btn btn-other btn-small" onclick="editUser(${i})">EDIT</button> <button class="btn btn-delete btn-small" onclick="delUser(${i})">DELETE</button>`;
+    function autoCompute() {
+        let base = parseFloat(document.getElementById('baseAmount').value);
+        if (isNaN(base)) {
+            document.getElementById('computedResult').innerText = 0;
+            return;
         }
-        t.innerHTML += `<tr><td>${x.name || ''}</td><td>${x.position || ''}</td><td>${x.username}</td><td>${x.role.toUpperCase()}</td><td>${actionBtns}</td></tr>`; 
-    });
-}
+        let result = (base * 2) + base;
+        document.getElementById('computedResult').innerText = result;
+    }
 
-function saveUserRecord() {
-    let editIdx = document.getElementById('editUserIndex').value;
-    let nameVal = document.getElementById('newUserName').value.trim();
-    let posVal = document.getElementById('newUserPosition').value.trim();
-    let u = document.getElementById('newUsername').value.trim(); 
-    let p = document.getElementById('newUserPass').value; 
-    let r = document.getElementById('newUserRole').value;
-    
-    if(editIdx !== "") {
-        let i = parseInt(editIdx);
-        if(users[i].username === 'NAD ITALLO') {
-            return alert('❌ NAD ITALLO account is fully restricted and cannot be edited!');
+    function applyLoss() {
+        let base = parseFloat(document.getElementById('baseAmount').value);
+        if (isNaN(base) || base <= 0) {
+            alert("Maglagay muna ng Base Amount.");
+            return;
         }
-    }
-    
-    if(!nameVal || !posVal || !u || !p) return alert('Fill all fields including Name, Position, Username, and Password!'); 
-    
-    if(editIdx === "") {
-        if(users.find(x=>x.username===u)) return alert('Username already exists!');
-        users.push({name: nameVal, position: posVal, username: u, password: p, role: r});
-        alert('✅ User added successfully!');
-    } else {
-        let i = parseInt(editIdx);
-        let existingUserWithSameName = users.find((x, idx) => idx !== i && x.username === u);
-        if(existingUserWithSameName) return alert('Username already exists!');
-        
-        users[i] = {name: nameVal, position: posVal, username: u, password: p, role: r};
-        alert('✅ User updated successfully!');
-    }
-    
-    saveUsers(); 
-    loadUserList();
-    resetUserForm();
-}
 
-function editUser(i) {
-    let x = users[i];
-    if(x.username === 'NAD ITALLO') {
-        return alert('❌ NAD ITALLO account is fully restricted and cannot be edited!');
-    }
-    document.getElementById('editUserIndex').value = i;
-    document.getElementById('newUserName').value = x.name || '';
-    document.getElementById('newUserPosition').value = x.position || '';
-    document.getElementById('newUsername').value = x.username || '';
-    document.getElementById('newUserPass').value = x.password || '';
-    document.getElementById('newUserRole').value = x.role || 'user';
-    document.getElementById('userSaveBtn').textContent = '💾 UPDATE USER';
-    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
-}
-
-function delUser(i) {
-    if(users[i].username==='NAD ITALLO') return alert('❌ NAD ITALLO account is fully restricted and cannot be deleted!');
-    if(!confirm('Delete this user?')) return; 
-    users.splice(i,1); 
-    saveUsers(); 
-    loadUserList(); 
-    resetUserForm();
-    alert('Deleted!');
-}
-
-function showPage(page, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(page+'Page').classList.add('active'); if(btn) btn.classList.add('active');
-    if(page==='emp') loadEmp(); if(page==='prod') loadProd();
-    if(page==='dep') { loadDep(); loadDepSelects(); newDep(); updateLastNumberForPrefix(); }
-}
-
-// ========== EMPLOYEE ==========
-function clearEmpForm() { document.getElementById('empKey').value='';document.getElementById('empName').value='';document.getElementById('empPos').value='';document.getElementById('empArea').value=''; }
-function resetEmpSearch() { document.getElementById('searchEmp').value=''; loadEmp(); }
-
-function saveEmpRecord() {
-    let k=document.getElementById('empKey').value, n=document.getElementById('empName').value.trim(),p=document.getElementById('empPos').value.trim(),a=document.getElementById('empArea').value.trim();
-    let nowIso = new Date().toISOString();
-    if(!n||!p||!a) return alert('Fill all fields!');
-    if(!k) { empData.push({key:Date.now(),name:n,pos:p,area:a,date:nowIso}); alert('✅ Added Successfully!'); }
-    else { let i=empData.findIndex(x=>x.key==k); empData[i]={key:k,name:n,pos:p,area:a,date:empData[i].date || nowIso}; alert('✅ Updated Successfully!'); }
-    saveEmp(); loadEmp(); clearEmpForm(); loadDepSelects();
-}
-function delEmp() {
-    let k=document.getElementById('empKey').value; if(!k) return alert('Select record first by clicking on list!');
-    if(!confirm('Delete this employee?')) return; empData=empData.filter(x=>x.key!=k); saveEmp(); loadEmp(); clearEmpForm(); alert('Deleted!'); loadDepSelects();
-}
-function saveEmp() { localStorage.setItem(DB_EMP,JSON.stringify(empData)); }
-
-function loadEmp() {
-    let s=normStr(document.getElementById('searchEmp').value);
-    let list = empData.filter(x=>normStr(x.name).includes(s)||normStr(x.pos).includes(s)||normStr(x.area).includes(s));
-    list.sort((a,b)=>b.key - a.key);
-    let t=document.getElementById('empList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="4" class="empty">No Records</td></tr>';
-    list.forEach(x=>{
-        let formattedDate = x.date ? new Date(x.date).toLocaleString('en-GB') : '-';
-        t.innerHTML+=`<tr onclick="fillEmp(${x.key})"><td>${x.name}</td><td>${x.pos}</td><td>${x.area}</td><td>${formattedDate}</td></tr>`;
-    });
-}
-function fillEmp(k) { let x=empData.find(i=>i.key==k); document.getElementById('empKey').value=x.key; document.getElementById('empName').value=x.name; document.getElementById('empPos').value=x.pos; document.getElementById('empArea').value=x.area; }
-
-// ========== PRODUCT ==========
-function clearProdForm() { 
-    document.getElementById('prodKey').value='';document.getElementById('prodDesc').value='';document.getElementById('prodModel').value='';
-    document.getElementById('prodQty').disabled=false;document.getElementById('prodQty').value='';document.getElementById('newQty').value='';
-    document.getElementById('newQty').disabled=true;document.getElementById('origTotalQty').value='';
-    document.getElementById('prodDesc').readOnly=false;document.getElementById('prodModel').readOnly=false;
-}
-function resetProdSearch() { document.getElementById('searchProd').value=''; loadProd(); }
-
-function saveProdRecord() {
-    let k=document.getElementById('prodKey').value, d=normStr(document.getElementById('prodDesc').value),m=normStr(document.getElementById('prodModel').value),q=parseInt(document.getElementById('prodQty').value)||0,nq=parseInt(document.getElementById('newQty').value)||0;
-    let nowIso = new Date().toISOString();
-    if(!d||!m||(!k && q<=0)) return alert('Fill all fields correctly!');
-    if(!k) { if(prodData.find(x=>normStr(x.desc)===d)) return alert('Description already exists!'); prodData.push({key:Date.now(),desc:d,model:m,totalQty:q,date:nowIso}); alert('✅ Added Successfully!'); }
-    else { let i=prodData.findIndex(x=>x.key==k); prodData[i].totalQty=parseInt(document.getElementById('origTotalQty').value)+nq; alert('✅ Updated! New Total: '+prodData[i].totalQty); }
-    saveProd(); loadProd(); clearProdForm();
-}
-function delProd() {
-    let k=document.getElementById('prodKey').value; if(!k) return alert('Select record first!');
-    if(!confirm('Delete this product?')) return; prodData=prodData.filter(x=>x.key!=k); saveProd(); loadProd(); clearProdForm(); alert('Deleted!');
-}
-function saveProd() { localStorage.setItem(DB_PROD,JSON.stringify(prodData)); }
-
-function loadProd() {
-    let s=normStr(document.getElementById('searchProd').value);
-    let list = prodData.filter(x=>normStr(x.desc).includes(s)||normStr(x.model).includes(s));
-    list.sort((a,b)=>b.key - a.key);
-    let t=document.getElementById('prodList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="4" class="empty">No Records</td></tr>';
-    list.forEach(x=>{
-        let formattedDate = x.date ? new Date(x.date).toLocaleString('en-GB') : '-';
-        t.innerHTML+=`<tr onclick="fillProd(${x.key})"><td>${x.desc}</td><td>${x.model}</td><td>${x.totalQty}</td><td>${formattedDate}</td></tr>`;
-    });
-}
-function fillProd(k) { 
-    let x=prodData.find(i=>i.key==k); document.getElementById('prodKey').value=x.key; 
-    document.getElementById('prodDesc').value=x.desc; document.getElementById('prodDesc').readOnly=true;
-    document.getElementById('prodModel').value=x.model; document.getElementById('prodModel').readOnly=true;
-    document.getElementById('prodQty').value=x.totalQty; document.getElementById('prodQty').readOnly=true;
-    document.getElementById('origTotalQty').value=x.totalQty; document.getElementById('newQty').disabled=false; document.getElementById('newQty').value=''; 
-}
-
-// ========== DEPLOYMENT ==========
-document.getElementById('depName').addEventListener('change',()=>{
-    let selName = document.getElementById('depName').value;
-    if(!selName){
-        document.getElementById('depPos').value='';
-        document.getElementById('depArea').value='';
-        return;
-    }
-    let emp = empData.find(e=>e.name === selName);
-    if(emp){
-        document.getElementById('depPos').value=emp.pos;
-        document.getElementById('depArea').value=emp.area;
-        document.querySelectorAll('.item-area').forEach(input => {
-            if(!input.value) input.value = emp.area;
-        });
-    } else {
-        document.getElementById('depPos').value='';
-        document.getElementById('depArea').value='';
-    }
-});
-
-function addDepItem() {
-    depItemCount++; let isAuto = document.getElementById('autoSeries').checked;
-    let baseNum = prefixData[seriesPrefix] || 1; let currentItemIdx = document.querySelectorAll('.item-row').length;
-    let nextNum = baseNum + currentItemIdx;
-    let container = document.getElementById('depItemsContainer');
-    let currentArea = document.getElementById('depArea').value || '';
-    
-    let itemHtml = `
-    <div class="item-row" id="item-${depItemCount}">
-        <div class="row">
-            <div class="col-wide"><label>PRODUCT</label><select class="item-prod" id="prod-${depItemCount}"><option value="">-- Select --</option>${prodData.map(x=>'<option value="'+x.key+'">'+x.desc+'</option>').join('')}</select></div>
-            <div class="col"><label>MODEL</label><input type="text" class="item-model" id="model-${depItemCount}" readonly></div>
-            <div class="col"><label>AREA</label><input type="text" class="item-area" id="area-${depItemCount}" value="${currentArea}" placeholder="Edit Area for this item"></div>
-        </div>
-        <div class="row">
-            <div class="col"><label>MACHINE NO</label><input type="text" class="item-mac" id="mac-${depItemCount}" value="${isAuto ? formatMacNum(nextNum) : ''}" ${isAuto ? 'readonly' : ''}></div>
-            <div class="col"><label>KEY NO</label><input type="text" class="item-keyno" id="keyno-${depItemCount}" placeholder="Enter Key No"></div>
-            <div class="col"><label>QTY</label><input type="number" class="item-qty" id="qty-${depItemCount}" min="1" value="1"></div>
-            <div class="col-sm" style="padding-top:20px; display:flex; gap:4px; align-items:flex-end;">
-                <button class="btn btn-add-update btn-small" style="margin-top:20px;" onclick="addDepItem()">➕</button>
-                <button class="btn btn-delete btn-small" style="margin-top:20px;" onclick="removeDepItem(${depItemCount})">✕</button>
-            </div>
-        </div>
-    </div>`;
-    container.insertAdjacentHTML('beforeend', itemHtml);
-    document.getElementById(`prod-${depItemCount}`).addEventListener('change',function(){
-        let k=this.value; document.getElementById(`model-${depItemCount}`).value=k?prodData.find(i=>i.key==k).model:'';
-    });
-}
-function removeDepItem(id) { 
-    let items = document.querySelectorAll('.item-row');
-    if(items.length <= 1) {
-        alert("⚠️ Kailangang may matirang kahit isang item sa listahan.");
-        return;
-    }
-    document.getElementById(`item-${id}`).remove(); 
-    updateSeriesMode(); 
-}
-function resetDepSearch() { document.getElementById('searchDepAll').value=''; loadDep(); }
-
-function newDep() {
-    document.getElementById('transNo').value=`TRN-${transCounter}`;
-    document.getElementById('depName').value='';document.getElementById('depPos').value='';document.getElementById('depArea').value='';
-    document.getElementById('depDate').value=getDate(); document.getElementById('depItemsContainer').innerHTML=''; depItemCount=0; addDepItem();
-    updateSeriesMode(); updateLastNumberForPrefix(); updateNextNumDisplay();
-}
-function saveBatchDep() {
-    let empName = document.getElementById('depName').value; let position = document.getElementById('depPos').value.trim(); let transNo = document.getElementById('transNo').value.trim();
-    if(!empName||!position) return alert('Select Employee first!');
-    let items = document.querySelectorAll('.item-row');
-    if(items.length===0) return alert('Add at least one item!');
-    let valid = true;
-    items.forEach((item)=>{
-        let pk = item.querySelector('.item-prod').value; let q = parseInt(item.querySelector('.item-qty').value)||0; let mac = item.querySelector('.item-mac').value.trim(); let itemArea = item.querySelector('.item-area').value.trim(); let kn = item.querySelector('.item-keyno').value.trim();
-        if(!pk||q<=0||!mac||!itemArea||!kn) valid=false; let prod = prodData.find(x=>x.key==pk);
-        if(!prod) { valid=false; return; }
-        if(prod.totalQty < q) { alert(`Not enough stock for ${prod.desc}! Available: ${prod.totalQty}`); valid=false; }
-    });
-    if(!valid) return alert('Please fill up all product, item area, machine number, key no and quantity fields correctly.');
-    
-    items.forEach(item=>{
-        let pk = item.querySelector('.item-prod').value; let mac = item.querySelector('.item-mac').value.trim(); let q = parseInt(item.querySelector('.item-qty').value)||0;
-        let itemArea = item.querySelector('.item-area').value.trim(); let kn = item.querySelector('.item-keyno').value.trim();
-        let prod = prodData.find(x=>x.key==pk); prod.totalQty -= q;
-        depData.push({key:Date.now()+Math.random(), transNo:transNo, name:empName, pos:position, area:itemArea, desc:prod.desc, model:prod.model, macNo:mac, keyNo:kn, qty:q, date:new Date().toISOString()});
-    });
-    updateLastNumberForPrefix(); transCounter++; saveProd(); saveDep(); saveTransCounter(); loadDep(); newDep(); alert(`✅ Transaction Saved! ${items.length} item/s recorded.`);
-}
-function saveDep() { localStorage.setItem(DB_DEP,JSON.stringify(depData)); }
-
-function getFilteredDep() {
-    let s = normStr(document.getElementById('searchDepAll').value);
-    return depData.filter(x=> {
-        return s==='' || normStr(x.transNo||'').includes(s) || normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s) || normStr(x.desc).includes(s) || normStr(x.model).includes(s) || normStr(x.macNo).includes(s) || normStr(x.keyNo||'').includes(s) || new Date(x.date).toLocaleString('en-GB').toLowerCase().includes(s);
-    });
-}
-function loadDep() {
-    let list=getFilteredDep(); list.sort((a,b)=>new Date(b.date) - new Date(a.date));
-    let t=document.getElementById('depList'); t.innerHTML=''; if(!list.length) return t.innerHTML='<tr><td colspan="10" class="empty">No Records Found</td></tr>';
-    
-    // Check if current user is NAD ITALLO
-    let isNadItallo = currentUser && currentUser.username === 'NAD ITALLO';
-
-    list.forEach(x => {
-        let actionCell = isNadItallo ? `<td><button class="btn btn-delete btn-small" onclick="delSingleDep('${x.transNo}')">🗑️ DELETE</button></td>` : '';
-        t.innerHTML += `<tr onclick="printSingleDep('${x.transNo}','${x.name}')">
-            <td>${x.transNo||''}</td>
-            <td>${x.name}</td>
-            <td>${x.pos}</td>
-            <td>${x.area}</td>
-            <td>${x.desc}</td>
-            <td>${x.model}</td>
-            <td>${x.macNo}</td>
-            <td>${x.keyNo||''}</td>
-            <td>${x.qty}</td>
-            <td>${new Date(x.date).toLocaleString('en-GB')}</td>
-            ${actionCell}
-        </tr>`;
-    });
-}
-
-function delSingleDep(transNo) {
-    event.stopPropagation();
-    
-    if(!currentUser || currentUser.username !== 'NAD ITALLO') {
-        alert('❌ Restricted: Only NAD ITALLO can delete deployment records!');
-        return;
-    }
-    
-    if(!confirm(`⚠️ Are you sure you want to delete transaction ${transNo}? Product stocks will be returned.`)) return;
-
-    let matchingItems = depData.filter(x => x.transNo === transNo);
-    matchingItems.forEach(item => {
-        let prod = prodData.find(p => p.desc === item.desc && p.model === item.model);
-        if(prod) {
-            prod.totalQty += item.qty;
+        let currentTotal = parseFloat(document.getElementById('computedResult').innerText);
+        if (isNaN(currentTotal) || currentTotal === 0) {
+            currentTotal = base;
         }
-    });
 
-    depData = depData.filter(x => x.transNo !== transNo);
-    saveDep();
-    saveProd();
-    loadDep();
-    loadProd();
-    alert('✅ Deployment transaction deleted and stocks restored successfully!');
-}
-
-function exportIndividualExcel(type) {
-    let csv = "";
-    let fileName = "";
-    if(type === 'emp') {
-        csv = "NAME,POSITION,AREA,DATE & TIME\n";
-        let s = normStr(document.getElementById('searchEmp').value);
-        let list = s ? empData.filter(x => normStr(x.name).includes(s) || normStr(x.pos).includes(s) || normStr(x.area).includes(s)) : empData;
-        if(list.length === 0) list = empData; 
-        list.forEach(x => {
-            let dt = x.date ? new Date(x.date).toLocaleString('en-GB') : '';
-            csv += `"${x.name || ''}","${x.pos || ''}","${x.area || ''}","${dt}"\n`;
-        });
-        fileName = "EMPLOYEE_REPORT";
-    } else if(type === 'prod') {
-        csv = "DESCRIPTION,MODEL,TOTAL QTY,DATE & TIME\n";
-        let s = normStr(document.getElementById('searchProd').value);
-        let list = s ? prodData.filter(x => normStr(x.desc).includes(s) || normStr(x.model).includes(s)) : prodData;
-        if(list.length === 0) list = prodData; 
-        list.forEach(x => {
-            let dt = x.date ? new Date(x.date).toLocaleString('en-GB') : '';
-            csv += `"${x.desc || ''}","${x.model || ''}",${x.totalQty || 0},"${dt}"\n`;
-        });
-        fileName = "PRODUCT_REPORT";
-    } else if(type === 'dep') {
-        csv = "TRANS NO,NAME,POSITION,AREA,DESCRIPTION,MODEL,MACHINE NO,KEY NO,QTY,DATE\n";
-        let list = getFilteredDep();
-        if(list.length === 0) list = depData; 
-        list.forEach(x => csv += `"${x.transNo||''}","${x.name||''}","${x.pos||''}","${x.area||''}","${x.desc||''}","${x.model||''}","${x.macNo||''}","${x.keyNo||''}",${x.qty||0},"${x.date ? new Date(x.date).toLocaleString('en-GB') : ''}"\n`);
-        fileName = "DEPLOYMENT_REPORT";
+        let nextResult = (currentTotal * 2) + base;
+        document.getElementById('computedResult').innerText = nextResult;
     }
-    
-    let blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-    let url = URL.createObjectURL(blob);
-    let a = document.createElement('a');
-    a.href = url; 
-    a.download = `${fileName}_${new Date().toISOString().slice(0,10)}.csv`;
-    document.body.appendChild(a); 
-    a.click(); 
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
 
-function printIndividualPDF(elementId) {
-    let zone = document.getElementById(elementId);
-    if (!zone) return;
-
-    let currentZoneHTML = zone.innerHTML;
-    let reportTitle = "SYSTEM REPORT";
-    if(elementId === 'empPrintZone') reportTitle = "EMPLOYEE REPORT";
-    else if(elementId === 'prodPrintZone') reportTitle = "PRODUCT INVENTORY REPORT";
-    else if(elementId === 'depPrintZone') reportTitle = "DEPLOYMENT LOG REPORT";
-    else if(elementId === 'allPrintZone') reportTitle = "COMPLETE SYSTEM MASTER REPORT";
-
-    let printHeaderHTML = `
-        <div class="print-header-center">
-            <img src="logo.png" class="print-logo-center" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'50\'><circle cx=\'25\' cy=\'25\' r=\'25\' fill=\'#1e293b\'/><text x=\'50%\' y=\'50%\' fill=\'#38bdf8\' font-size=\'10\' font-family=\'Arial\' text-anchor=\'middle\' dominant-baseline=\'middle\'>LOGO</text></svg>'">
-            <div class="print-title-container">
-                <div class="print-company-name">AL HAYAH AL SALAH ELECTRONICS DEVICES AND REP</div>
-                <div class="print-system-name">WM INVENTORY & DEPLOYMENT SYSTEM</div>
-            </div>
-        </div>
-        <div class="print-report-title">${reportTitle}</div>
-    `;
-
-    let printFooterHTML = `
-        <div class="print-footer-info">
-            Prepared by: ${currentUser ? currentUser.name : 'Warehouse Management'}<br>
-            Prepared by ${currentUser ? currentUser.position : 'Staff'}<br>
-            Date: ${new Date().toLocaleDateString('en-GB')}
-        </div>
-    `;
-
-    let printHTML = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Report - WM Deployment System</title>
-            <style>
-                @page { size: landscape; margin: 10mm; }
-                body { font-family: Arial, sans-serif; color: black; background: white; padding: 15px; margin: 0; }
-                .print-header-center { text-align: left; width: 100%; margin-bottom: 15px; border-bottom: 3px solid #38bdf8; padding-bottom: 10px; display: flex; align-items: center; gap: 15px; }
-                .print-logo-center { width: 50px; height: 50px; object-fit: cover; border-radius: 50% !important; background: #1e293b; border: 2px solid #38bdf8; display: block; flex-shrink: 0; }
-                .print-title-container { display: flex; flex-direction: column; justify-content: center; }
-                .print-company-name { font-size: 13px; font-weight: bold; color: #000; text-transform: uppercase; line-height: 1.2; }
-                .print-system-name { font-size: 11px; font-weight: bold; color: #334155; text-transform: uppercase; margin-top: 2px; line-height: 1.2; }
-                .print-report-title { text-align: left; font-size: 15px; font-weight: bold; margin: 10px 0; text-transform: uppercase; color: #000; }
-                .print-footer-info { text-align: right; font-size: 11px; font-weight: bold; color: #000; margin-top: 25px; line-height: 1.4; }
-                .table-container { width: 100%; margin-top: 10px; }
-                table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
-                th, td { border: 1px solid #000; padding: 8px; text-align: left; color: black; }
-                th { background-color: #e2e8f0 !important; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-                h4 { margin-top: 15px; color: #000; font-size: 13px; }
-            </style>
-        </head>
-        <body onload="setTimeout(function() { window.print(); }, 500);">
-            ${printHeaderHTML}
-            ${currentZoneHTML}
-            ${printFooterHTML}
-        </body>
-        </html>
-    `;
-
-    let blob = new Blob([printHTML], {type: 'text/html;charset=utf-8;'});
-    let url = URL.createObjectURL(blob);
-    
-    let newWindow = window.open(url, '_blank');
-    if (!newWindow) {
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = `${elementId}_Report_${new Date().toISOString().slice(0,10)}.html`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+    function resetBet() {
+        document.getElementById('baseAmount').value = '';
+        document.getElementById('computedResult').innerText = '0';
     }
-}
 
-function printSingleDep(transNo, name) {
-    printIndividualPDF('depPrintZone');
-}
-
-function clearAllDB() {
-    if(!confirm('⚠️ WARNING! THIS WILL DELETE ALL DATA FOREVER!\nOnly Programmer can do this!\nType "DELETE ALL" to confirm:')) return;
-    let confirmTxt = prompt("Type exactly: DELETE ALL");
-    if(confirmTxt !== "DELETE ALL") return alert("❌ Cancelled!");
-    localStorage.clear();
-    alert("✅ All Data Cleared! Page will reload.");
-    location.reload();
-}
-
-function backupDB() {
-    let backupData = {
-        version: "1.0",
-        exported: new Date().toISOString(),
-        users: users,
-        empData: empData,
-        prodData: prodData,
-        depData: depData,
-        prefixData: prefixData,
-        transCounter: transCounter,
-        seriesPrefix: seriesPrefix
-    };
-    let blob = new Blob([JSON.stringify(backupData, null, 2)], {type:'application/json'});
-    let url = URL.createObjectURL(blob);
-    let a = document.createElement('a');
-    a.href = url;
-    a.download = `ALHAYAH_BACKUP_${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    localStorage.setItem(DB_LAST_BACKUP, new Date().toISOString());
-    alert("✅ Backup Downloaded Successfully!");
-}
-
-document.getElementById('restoreFile').addEventListener('change', function(e){
-    let file = e.target.files[0];
-    if(!file) return;
-    if(!confirm('⚠️ This will replace ALL current data with backup file!\nContinue?')) return;
-    let reader = new FileReader();
-    reader.onload = function(event){
-        try{
-            let data = JSON.parse(event.target.result);
-            if(!data.version) return alert('❌ Invalid backup file!');
-            users = data.users || [];
-            empData = data.empData || [];
-            prodData = data.prodData || [];
-            depData = data.depData || [];
-            prefixData = data.prefixData || {"Easy":1};
-            transCounter = data.transCounter || 2001;
-            seriesPrefix = data.seriesPrefix || 'Easy';
-            
-            localStorage.setItem(DB_USER, JSON.stringify(users));
-            localStorage.setItem(DB_EMP, JSON.stringify(empData));
-            localStorage.setItem(DB_PROD, JSON.stringify(prodData));
-            localStorage.setItem(DB_DEP, JSON.stringify(depData));
-            localStorage.setItem(DB_PREFIX_DATA, JSON.stringify(prefixData));
-            localStorage.setItem('TRANS_SERIES', transCounter);
-            localStorage.setItem('SERIES_PREFIX', seriesPrefix);
-            
-            alert("✅ Restore Complete! Page will reload.");
-            location.reload();
-        }catch(err){
-            alert("❌ Error reading file: " + err.message);
+    function processGrid() {
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                gridMatrix[r][c].classList.remove('box-green');
+            }
         }
-    };
-    reader.readAsText(file);
-    this.value = '';
-});
 
-document.getElementById('importExcelFile').addEventListener('change', function(e){
-    let file = e.target.files[0];
-    if(!file) return;
-    let reader = new FileReader();
-    reader.onload = function(event){
-        try {
-            let text = event.target.result;
-            let lines = text.split(/\r\n|\n/);
-            let importedCount = 0;
-            
-            for(let i=1; i<lines.length; i++) {
-                let line = lines[i].trim();
-                if(!line) continue;
-                let cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+        for (let r = 0; r < ROWS; r++) {
+            let c = 0;
+            while (c < COLS) {
+                let val = gridMatrix[r][c].value.trim().toUpperCase();
+                if (val === '') {
+                    c++;
+                    continue;
+                }
+
+                let startC = c;
+                let streak = 0;
+                let nextC = c;
                 
-                if(cols.length >= 3 && cols[0]) {
-                    if(cols.length === 3 && !isNaN(cols[2])) {
-                        let desc = cols[0];
-                        let model = cols[1];
-                        let qty = parseInt(cols[2]) || 0;
-                        if(!prodData.some(p => normStr(p.desc) === normStr(desc))) {
-                            prodData.push({key: Date.now() + Math.random(), desc: desc, model: model, totalQty: qty, date: new Date().toISOString()});
-                            importedCount++;
+                while (nextC < COLS && gridMatrix[r][nextC].value.trim().toUpperCase() === val) {
+                    streak++;
+                    nextC++;
+                }
+
+                if (streak >= 4) {
+                    for (let i = startC + 4; i < COLS; i++) {
+                        let currentVal = gridMatrix[r][i].value.trim().toUpperCase();
+                        if (currentVal === val || currentVal === "") {
+                            gridMatrix[r][i].classList.add('box-green');
+                            if (currentVal === "") break;
+                        } else {
+                            break;
                         }
-                    } else if(cols.length === 3) {
-                        let name = cols[0];
-                        let pos = cols[1];
-                        let area = cols[2];
-                        if(!empData.some(e => normStr(e.name) === normStr(name))) {
-                            empData.push({key: Date.now() + Math.random(), name: name, pos: pos, area: area, date: new Date().toISOString()});
-                            importedCount++;
+                    }
+                }
+
+                c = nextC;
+            }
+        }
+
+        updateMainPrediction();
+    }
+
+    function updateMainPrediction() {
+        let predTextElem = document.getElementById('mainPredictionText');
+        let predLayerElem = document.getElementById('mainPredictionLayer');
+
+        let activeLayer = -1;
+        let targetMatch = [];
+        let criteriaType = "";
+
+        // 1. Suriin muna ang bawat layer kung may 7+ consecutive misses
+        for (let r = 0; r < ROWS; r++) {
+            let rowValues = [];
+            for (let c = 0; c < COLS; c++) {
+                let val = gridMatrix[r][c].value.trim().toUpperCase();
+                if (val !== '') {
+                    rowValues.push(val);
+                }
+            }
+
+            if (rowValues.length > 0) {
+                let layerMissHits = [];
+                TRACKED_LETTERS.forEach(letter => {
+                    let consecutiveMisses = 0;
+                    for (let i = rowValues.length - 1; i >= 0; i--) {
+                        if (rowValues[i] !== letter) {
+                            consecutiveMisses++;
+                        } else {
+                            break; 
                         }
-                    } else if(cols.length >= 10) {
-                        let transNo = cols[1] || `TRN-${transCounter++}`;
-                        let name = cols[2];
-                        let pos = cols[3];
-                        let area = cols[4];
-                        let desc = cols[5];
-                        let model = cols[6];
-                        let mac = cols[7];
-                        let keyNo = cols[8];
-                        let qty = parseInt(cols[9]) || 1;
-                        let dateVal = cols[10] ? new Date(cols[10]).toISOString() : new Date().toISOString();
-                        
-                        depData.push({
-                            key: Date.now() + Math.random(),
-                            transNo: transNo,
-                            name: name,
-                            pos: pos,
-                            area: area,
-                            desc: desc,
-                            model: model,
-                            macNo: mac,
-                            keyNo: keyNo,
-                            qty: qty,
-                            date: dateVal
-                        });
-                        importedCount++;
+                    }
+                    if (consecutiveMisses >= 7) {
+                        layerMissHits.push(letter);
+                    }
+                });
+
+                if (layerMissHits.length > 0) {
+                    activeLayer = r + 1;
+                    targetMatch = layerMissHits;
+                    criteriaType = "7+ consecutive misses";
+                    break;
+                }
+            }
+        }
+
+        // 2. Kung walang 7+ misses, kunin ang huling 20 rounds sa pangkalahatan at sundin ang Custom Rank
+        if (activeLayer === -1) {
+            let allGridValues = [];
+            let lastRowWithData = -1;
+
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    let val = gridMatrix[r][c].value.trim().toUpperCase();
+                    if (val !== '') {
+                        allGridValues.push(val);
+                        lastRowWithData = r + 1;
                     }
                 }
             }
-            
-            saveEmp(); saveProd(); saveDep();
-            loadEmp(); loadProd(); loadDep(); loadDepSelects();
-            
-            alert(`✅ Excel File Imported Successfully! Added ${importedCount} record(s).`);
-        } catch(err) {
-            alert("❌ Error importing Excel file: " + err.message);
+
+            if (allGridValues.length > 0) {
+                let last20Overall = allGridValues.slice(-20);
+
+                let counts = {};
+                TRACKED_LETTERS.forEach(letter => {
+                    counts[letter] = 0;
+                });
+
+                last20Overall.forEach(letter => {
+                    if (counts.hasOwnProperty(letter)) {
+                        counts[letter]++;
+                    }
+                });
+
+                // I-sort ang mga letra mula sa Pinakamataas patungo sa Pinakamababa (Descending)
+                let sortedDesc = TRACKED_LETTERS.slice().sort((a, b) => {
+                    if (counts[b] !== counts[a]) {
+                        return counts[b] - counts[a];
+                    }
+                    return 0;
+                });
+
+                // 1st Letter: Pinakamataas (Index 0)
+                // 2nd Letter: Pang-3 sa mataas (Index 2)
+                // 3rd Letter: Pinakamababa (Index 5 o ang dulo)
+                let highest = sortedDesc[0];
+                let thirdHighest = sortedDesc[2];
+                let lowest = sortedDesc[sortedDesc.length - 1];
+
+                targetMatch = [highest, thirdHighest, lowest];
+                activeLayer = lastRowWithData;
+                criteriaType = `Custom Rank sa pangkalahatang huling ${last20Overall.length} rounds`;
+            }
         }
-    };
-    reader.readAsText(file);
-    this.value = '';
-});
 
-function exportExcelAll() {
-    let csv = "DATA TYPE,TRANS NO,NAME,POSITION,AREA,DESCRIPTION,MODEL,MACHINE NO,KEY NO,QTY,DATE\n";
-    
-    if(empData.length > 0) {
-        empData.forEach(x=> {
-            csv += `"EMPLOYEE","","${x.name || ''}","${x.pos || ''}","${x.area || ''}","","","","","", "${x.date || new Date().toISOString()}"\n`;
-        });
-    }
-    if(prodData.length > 0) {
-        prodData.forEach(x=> {
-            csv += `"PRODUCT","","","","","${x.desc || ''}","${x.model || ''}","","",${x.totalQty || 0}, "${x.date || new Date().toISOString()}"\n`;
-        });
-    }
-    if(depData.length > 0) {
-        depData.forEach(x=> {
-            csv += `"DEPLOYMENT","${x.transNo || ''}","${x.name || ''}","${x.pos || ''}","${x.area || ''}","${x.desc || ''}","${x.model || ''}","${x.macNo || ''}","${x.keyNo || ''}",${x.qty || 0},"${x.date || ''}"\n`;
-        });
-    }
-    
-    let blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-    let url = URL.createObjectURL(blob);
-    let a = document.createElement('a');
-    a.href = url; 
-    a.download = `ALHAYAH_MASTER_REPORT_${new Date().toISOString().slice(0,10)}.csv`;
-    document.body.appendChild(a);
-    a.click(); 
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
+        if (activeLayer === -1) {
+            predTextElem.innerText = "-";
+            predTextElem.className = "";
+            predLayerElem.innerText = "Wala pang laman ang mga grid boxes.";
+            return;
+        }
 
-function exportPDFAll() {
-    let empTbody = document.getElementById('printAllEmpList');
-    let prodTbody = document.getElementById('printAllProdList');
-    let depTbody = document.getElementById('printAllDepList');
-    
-    empTbody.innerHTML = empData.length === 0 ? '<tr><td colspan="4" class="empty">No Records</td></tr>' : empData.map(x => `<tr><td>${x.name || ''}</td><td>${x.pos || ''}</td><td>${x.area || ''}</td><td>${x.date ? new Date(x.date).toLocaleString('en-GB') : '-'}</td></tr>`).join('');
-    prodTbody.innerHTML = prodData.length === 0 ? '<tr><td colspan="4" class="empty">No Records</td></tr>' : prodData.map(x => `<tr><td>${x.desc || ''}</td><td>${x.model || ''}</td><td>${x.totalQty || 0}</td><td>${x.date ? new Date(x.date).toLocaleString('en-GB') : '-'}</td></tr>`).join('');
-    depTbody.innerHTML = depData.length === 0 ? '<tr><td colspan="10" class="empty">No Records</td></tr>' : depData.map(x => `<tr><td>${x.transNo || ''}</td><td>${x.name || ''}</td><td>${x.pos || ''}</td><td>${x.area || ''}</td><td>${x.desc || ''}</td><td>${x.model || ''}</td><td>${x.macNo || ''}</td><td>${x.keyNo || ''}</td><td>${x.qty || 0}</td><td>${new Date(x.date).toLocaleString('en-GB')}</td></tr>`).join('');
-    
-    printIndividualPDF('allPrintZone');
-}
+        predTextElem.innerText = targetMatch.join(", ");
+        predTextElem.className = "pred-highlight";
+        predLayerElem.innerText = `Resulta (${criteriaType}) [Hanggang Layer ${activeLayer}]`;
+    }
+
+    function saveToLocalStorage() {
+        let gridData = [];
+        for (let r = 0; r < ROWS; r++) {
+            let row = [];
+            for (let c = 0; c < COLS; c++) {
+                row.push(gridMatrix[r][c].value);
+            }
+            gridData.push(row);
+        }
+        localStorage.setItem('savedGridData', JSON.stringify(gridData));
+    }
+
+    function loadFromLocalStorage() {
+        let savedData = localStorage.getItem('savedGridData');
+        if (savedData) {
+            let gridData = JSON.parse(savedData);
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    if (gridData[r] && gridData[r][c] !== undefined) {
+                        gridMatrix[r][c].value = gridData[r][c];
+                    }
+                }
+            }
+            processGrid();
+        }
+    }
+
+    function resetAll() {
+        resetBet();
+        document.getElementById('mainPredictionText').innerText = '-';
+        document.getElementById('mainPredictionText').className = '';
+        document.getElementById('mainPredictionLayer').innerText = 'Maglagay ng W, B, R, G, Y, o P sa grid boxes.';
+
+        for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+                gridMatrix[r][c].value = '';
+                gridMatrix[r][c].classList.remove('box-green');
+            }
+        }
+
+        localStorage.removeItem('savedGridData');
+    }
+
+    window.onload = loadFromLocalStorage;
 </script>
+
 </body>
 </html>
